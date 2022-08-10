@@ -30,6 +30,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
     return Scaffold(
         body: pages[selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: const Color(0xFFFFC107),
           type: BottomNavigationBarType.fixed,
           showUnselectedLabels: false,
           showSelectedLabels: false,
