@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:group_planner_app/screens/home.dart';
+import 'package:group_planner_app/screens/btm_bar.dart';
 import 'package:provider/provider.dart';
 
 import 'consts/theme_data.dart';
@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: Styles.themeData(themeProvider.getDarkTheme, context),
-          home: const Home(),
+          home: BottomBarScreen(),
         );
       }),
     );
