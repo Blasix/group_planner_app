@@ -11,46 +11,38 @@ class AgendaScreen extends StatefulWidget {
 }
 
 class _AgendaScreenState extends State<AgendaScreen> {
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
   @override
   Widget build(BuildContext context) {
-    CalendarFormat calendarFormat = CalendarFormat.month;
-    DateTime focusedDay = DateTime.now();
-    DateTime? selectedDay;
     return SafeArea(
       child: TableCalendar(
-        startingDayOfWeek: StartingDayOfWeek.monday,
         firstDay: kFirstDay,
         lastDay: kLastDay,
-        focusedDay: focusedDay,
-        calendarFormat: calendarFormat,
+        focusedDay: _focusedDay,
+        calendarFormat: _calendarFormat,
+        startingDayOfWeek: StartingDayOfWeek.monday,
         selectedDayPredicate: (day) {
-          // Use `selectedDayPredicate` to determine which day is currently selected.
-          // If this returns true, then `day` will be marked as selected.
-
-          // Using `isSameDay` is recommended to disregard
-          // the time-part of compared DateTime objects.
-          return isSameDay(selectedDay, day);
+          return isSameDay(_selectedDay, day);
         },
         onDaySelected: (selectedDay, focusedDay) {
-          if (!isSameDay(selectedDay, selectedDay)) {
-            // Call `setState()` when updating the selected day
+          if (!isSameDay(_selectedDay, selectedDay)) {
             setState(() {
-              selectedDay = selectedDay;
-              focusedDay = focusedDay;
+              _selectedDay = selectedDay;
+              _focusedDay = focusedDay;
             });
           }
         },
         onFormatChanged: (format) {
-          if (calendarFormat != format) {
-            // Call `setState()` when updating calendar format
+          if (_calendarFormat != format) {
             setState(() {
-              calendarFormat = format;
+              _calendarFormat = format;
             });
           }
         },
         onPageChanged: (focusedDay) {
-          // No need to call `setState()` here
-          focusedDay = focusedDay;
+          _focusedDay = focusedDay;
         },
       ),
     );

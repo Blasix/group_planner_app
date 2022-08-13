@@ -42,8 +42,8 @@ class UserScreen extends StatelessWidget {
                               child: Container(
                                 height: 30,
                                 width: 30,
-                                decoration: const BoxDecoration(
-                                    color: kPrimaryColor,
+                                decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
                                     shape: BoxShape.circle),
                                 child: InkWell(
                                   onTap: () {},
@@ -82,41 +82,25 @@ class UserScreen extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            Text(
-              'Name',
-              style: TextStyle(
-                  fontSize: ScreenUtil().setSp(17),
-                  fontWeight: FontWeight.w600),
-            ),
+            Text('Name', style: kTitleTextStyle),
             const SizedBox(
               height: 5,
             ),
-            Text(
-              'Mail',
-              style: TextStyle(
-                  fontSize: ScreenUtil().setSp(13),
-                  fontWeight: themeState.getDarkTheme
-                      ? FontWeight.w200
-                      : FontWeight.w300),
-            ),
+            Text('Mail', style: kCaptionTextStyle),
             // const SizedBox(
             //   height: 20,
             // ),
             // ElevatedButton(
             //   style: ElevatedButton.styleFrom(
             //     fixedSize: const Size(200, 40),
-            //     primary: kPrimaryColor,
+            //     primary: Theme.of(context).primaryColor,
             //     shape: const RoundedRectangleBorder(
             //         borderRadius: BorderRadius.all(Radius.circular(30))),
             //   ),
             //   onPressed: () {},
             //   child: Text(
             //     'Upgrade to PRO',
-            //     style: TextStyle(
-            //       fontSize: ScreenUtil().setSp(15),
-            //       fontWeight: FontWeight.w400,
-            //       color: Colors.black,
-            //     ),
+            //     style: kButtonTextStyle
             //   ),
             // ),
             const SizedBox(
@@ -195,7 +179,7 @@ class ProfileListItem extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 40).copyWith(bottom: 20),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
-          color: isDarkTheme ? Colors.grey[800] : Colors.white),
+          color: Theme.of(context).cardColor),
       child: InkWell(
         onTap: () {
           onPressed();
@@ -212,12 +196,8 @@ class ProfileListItem extends StatelessWidget {
               const SizedBox(
                 width: 8,
               ),
-              Text(
-                text,
-                style: TextStyle(
-                    fontSize: ScreenUtil().setSp(17),
-                    fontWeight: FontWeight.w500),
-              ),
+              Text(text,
+                  style: kTitleTextStyle.copyWith(fontWeight: FontWeight.w500)),
               const Spacer(),
               Visibility(
                 visible: hasNavgigation,
