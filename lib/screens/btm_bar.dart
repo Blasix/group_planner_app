@@ -3,6 +3,8 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:group_planner_app/screens/agenda.dart';
+import 'package:group_planner_app/screens/team.dart';
 import 'package:group_planner_app/screens/user.dart';
 import 'package:iconly/iconly.dart';
 
@@ -17,7 +19,12 @@ class BottomBarScreen extends StatefulWidget {
 
 class _BottomBarScreenState extends State<BottomBarScreen> {
   int selectedIndex = 0;
-  final List pages = [const HomeScreen(), const UserScreen()];
+  final List pages = [
+    const HomeScreen(),
+    const AgendaScreen(),
+    const TeamScreen(),
+    const UserScreen(),
+  ];
 
   void _selectedPage(int index) {
     setState(() {
@@ -44,6 +51,17 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
             ),
             BottomNavigationBarItem(
               icon: Icon(selectedIndex == 1
+                  ? IconlyBold.calendar
+                  : IconlyLight.calendar),
+              label: "Agenda",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                  selectedIndex == 2 ? IconlyBold.user_3 : IconlyLight.user_1),
+              label: "Team",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(selectedIndex == 3
                   ? IconlyBold.profile
                   : IconlyLight.profile),
               label: "User",
