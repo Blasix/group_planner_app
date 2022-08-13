@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../consts/utils.dart';
+
 class AgendaScreen extends StatefulWidget {
   const AgendaScreen({Key? key}) : super(key: key);
 
@@ -11,9 +13,6 @@ class AgendaScreen extends StatefulWidget {
 class _AgendaScreenState extends State<AgendaScreen> {
   @override
   Widget build(BuildContext context) {
-    final kToday = DateTime.now();
-    final kFirstDay = DateTime(kToday.year - 1, kToday.month, kToday.day);
-    final kLastDay = DateTime(kToday.year + 1, kToday.month, kToday.day);
     CalendarFormat calendarFormat = CalendarFormat.month;
     DateTime focusedDay = DateTime.now();
     DateTime? selectedDay;

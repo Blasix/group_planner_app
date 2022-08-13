@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:group_planner_app/consts/utils.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
@@ -42,7 +43,7 @@ class UserScreen extends StatelessWidget {
                                 height: 30,
                                 width: 30,
                                 decoration: const BoxDecoration(
-                                    color: Color(0xFFFFC107),
+                                    color: kPrimaryColor,
                                     shape: BoxShape.circle),
                                 child: InkWell(
                                   onTap: () {},
@@ -104,7 +105,7 @@ class UserScreen extends StatelessWidget {
             // ElevatedButton(
             //   style: ElevatedButton.styleFrom(
             //     fixedSize: const Size(200, 40),
-            //     primary: const Color(0xFFFFC107),
+            //     primary: kPrimaryColor,
             //     shape: const RoundedRectangleBorder(
             //         borderRadius: BorderRadius.all(Radius.circular(30))),
             //   ),
