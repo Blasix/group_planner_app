@@ -4,14 +4,14 @@ import 'package:group_planner_app/consts/utils.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/dark_theme_provider.dart';
+import '../consts/theme_manager.dart';
 
 class UserScreen extends StatelessWidget {
   const UserScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final themeState = Provider.of<DarkThemeProvider>(context);
+    final theme = Provider.of<ThemeNotifier>(context);
     ScreenUtil.init(context, designSize: const Size(414, 896));
     return Scaffold(
       body: SafeArea(
@@ -63,15 +63,16 @@ class UserScreen extends StatelessWidget {
                       alignment: Alignment.topRight,
                       child: IconButton(
                         onPressed: () {
-                          themeState.getDarkTheme
-                              ? themeState.setDarkTheme = false
-                              : themeState.setDarkTheme = true;
+                          if (theme.getTheme() == theme.lightTheme) {
+                            theme.setDarkMode();
+                          } else if (theme.getTheme() == theme.darkTheme) {
+                            theme.setLightMode();
+                          }
                         },
                         icon: Icon(
-                          themeState.getDarkTheme
-                              ? Icons.light_mode_outlined
-                              : Icons.dark_mode_outlined,
-                          size: ScreenUtil().setSp(30),
+                          (theme.getTheme() == theme.lightTheme)
+                              ? Icons.dark_mode_outlined
+                              : Icons.light_mode_outlined,
                         ),
                       ),
                     ),
@@ -113,37 +114,31 @@ class UserScreen extends StatelessWidget {
                     icon: IconlyLight.shield_done,
                     text: 'Privacy',
                     onPressed: () {},
-                    isDarkTheme: themeState.getDarkTheme,
                   ),
                   // ProfileListItem(
                   //   icon: IconlyLight.time_circle,
                   //   text: 'Purchase History',
                   //   onPressed: () {},
-                  //   isDarkTheme: themeState.getDarkTheme,
                   // ),
                   ProfileListItem(
                     icon: IconlyLight.discovery,
                     text: 'Help & Support',
                     onPressed: () {},
-                    isDarkTheme: themeState.getDarkTheme,
                   ),
                   ProfileListItem(
                     icon: IconlyLight.setting,
                     text: 'Settings',
                     onPressed: () {},
-                    isDarkTheme: themeState.getDarkTheme,
                   ),
                   ProfileListItem(
                     icon: IconlyLight.add_user,
                     text: 'Invite a Friend',
                     onPressed: () {},
-                    isDarkTheme: themeState.getDarkTheme,
                   ),
                   ProfileListItem(
                     icon: IconlyLight.logout,
                     text: 'Logout',
                     onPressed: () {},
-                    isDarkTheme: themeState.getDarkTheme,
                     hasNavgigation: false,
                   ),
                 ],
@@ -160,7 +155,6 @@ class ProfileListItem extends StatelessWidget {
   final IconData icon;
   final String text;
   final Function onPressed;
-  final bool isDarkTheme;
   final bool hasNavgigation;
 
   const ProfileListItem({
@@ -168,7 +162,6 @@ class ProfileListItem extends StatelessWidget {
     required this.icon,
     required this.text,
     required this.onPressed,
-    required this.isDarkTheme,
     this.hasNavgigation = true,
   }) : super(key: key);
 
