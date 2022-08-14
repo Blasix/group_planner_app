@@ -6,8 +6,15 @@ import 'package:provider/provider.dart';
 
 import '../consts/theme_manager.dart';
 
-class UserScreen extends StatelessWidget {
+class UserScreen extends StatefulWidget {
   const UserScreen({Key? key}) : super(key: key);
+
+  @override
+  State<UserScreen> createState() => _UserScreenState();
+}
+
+class _UserScreenState extends State<UserScreen> {
+  bool themeSelector = false;
 
   @override
   Widget build(BuildContext context) {
@@ -20,92 +27,154 @@ class UserScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(12),
               child: SizedBox(
-                height: 140,
+                height: 200,
                 width: double.infinity,
-                child: Stack(
+                child: Column(
                   children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        height: 100,
-                        width: 100,
-                        margin: const EdgeInsets.only(top: 30),
-                        child: Stack(
-                          children: [
-                            const CircleAvatar(
-                              radius: 50,
-                              backgroundImage:
-                                  AssetImage('assets/images/avatar.jpg'),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: Container(
-                                height: 30,
-                                width: 30,
-                                decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor,
-                                    shape: BoxShape.circle),
-                                child: InkWell(
-                                  onTap: () {},
-                                  child: Icon(
-                                    Icons.edit_outlined,
-                                    size: ScreenUtil().setSp(15),
-                                    color: Colors.black,
+                    Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            height: 100,
+                            width: 100,
+                            margin: const EdgeInsets.only(top: 30),
+                            child: Stack(
+                              children: [
+                                const CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage:
+                                      AssetImage('assets/images/avatar.jpg'),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Container(
+                                    height: 30,
+                                    width: 30,
+                                    decoration: BoxDecoration(
+                                        color: Theme.of(context).primaryColor,
+                                        shape: BoxShape.circle),
+                                    child: InkWell(
+                                      onTap: () {},
+                                      child: Icon(
+                                        Icons.edit_outlined,
+                                        size: ScreenUtil().setSp(15),
+                                        color: Colors.black,
+                                      ),
+                                    ),
                                   ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    themeSelector = true;
+                                  });
+                                },
+                                icon: Icon(
+                                  (theme.getTheme() == theme.lightTheme)
+                                      ? Icons.light_mode_outlined
+                                      : Icons.dark_mode_outlined,
                                 ),
                               ),
-                            )
-                          ],
+                              Visibility(
+                                visible: themeSelector,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Theme.of(context).cardColor,
+                                  ),
+                                  width: 100,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          theme.setLightMode();
+                                          setState(() {
+                                            themeSelector = false;
+                                          });
+                                        },
+                                        child: Row(
+                                          children: const [
+                                            Icon(Icons.light_mode_outlined),
+                                            Text(' Light')
+                                          ],
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          theme.setDarkMode();
+                                          setState(() {
+                                            themeSelector = false;
+                                          });
+                                        },
+                                        child: Row(
+                                          children: const [
+                                            Icon(Icons.dark_mode_outlined),
+                                            Text(' Dark')
+                                          ],
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {},
+                                        child: Row(
+                                          children: const [
+                                            Icon(Icons.computer_outlined),
+                                            Text(' System')
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                        onPressed: () {
-                          if (theme.getTheme() == theme.lightTheme) {
-                            theme.setDarkMode();
-                          } else if (theme.getTheme() == theme.darkTheme) {
-                            theme.setLightMode();
-                          }
-                        },
-                        icon: Icon(
-                          (theme.getTheme() == theme.lightTheme)
-                              ? Icons.dark_mode_outlined
-                              : Icons.light_mode_outlined,
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 150,
+                              ),
+                              Text('Name', style: kTitleTextStyle),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text('Mail', style: kCaptionTextStyle),
+                              // const SizedBox(
+                              //   height: 20,
+                              // ),
+                              // ElevatedButton(
+                              //   style: ElevatedButton.styleFrom(
+                              //     fixedSize: const Size(200, 40),
+                              //     primary: Theme.of(context).primaryColor,
+                              //     shape: const RoundedRectangleBorder(
+                              //         borderRadius: BorderRadius.all(
+                              //             Radius.circular(30))),
+                              //   ),
+                              //   onPressed: () {},
+                              //   child: Text('Upgrade to PRO',
+                              //       style: kButtonTextStyle),
+                              // ),
+                            ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text('Name', style: kTitleTextStyle),
-            const SizedBox(
-              height: 5,
-            ),
-            Text('Mail', style: kCaptionTextStyle),
-            // const SizedBox(
-            //   height: 20,
-            // ),
-            // ElevatedButton(
-            //   style: ElevatedButton.styleFrom(
-            //     fixedSize: const Size(200, 40),
-            //     primary: Theme.of(context).primaryColor,
-            //     shape: const RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.all(Radius.circular(30))),
-            //   ),
-            //   onPressed: () {},
-            //   child: Text(
-            //     'Upgrade to PRO',
-            //     style: kButtonTextStyle
-            //   ),
-            // ),
-            const SizedBox(
-              height: 20,
             ),
             Expanded(
               child: ListView(

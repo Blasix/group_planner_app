@@ -5,7 +5,7 @@ class ThemeNotifier with ChangeNotifier {
   final darkTheme = ThemeData(
     primaryColor: const Color(0xFFFFC107),
     colorScheme: ThemeData().colorScheme.copyWith(
-          primary: const Color(0xFFFFC107),
+          primary: Colors.white,
           secondary: const Color(0xFFFFC107),
           brightness: Brightness.dark,
         ),
@@ -15,11 +15,11 @@ class ThemeNotifier with ChangeNotifier {
   final lightTheme = ThemeData(
     primaryColor: const Color(0xFFFFC107),
     colorScheme: ThemeData().colorScheme.copyWith(
-          primary: const Color(0xFFFFC107),
+          primary: Colors.black,
           secondary: const Color(0xFFFFC107),
           brightness: Brightness.light,
         ),
-    scaffoldBackgroundColor: Colors.grey[50],
+    scaffoldBackgroundColor: Colors.grey[300],
   );
 
   ThemeData _themeData = ThemeData();
