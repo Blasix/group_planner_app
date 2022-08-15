@@ -28,7 +28,7 @@ class ThemeNotifier with ChangeNotifier {
   ThemeNotifier() {
     StorageManager.readData('themeMode').then((value) {
       // print('value read from storage: ' + value.toString());
-      var themeMode = value ?? 'dark';
+      var themeMode = value ?? 'system';
       if (themeMode == 'light') {
         _themeMode = ThemeMode.light;
       } else if (themeMode == 'dark') {
@@ -41,8 +41,6 @@ class ThemeNotifier with ChangeNotifier {
       notifyListeners();
     });
   }
-
-  bool get isDarkTheme => (_themeMode == ThemeMode.dark) ? true : false;
 
   void setDarkMode() async {
     _themeMode = ThemeMode.dark;

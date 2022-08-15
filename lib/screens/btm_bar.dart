@@ -38,6 +38,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
         body: pages[selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
+          selectedItemColor: Theme.of(context).primaryColor,
           showUnselectedLabels: false,
           showSelectedLabels: false,
           currentIndex: selectedIndex,

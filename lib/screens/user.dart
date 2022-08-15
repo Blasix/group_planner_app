@@ -21,6 +21,8 @@ class _UserScreenState extends State<UserScreen> {
     Color lightMode = Theme.of(context).colorScheme.primary;
     Color darkMode = Theme.of(context).colorScheme.primary;
     Color systemMode = Theme.of(context).colorScheme.primary;
+    bool isDarkTheme =
+        (Theme.of(context).colorScheme.primary == Colors.white) ? true : false;
     final theme = Provider.of<ThemeNotifier>(context);
     if (theme.getTheme() == ThemeMode.light) {
       setState(() {
@@ -102,7 +104,7 @@ class _UserScreenState extends State<UserScreen> {
                                         });
                                 },
                                 icon: Icon(
-                                  theme.isDarkTheme
+                                  isDarkTheme
                                       ? Icons.dark_mode_outlined
                                       : Icons.light_mode_outlined,
                                 ),
