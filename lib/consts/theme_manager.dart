@@ -22,32 +22,43 @@ class ThemeNotifier with ChangeNotifier {
     scaffoldBackgroundColor: Colors.grey[300],
   );
 
-  ThemeData _themeData = ThemeData();
-  ThemeData getTheme() => _themeData;
+  ThemeMode _themeMode = ThemeMode.system;
+  ThemeMode getTheme() => _themeMode;
 
   ThemeNotifier() {
     StorageManager.readData('themeMode').then((value) {
       // print('value read from storage: ' + value.toString());
-      var themeMode = value ?? 'light';
+      var themeMode = value ?? 'dark';
       if (themeMode == 'light') {
-        _themeData = lightTheme;
-      } else {
+        _themeMode = ThemeMode.light;
+      } else if (themeMode == 'dark') {
         // print('setting dark theme');
-        _themeData = darkTheme;
+        _themeMode = ThemeMode.dark;
+      } else if (themeMode == 'system') {
+        // print('setting dark theme');
+        _themeMode = ThemeMode.system;
       }
       notifyListeners();
     });
   }
 
+  bool get isDarkTheme => (_themeMode == ThemeMode.dark) ? true : false;
+
   void setDarkMode() async {
-    _themeData = darkTheme;
+    _themeMode = ThemeMode.dark;
     StorageManager.saveData('themeMode', 'dark');
     notifyListeners();
   }
 
   void setLightMode() async {
-    _themeData = lightTheme;
+    _themeMode = ThemeMode.light;
     StorageManager.saveData('themeMode', 'light');
+    notifyListeners();
+  }
+
+  void setSystemMode() async {
+    _themeMode = ThemeMode.system;
+    StorageManager.saveData('themeMode', 'system');
     notifyListeners();
   }
 }

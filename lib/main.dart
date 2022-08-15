@@ -24,7 +24,9 @@ class _MyAppState extends State<MyApp> {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Group Planner',
-        theme: theme.getTheme(),
+        themeMode: theme.getTheme(),
+        theme: theme.lightTheme,
+        darkTheme: theme.darkTheme,
         home: const BottomBarScreen(),
       );
     });

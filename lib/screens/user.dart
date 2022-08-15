@@ -18,7 +18,25 @@ class _UserScreenState extends State<UserScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Color lightMode = Theme.of(context).colorScheme.primary;
+    Color darkMode = Theme.of(context).colorScheme.primary;
+    Color systemMode = Theme.of(context).colorScheme.primary;
     final theme = Provider.of<ThemeNotifier>(context);
+    if (theme.getTheme() == ThemeMode.light) {
+      setState(() {
+        lightMode = Theme.of(context).primaryColor;
+      });
+    }
+    if (theme.getTheme() == ThemeMode.dark) {
+      setState(() {
+        darkMode = Theme.of(context).primaryColor;
+      });
+    }
+    if (theme.getTheme() == ThemeMode.system) {
+      setState(() {
+        systemMode = Theme.of(context).primaryColor;
+      });
+    }
     ScreenUtil.init(context, designSize: const Size(414, 896));
     return Scaffold(
       body: SafeArea(
@@ -75,14 +93,18 @@ class _UserScreenState extends State<UserScreen> {
                             children: [
                               IconButton(
                                 onPressed: () {
-                                  setState(() {
-                                    themeSelector = true;
-                                  });
+                                  themeSelector
+                                      ? setState(() {
+                                          themeSelector = false;
+                                        })
+                                      : setState(() {
+                                          themeSelector = true;
+                                        });
                                 },
                                 icon: Icon(
-                                  (theme.getTheme() == theme.lightTheme)
-                                      ? Icons.light_mode_outlined
-                                      : Icons.dark_mode_outlined,
+                                  theme.isDarkTheme
+                                      ? Icons.dark_mode_outlined
+                                      : Icons.light_mode_outlined,
                                 ),
                               ),
                               Visibility(
@@ -92,45 +114,84 @@ class _UserScreenState extends State<UserScreen> {
                                     borderRadius: BorderRadius.circular(12),
                                     color: Theme.of(context).cardColor,
                                   ),
-                                  width: 100,
+                                  width: 115,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       TextButton(
                                         onPressed: () {
                                           theme.setLightMode();
-                                          setState(() {
-                                            themeSelector = false;
-                                          });
+                                          // setState(() {
+                                          //   themeSelector = false;
+                                          // });
                                         },
-                                        child: Row(
-                                          children: const [
-                                            Icon(Icons.light_mode_outlined),
-                                            Text(' Light')
-                                          ],
+                                        child: FittedBox(
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.light_mode_outlined,
+                                                color: lightMode,
+                                                size: 25,
+                                              ),
+                                              Text(
+                                                ' Light',
+                                                style: kTitleTextStyle.copyWith(
+                                                  color: lightMode,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                       TextButton(
                                         onPressed: () {
                                           theme.setDarkMode();
-                                          setState(() {
-                                            themeSelector = false;
-                                          });
+                                          // setState(() {
+                                          //   themeSelector = false;
+                                          // });
                                         },
-                                        child: Row(
-                                          children: const [
-                                            Icon(Icons.dark_mode_outlined),
-                                            Text(' Dark')
-                                          ],
+                                        child: FittedBox(
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.dark_mode_outlined,
+                                                size: 25,
+                                                color: darkMode,
+                                              ),
+                                              Text(
+                                                ' Dark',
+                                                style: kTitleTextStyle.copyWith(
+                                                    color: darkMode,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                       TextButton(
-                                        onPressed: () {},
-                                        child: Row(
-                                          children: const [
-                                            Icon(Icons.computer_outlined),
-                                            Text(' System')
-                                          ],
+                                        onPressed: () {
+                                          theme.setSystemMode();
+                                        },
+                                        child: FittedBox(
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.computer_outlined,
+                                                size: 25,
+                                                color: systemMode,
+                                              ),
+                                              Text(
+                                                ' System',
+                                                style: kTitleTextStyle.copyWith(
+                                                  color: systemMode,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],
