@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_planner_app/consts/utils.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +38,6 @@ class _UserScreenState extends State<UserScreen> {
         systemMode = Theme.of(context).primaryColor;
       });
     }
-    ScreenUtil.init(context, designSize: const Size(414, 896));
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -76,9 +74,9 @@ class _UserScreenState extends State<UserScreen> {
                                         shape: BoxShape.circle),
                                     child: InkWell(
                                       onTap: () {},
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.edit_outlined,
-                                        size: ScreenUtil().setSp(15),
+                                        size: 15,
                                         color: Colors.black,
                                       ),
                                     ),
@@ -107,6 +105,7 @@ class _UserScreenState extends State<UserScreen> {
                                   isDarkTheme
                                       ? Icons.dark_mode_outlined
                                       : Icons.light_mode_outlined,
+                                  size: 32,
                                 ),
                               ),
                               Visibility(
@@ -206,12 +205,12 @@ class _UserScreenState extends State<UserScreen> {
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Column(
-                            children: [
-                              const SizedBox(
+                            children: const [
+                              SizedBox(
                                 height: 150,
                               ),
                               Text('Name', style: kTitleTextStyle),
-                              const SizedBox(
+                              SizedBox(
                                 height: 5,
                               ),
                               Text('Mail', style: kCaptionTextStyle),

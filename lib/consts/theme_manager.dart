@@ -20,6 +20,7 @@ class ThemeNotifier with ChangeNotifier {
           brightness: Brightness.light,
         ),
     scaffoldBackgroundColor: Colors.grey[300],
+    canvasColor: Colors.grey[100],
   );
 
   ThemeMode _themeMode = ThemeMode.system;
