@@ -19,7 +19,7 @@ class ThemeNotifier with ChangeNotifier {
           secondary: const Color(0xFFFFC107),
           brightness: Brightness.light,
         ),
-    scaffoldBackgroundColor: Colors.grey[300],
+    scaffoldBackgroundColor: Colors.grey[200],
     canvasColor: Colors.grey[100],
   );
 

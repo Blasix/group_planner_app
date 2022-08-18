@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:group_planner_app/consts/utils.dart';
 import 'package:iconly/iconly.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../consts/theme_manager.dart';
@@ -14,6 +17,18 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
   bool themeSelector = false;
+  File? _image;
+
+  Future getImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image == null) return;
+
+    final imageTemp = File(image.path);
+
+    setState(() {
+      _image = imageTemp;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,11 +74,16 @@ class _UserScreenState extends State<UserScreen> {
                             margin: const EdgeInsets.only(top: 30),
                             child: Stack(
                               children: [
-                                const CircleAvatar(
-                                  radius: 50,
-                                  backgroundImage:
-                                      AssetImage('assets/images/avatar.jpg'),
-                                ),
+                                _image != null
+                                    ? CircleAvatar(
+                                        radius: 50,
+                                        backgroundImage: FileImage(_image!),
+                                      )
+                                    : const CircleAvatar(
+                                        radius: 50,
+                                        backgroundImage: AssetImage(
+                                            'assets/images/avatar.jpg'),
+                                      ),
                                 Align(
                                   alignment: Alignment.bottomRight,
                                   child: Container(
@@ -73,7 +93,9 @@ class _UserScreenState extends State<UserScreen> {
                                         color: Theme.of(context).primaryColor,
                                         shape: BoxShape.circle),
                                     child: InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        getImage();
+                                      },
                                       child: const Icon(
                                         Icons.edit_outlined,
                                         size: 15,
@@ -315,7 +337,7 @@ class ProfileListItem extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                size: 25,
+                size: 30,
               ),
               const SizedBox(
                 width: 8,
@@ -327,7 +349,7 @@ class ProfileListItem extends StatelessWidget {
                 visible: hasNavgigation,
                 child: const Icon(
                   IconlyLight.arrow_right_2,
-                  size: 25,
+                  size: 30,
                 ),
               ),
             ],
