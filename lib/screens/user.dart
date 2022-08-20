@@ -87,7 +87,7 @@ class _UserScreenState extends State<UserScreen> {
                                     : const CircleAvatar(
                                         radius: 50,
                                         backgroundImage: AssetImage(
-                                            'assets/images/avatar.jpg'),
+                                            'assets/images/Profile.jpg'),
                                       ),
                                 Align(
                                   alignment: Alignment.bottomRight,
