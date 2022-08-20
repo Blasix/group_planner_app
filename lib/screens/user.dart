@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:group_planner_app/consts/utils.dart';
 import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,14 +21,18 @@ class _UserScreenState extends State<UserScreen> {
   File? _image;
 
   Future getImage() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image == null) return;
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
 
-    final imageTemp = File(image.path);
+      final imageTemp = File(image.path);
 
-    setState(() {
-      _image = imageTemp;
-    });
+      setState(() {
+        _image = imageTemp;
+      });
+    } on PlatformException {
+      return ErrorDescription('Someting went wrong');
+    }
   }
 
   @override
