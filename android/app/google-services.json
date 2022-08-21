@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "749553275010",
+    "project_id": "group-planner-d4826",
+    "storage_bucket": "group-planner-d4826.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:749553275010:android:d704dda359e7b86881a49b",
+        "android_client_info": {
+          "package_name": "net.blasix.group_planner_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "749553275010-0d7d7ru9q4cdciaj4h4nftelauvvep9k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBntQ8dI3v0cdUjIy3POqScwgcvURrsmLw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "749553275010-0d7d7ru9q4cdciaj4h4nftelauvvep9k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
