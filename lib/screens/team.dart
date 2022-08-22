@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:group_planner_app/consts/utils.dart';
+import 'package:group_planner_app/services/utils.dart';
 
 class TeamScreen extends StatefulWidget {
   const TeamScreen({Key? key}) : super(key: key);

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:group_planner_app/screens/auth/login.dart';
+import 'package:group_planner_app/screens/btm_bar.dart';
 import 'package:provider/provider.dart';
+import 'consts/firebase_consts.dart';
 import 'consts/theme_manager.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -33,7 +35,7 @@ class _MyAppState extends State<MyApp> {
         themeMode: theme.getTheme(),
         theme: theme.lightTheme,
         darkTheme: theme.darkTheme,
-        home: const LoginScreen(),
+        home: user == null ? const BottomBarScreen() : const LoginScreen(),
       );
     });
   }
