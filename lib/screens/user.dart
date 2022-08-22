@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_planner_app/services/utils.dart';
@@ -8,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../consts/theme_manager.dart';
+import '../services/global_methods.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({Key? key}) : super(key: key);
@@ -30,8 +32,19 @@ class _UserScreenState extends State<UserScreen> {
       setState(() {
         _image = imageTemp;
       });
-    } on PlatformException {
-      return ErrorDescription('Someting went wrong');
+    } on PlatformException catch (error) {
+      GlobalMethods.dialog(
+          context: context,
+          title: 'Oh snap!',
+          message: '${error.message}',
+          contentType: ContentType.failure);
+    } catch (error) {
+      GlobalMethods.dialog(
+        context: context,
+        title: 'Oh snap!',
+        message: '$error',
+        contentType: ContentType.failure,
+      );
     }
   }
 
