@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:group_planner_app/consts/loading_manager.dart';
 import 'package:group_planner_app/services/utils.dart';
 import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,10 +20,15 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
+  bool _isLoading = false;
   bool themeSelector = false;
   File? _image;
 
   Future getImage() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
@@ -45,6 +51,10 @@ class _UserScreenState extends State<UserScreen> {
         message: '$error',
         contentType: ContentType.failure,
       );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -72,250 +82,256 @@ class _UserScreenState extends State<UserScreen> {
       });
     }
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: SizedBox(
-                height: 200,
-                width: double.infinity,
-                child: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Container(
-                            height: 100,
-                            width: 100,
-                            margin: const EdgeInsets.only(top: 30),
-                            child: Stack(
+      body: LoadingManager(
+        isLoading: _isLoading,
+        child: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: SizedBox(
+                  height: 200,
+                  width: double.infinity,
+                  child: Column(
+                    children: [
+                      Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              height: 100,
+                              width: 100,
+                              margin: const EdgeInsets.only(top: 30),
+                              child: Stack(
+                                children: [
+                                  _image != null
+                                      ? CircleAvatar(
+                                          radius: 50,
+                                          backgroundImage: FileImage(_image!),
+                                        )
+                                      : const CircleAvatar(
+                                          radius: 50,
+                                          backgroundImage: AssetImage(
+                                              'assets/images/Profile.jpg'),
+                                        ),
+                                  Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Container(
+                                      height: 30,
+                                      width: 30,
+                                      decoration: BoxDecoration(
+                                          color: Theme.of(context).primaryColor,
+                                          shape: BoxShape.circle),
+                                      child: InkWell(
+                                        onTap: () {
+                                          getImage();
+                                        },
+                                        child: const Icon(
+                                          Icons.edit_outlined,
+                                          size: 15,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                _image != null
-                                    ? CircleAvatar(
-                                        radius: 50,
-                                        backgroundImage: FileImage(_image!),
-                                      )
-                                    : const CircleAvatar(
-                                        radius: 50,
-                                        backgroundImage: AssetImage(
-                                            'assets/images/Profile.jpg'),
-                                      ),
-                                Align(
-                                  alignment: Alignment.bottomRight,
+                                IconButton(
+                                  onPressed: () {
+                                    themeSelector
+                                        ? setState(() {
+                                            themeSelector = false;
+                                          })
+                                        : setState(() {
+                                            themeSelector = true;
+                                          });
+                                  },
+                                  icon: Icon(
+                                    isDarkTheme
+                                        ? Icons.dark_mode_outlined
+                                        : Icons.light_mode_outlined,
+                                    size: 32,
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: themeSelector,
                                   child: Container(
-                                    height: 30,
-                                    width: 30,
                                     decoration: BoxDecoration(
-                                        color: Theme.of(context).primaryColor,
-                                        shape: BoxShape.circle),
-                                    child: InkWell(
-                                      onTap: () {
-                                        getImage();
-                                      },
-                                      child: const Icon(
-                                        Icons.edit_outlined,
-                                        size: 15,
-                                        color: Colors.black,
-                                      ),
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: Theme.of(context).cardColor,
+                                    ),
+                                    width: 115,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {
+                                            theme.setLightMode();
+                                            // setState(() {
+                                            //   themeSelector = false;
+                                            // });
+                                          },
+                                          child: FittedBox(
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.light_mode_outlined,
+                                                  color: lightMode,
+                                                  size: 25,
+                                                ),
+                                                Text(
+                                                  ' Light',
+                                                  style:
+                                                      kTitleTextStyle.copyWith(
+                                                    color: lightMode,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            theme.setDarkMode();
+                                            // setState(() {
+                                            //   themeSelector = false;
+                                            // });
+                                          },
+                                          child: FittedBox(
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.dark_mode_outlined,
+                                                  size: 25,
+                                                  color: darkMode,
+                                                ),
+                                                Text(
+                                                  ' Dark',
+                                                  style:
+                                                      kTitleTextStyle.copyWith(
+                                                          color: darkMode,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            theme.setSystemMode();
+                                          },
+                                          child: FittedBox(
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.computer_outlined,
+                                                  size: 25,
+                                                  color: systemMode,
+                                                ),
+                                                Text(
+                                                  ' System',
+                                                  style:
+                                                      kTitleTextStyle.copyWith(
+                                                    color: systemMode,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 )
                               ],
                             ),
                           ),
-                        ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  themeSelector
-                                      ? setState(() {
-                                          themeSelector = false;
-                                        })
-                                      : setState(() {
-                                          themeSelector = true;
-                                        });
-                                },
-                                icon: Icon(
-                                  isDarkTheme
-                                      ? Icons.dark_mode_outlined
-                                      : Icons.light_mode_outlined,
-                                  size: 32,
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Column(
+                              children: const [
+                                SizedBox(
+                                  height: 150,
                                 ),
-                              ),
-                              Visibility(
-                                visible: themeSelector,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Theme.of(context).cardColor,
-                                  ),
-                                  width: 115,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      TextButton(
-                                        onPressed: () {
-                                          theme.setLightMode();
-                                          // setState(() {
-                                          //   themeSelector = false;
-                                          // });
-                                        },
-                                        child: FittedBox(
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.light_mode_outlined,
-                                                color: lightMode,
-                                                size: 25,
-                                              ),
-                                              Text(
-                                                ' Light',
-                                                style: kTitleTextStyle.copyWith(
-                                                  color: lightMode,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          theme.setDarkMode();
-                                          // setState(() {
-                                          //   themeSelector = false;
-                                          // });
-                                        },
-                                        child: FittedBox(
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.dark_mode_outlined,
-                                                size: 25,
-                                                color: darkMode,
-                                              ),
-                                              Text(
-                                                ' Dark',
-                                                style: kTitleTextStyle.copyWith(
-                                                    color: darkMode,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          theme.setSystemMode();
-                                        },
-                                        child: FittedBox(
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.computer_outlined,
-                                                size: 25,
-                                                color: systemMode,
-                                              ),
-                                              Text(
-                                                ' System',
-                                                style: kTitleTextStyle.copyWith(
-                                                  color: systemMode,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                Text('Name', style: kTitleTextStyle),
+                                SizedBox(
+                                  height: 5,
                                 ),
-                              )
-                            ],
+                                Text('Mail', style: kCaptionTextStyle),
+                                // const SizedBox(
+                                //   height: 20,
+                                // ),
+                                // ElevatedButton(
+                                //   style: ElevatedButton.styleFrom(
+                                //     fixedSize: const Size(200, 40),
+                                //     primary: Theme.of(context).primaryColor,
+                                //     shape: const RoundedRectangleBorder(
+                                //         borderRadius: BorderRadius.all(
+                                //             Radius.circular(30))),
+                                //   ),
+                                //   onPressed: () {},
+                                //   child: Text('Upgrade to PRO',
+                                //       style: kButtonTextStyle),
+                                // ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Column(
-                            children: const [
-                              SizedBox(
-                                height: 150,
-                              ),
-                              Text('Name', style: kTitleTextStyle),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text('Mail', style: kCaptionTextStyle),
-                              // const SizedBox(
-                              //   height: 20,
-                              // ),
-                              // ElevatedButton(
-                              //   style: ElevatedButton.styleFrom(
-                              //     fixedSize: const Size(200, 40),
-                              //     primary: Theme.of(context).primaryColor,
-                              //     shape: const RoundedRectangleBorder(
-                              //         borderRadius: BorderRadius.all(
-                              //             Radius.circular(30))),
-                              //   ),
-                              //   onPressed: () {},
-                              //   child: Text('Upgrade to PRO',
-                              //       style: kButtonTextStyle),
-                              // ),
-                            ],
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: ListView(
+                  children: [
+                    ProfileListItem(
+                      icon: IconlyLight.shield_done,
+                      text: 'Privacy',
+                      onPressed: () {},
+                    ),
+                    // ProfileListItem(
+                    //   icon: IconlyLight.time_circle,
+                    //   text: 'Purchase History',
+                    //   onPressed: () {},
+                    // ),
+                    ProfileListItem(
+                      icon: IconlyLight.discovery,
+                      text: 'Help & Support',
+                      onPressed: () {},
+                    ),
+                    ProfileListItem(
+                      icon: IconlyLight.setting,
+                      text: 'Settings',
+                      onPressed: () {},
+                    ),
+                    ProfileListItem(
+                      icon: IconlyLight.add_user,
+                      text: 'Invite a Friend',
+                      onPressed: () {},
+                    ),
+                    ProfileListItem(
+                      icon: IconlyLight.logout,
+                      text: 'Logout',
+                      onPressed: () {},
+                      hasNavgigation: false,
                     ),
                   ],
                 ),
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                children: [
-                  ProfileListItem(
-                    icon: IconlyLight.shield_done,
-                    text: 'Privacy',
-                    onPressed: () {},
-                  ),
-                  // ProfileListItem(
-                  //   icon: IconlyLight.time_circle,
-                  //   text: 'Purchase History',
-                  //   onPressed: () {},
-                  // ),
-                  ProfileListItem(
-                    icon: IconlyLight.discovery,
-                    text: 'Help & Support',
-                    onPressed: () {},
-                  ),
-                  ProfileListItem(
-                    icon: IconlyLight.setting,
-                    text: 'Settings',
-                    onPressed: () {},
-                  ),
-                  ProfileListItem(
-                    icon: IconlyLight.add_user,
-                    text: 'Invite a Friend',
-                    onPressed: () {},
-                  ),
-                  ProfileListItem(
-                    icon: IconlyLight.logout,
-                    text: 'Logout',
-                    onPressed: () {},
-                    hasNavgigation: false,
-                  ),
-                ],
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
         themeMode: theme.getTheme(),
         theme: theme.lightTheme,
         darkTheme: theme.darkTheme,
-        home: user == null ? const BottomBarScreen() : const LoginScreen(),
+        home: user == null ? const LoginScreen() : const BottomBarScreen(),
       );
     });
   }
