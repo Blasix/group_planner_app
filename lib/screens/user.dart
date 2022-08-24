@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,14 +26,55 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   bool _isLoading = false;
   bool themeSelector = false;
+  final User? user = authInstance.currentUser;
+  String? _email;
+  String? _name;
   File? _image;
+
+  @override
+  void initState() {
+    getUserData();
+    super.initState();
+  }
+
+  Future<void> getUserData() async {
+    setState(() {
+      _isLoading = true;
+    });
+    if (user == null) {
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+    try {
+      String uid = user!.uid;
+      final DocumentSnapshot userDoc =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      _email = userDoc.get('email');
+      _name = userDoc.get('username');
+    } catch (error) {
+      GlobalMethods.dialog(
+        context: context,
+        title: 'On snap!',
+        message: '$error',
+        contentType: ContentType.failure,
+      );
+      setState(() {
+        _isLoading = false;
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   Future getImage(imageSource) async {
     // TODO: make a bottomsheet for choosing camera or gallery
     setState(() {
       _isLoading = true;
     });
-
     try {
       final image = await ImagePicker().pickImage(source: imageSource);
       if (image == null) return;
@@ -264,15 +306,15 @@ class _UserScreenState extends State<UserScreen> {
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: Column(
-                              children: const [
-                                SizedBox(
+                              children: [
+                                const SizedBox(
                                   height: 150,
                                 ),
-                                Text('Name', style: kTitleTextStyle),
-                                SizedBox(
+                                Text(_name ?? 'User', style: kTitleTextStyle),
+                                const SizedBox(
                                   height: 5,
                                 ),
-                                Text('Mail', style: kCaptionTextStyle),
+                                Text(_email ?? '', style: kCaptionTextStyle),
                                 // const SizedBox(
                                 //   height: 20,
                                 // ),
@@ -329,6 +371,9 @@ class _UserScreenState extends State<UserScreen> {
                       icon: IconlyLight.logout,
                       text: 'Logout',
                       onPressed: (context) async {
+                        setState(() {
+                          _isLoading = true;
+                        });
                         try {
                           await authInstance.signOut();
                           Navigator.of(context).pushReplacement(
@@ -343,6 +388,9 @@ class _UserScreenState extends State<UserScreen> {
                             context: context,
                             contentType: ContentType.failure,
                           );
+                          setState(() {
+                            _isLoading = false;
+                          });
                         } catch (error) {
                           GlobalMethods.dialog(
                             title: 'Oh Snap!',
@@ -350,6 +398,13 @@ class _UserScreenState extends State<UserScreen> {
                             context: context,
                             contentType: ContentType.failure,
                           );
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        } finally {
+                          setState(() {
+                            _isLoading = false;
+                          });
                         }
                       },
                       hasNavgigation: false,
