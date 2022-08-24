@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
@@ -30,6 +31,7 @@ class _UserScreenState extends State<UserScreen> {
   String? _email;
   String? _name;
   File? _image;
+  String _imageUrl = '';
 
   @override
   void initState() {
@@ -53,6 +55,7 @@ class _UserScreenState extends State<UserScreen> {
           await FirebaseFirestore.instance.collection('users').doc(uid).get();
       _email = userDoc.get('email');
       _name = userDoc.get('username');
+      _imageUrl = userDoc.get('profilePictureUrl');
     } catch (error) {
       GlobalMethods.dialog(
         context: context,
@@ -81,12 +84,18 @@ class _UserScreenState extends State<UserScreen> {
         maxWidth: 512,
         imageQuality: 75,
       );
+      String uid = user!.uid;
+      Reference ref =
+          FirebaseStorage.instance.ref().child('ProfilePics/$uid.jpg');
       if (image == null) return;
-
-      final imageTemp = File(image.path);
-
-      setState(() {
-        _image = imageTemp;
+      await ref.putFile(File(image.path));
+      ref.getDownloadURL().then((value) async {
+        setState(() {
+          _imageUrl = value;
+        });
+        await FirebaseFirestore.instance.collection('users').doc(uid).update({
+          'profilePictureUrl': value,
+        });
       });
     } on PlatformException catch (error) {
       GlobalMethods.dialog(
@@ -154,15 +163,16 @@ class _UserScreenState extends State<UserScreen> {
                               margin: const EdgeInsets.only(top: 30),
                               child: Stack(
                                 children: [
-                                  _image != null
+                                  _imageUrl != ''
                                       ? CircleAvatar(
                                           radius: 50,
-                                          backgroundImage: FileImage(_image!),
+                                          backgroundImage:
+                                              NetworkImage(_imageUrl),
                                         )
                                       : const CircleAvatar(
                                           radius: 50,
-                                          backgroundImage: AssetImage(
-                                              'assets/images/Profile.jpg'),
+                                          backgroundImage: NetworkImage(
+                                              'https://firebasestorage.googleapis.com/v0/b/group-planner-d4826.appspot.com/o/Profile.jpg?alt=media&token=e204d44b-afbe-4f95-a928-1e589ca75712'),
                                         ),
                                   Align(
                                     alignment: Alignment.bottomRight,
@@ -192,39 +202,35 @@ class _UserScreenState extends State<UserScreen> {
                                                     mainAxisSize:
                                                         MainAxisSize.min,
                                                     children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(top: 8),
-                                                        child: TextButton(
-                                                          onPressed: () {
-                                                            getImage(ImageSource
-                                                                .gallery);
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Row(
-                                                              children: [
-                                                                const Icon(
-                                                                  IconlyLight
-                                                                      .image_2,
-                                                                  size: 30,
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          getImage(ImageSource
+                                                              .gallery);
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Row(
+                                                            children: [
+                                                              const Icon(
+                                                                IconlyLight
+                                                                    .image_2,
+                                                                size: 30,
+                                                              ),
+                                                              Text(
+                                                                ' Photo library',
+                                                                style:
+                                                                    kTitleTextStyle
+                                                                        .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
                                                                 ),
-                                                                Text(
-                                                                  ' Photo library',
-                                                                  style: kTitleTextStyle
-                                                                      .copyWith(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
                                                       ),
@@ -402,7 +408,7 @@ class _UserScreenState extends State<UserScreen> {
                             child: Column(
                               children: [
                                 const SizedBox(
-                                  height: 150,
+                                  height: 148,
                                 ),
                                 Text(_name ?? 'User', style: kTitleTextStyle),
                                 const SizedBox(
