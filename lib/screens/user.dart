@@ -170,7 +170,54 @@ class _UserScreenState extends State<UserScreen> {
                                           shape: BoxShape.circle),
                                       child: InkWell(
                                         onTap: () {
-                                          getImage(ImageSource.gallery);
+                                          showModalBottomSheet(
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(12),
+                                                  topRight: Radius.circular(12),
+                                                ),
+                                              ),
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        getImage(ImageSource
+                                                            .gallery);
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Row(
+                                                        children: const [
+                                                          Icon(IconlyLight
+                                                              .image_2),
+                                                          Text(
+                                                              ' Photo library'),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        getImage(
+                                                            ImageSource.camera);
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Row(
+                                                        children: const [
+                                                          Icon(IconlyLight
+                                                              .camera),
+                                                          Text(' Camera'),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              });
                                         },
                                         child: const Icon(
                                           Icons.edit_outlined,
