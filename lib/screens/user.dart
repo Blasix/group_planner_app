@@ -71,12 +71,16 @@ class _UserScreenState extends State<UserScreen> {
   }
 
   Future getImage(imageSource) async {
-    // TODO: make a bottomsheet for choosing camera or gallery
     setState(() {
       _isLoading = true;
     });
     try {
-      final image = await ImagePicker().pickImage(source: imageSource);
+      final image = await ImagePicker().pickImage(
+        source: imageSource,
+        maxHeight: 512,
+        maxWidth: 512,
+        imageQuality: 75,
+      );
       if (image == null) return;
 
       final imageTemp = File(image.path);
@@ -163,8 +167,8 @@ class _UserScreenState extends State<UserScreen> {
                                   Align(
                                     alignment: Alignment.bottomRight,
                                     child: Container(
-                                      height: 30,
-                                      width: 30,
+                                      height: 34,
+                                      width: 34,
                                       decoration: BoxDecoration(
                                           color: Theme.of(context).primaryColor,
                                           shape: BoxShape.circle),
@@ -180,48 +184,91 @@ class _UserScreenState extends State<UserScreen> {
                                               ),
                                               context: context,
                                               builder: (BuildContext context) {
-                                                return Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        getImage(ImageSource
-                                                            .gallery);
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Row(
-                                                        children: const [
-                                                          Icon(IconlyLight
-                                                              .image_2),
-                                                          Text(
-                                                              ' Photo library'),
-                                                        ],
+                                                return SafeArea(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(top: 8),
+                                                        child: TextButton(
+                                                          onPressed: () {
+                                                            getImage(ImageSource
+                                                                .gallery);
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Row(
+                                                              children: [
+                                                                const Icon(
+                                                                  IconlyLight
+                                                                      .image_2,
+                                                                  size: 30,
+                                                                ),
+                                                                Text(
+                                                                  ' Photo library',
+                                                                  style: kTitleTextStyle
+                                                                      .copyWith(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        getImage(
-                                                            ImageSource.camera);
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Row(
-                                                        children: const [
-                                                          Icon(IconlyLight
-                                                              .camera),
-                                                          Text(' Camera'),
-                                                        ],
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          getImage(ImageSource
+                                                              .camera);
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 8.0),
+                                                          child: Row(
+                                                            children: [
+                                                              const Icon(
+                                                                IconlyLight
+                                                                    .camera,
+                                                                size: 30,
+                                                              ),
+                                                              Text(
+                                                                ' Camera',
+                                                                style:
+                                                                    kTitleTextStyle
+                                                                        .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 );
                                               });
                                         },
                                         child: const Icon(
                                           Icons.edit_outlined,
-                                          size: 15,
+                                          size: 20,
                                           color: Colors.black,
                                         ),
                                       ),
