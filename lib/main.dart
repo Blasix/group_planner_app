@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:group_planner_app/screens/auth/login.dart';
 import 'package:group_planner_app/screens/btm_bar.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final User? user = authInstance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeNotifier>(builder: (context, theme, child) {

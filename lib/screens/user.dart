@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
@@ -9,8 +10,10 @@ import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../consts/firebase_consts.dart';
 import '../consts/theme_manager.dart';
 import '../services/global_methods.dart';
+import 'auth/login.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({Key? key}) : super(key: key);
@@ -24,13 +27,14 @@ class _UserScreenState extends State<UserScreen> {
   bool themeSelector = false;
   File? _image;
 
-  Future getImage() async {
+  Future getImage(imageSource) async {
+    // TODO: make a bottomsheet for choosing camera or gallery
     setState(() {
       _isLoading = true;
     });
 
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final image = await ImagePicker().pickImage(source: imageSource);
       if (image == null) return;
 
       final imageTemp = File(image.path);
@@ -124,7 +128,7 @@ class _UserScreenState extends State<UserScreen> {
                                           shape: BoxShape.circle),
                                       child: InkWell(
                                         onTap: () {
-                                          getImage();
+                                          getImage(ImageSource.gallery);
                                         },
                                         child: const Icon(
                                           Icons.edit_outlined,
@@ -324,7 +328,30 @@ class _UserScreenState extends State<UserScreen> {
                     ProfileListItem(
                       icon: IconlyLight.logout,
                       text: 'Logout',
-                      onPressed: () {},
+                      onPressed: (context) async {
+                        try {
+                          await authInstance.signOut();
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
+                        } on FirebaseAuthException catch (error) {
+                          GlobalMethods.dialog(
+                            title: 'Oh Snap!',
+                            message: '${error.message}',
+                            context: context,
+                            contentType: ContentType.failure,
+                          );
+                        } catch (error) {
+                          GlobalMethods.dialog(
+                            title: 'Oh Snap!',
+                            message: '$error',
+                            context: context,
+                            contentType: ContentType.failure,
+                          );
+                        }
+                      },
                       hasNavgigation: false,
                     ),
                   ],
@@ -362,7 +389,7 @@ class ProfileListItem extends StatelessWidget {
           color: Theme.of(context).cardColor),
       child: InkWell(
         onTap: () {
-          onPressed();
+          onPressed(context);
         },
         borderRadius: BorderRadius.circular(30),
         child: Padding(
