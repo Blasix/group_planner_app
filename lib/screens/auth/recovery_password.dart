@@ -1,6 +1,12 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
+import 'package:group_planner_app/consts/loading_manager.dart';
 import 'package:iconly/iconly.dart';
+
+import '../../consts/firebase_consts.dart';
+import '../../services/global_methods.dart';
 
 class PassRecScreen extends StatefulWidget {
   const PassRecScreen({Key? key}) : super(key: key);
@@ -19,144 +25,188 @@ class _PassRecScreenState extends State<PassRecScreen> {
     super.dispose();
   }
 
-  void _submitFormOnLogin() {
+  bool _isLoading = false;
+  Future<void> _submitFormOnLogin(context) async {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
     if (isValid) {
       _formKey.currentState!.save();
+      setState(() {
+        _isLoading = true;
+      });
+      try {
+        await authInstance.sendPasswordResetEmail(
+            email: _emailTextController.text.toLowerCase().trim());
+        GlobalMethods.dialog(
+          context: context,
+          title: 'Send!',
+          message: 'A reset password email has been succesfully send',
+          contentType: ContentType.success,
+        );
+      } on FirebaseAuthException catch (error) {
+        GlobalMethods.dialog(
+          context: context,
+          title: 'On snap!',
+          message: '${error.message}',
+          contentType: ContentType.failure,
+        );
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      } catch (error) {
+        GlobalMethods.dialog(
+          context: context,
+          title: 'On snap!',
+          message: '$error',
+          contentType: ContentType.failure,
+        );
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: IconButton(
-                        onPressed: () {
-                          if (Navigator.canPop(context)) {
-                            Navigator.pop(context);
-                          }
-                        },
-                        icon: const Icon(IconlyLight.arrow_left_2),
+      body: LoadingManager(
+        isLoading: _isLoading,
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: IconButton(
+                          onPressed: () {
+                            if (Navigator.canPop(context)) {
+                              Navigator.pop(context);
+                            }
+                          },
+                          icon: const Icon(IconlyLight.arrow_left_2),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.2,
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        'Forgot your password?',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 34,
-                          color:
-                              Theme.of(context).dividerColor.withOpacity(0.9),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.2,
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          'Forgot your password?',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 34,
+                            color:
+                                Theme.of(context).dividerColor.withOpacity(0.9),
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      Text(
-                        "Confirm your email and we'll send the instructions",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w300,
-                          color:
-                              Theme.of(context).dividerColor.withOpacity(0.7),
+                        const SizedBox(
+                          height: 6,
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.03,
-                  ),
-                  Form(
-                    key: _formKey,
-                    child: TextFormField(
-                      cursorColor: Theme.of(context).primaryColor,
-                      controller: _emailTextController,
-                      keyboardType: TextInputType.emailAddress,
-                      onEditingComplete: () {
-                        _submitFormOnLogin();
-                      },
-                      validator:
-                          ValidationBuilder().email().maxLength(50).build(),
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.mail, color: Colors.grey),
-                        contentPadding:
-                            const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                        hintText: "Email",
-                        hintStyle: const TextStyle(color: Colors.grey),
-                        enabledBorder: OutlineInputBorder(
+                        Text(
+                          "Confirm your email and we'll send the instructions",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w300,
+                            color:
+                                Theme.of(context).dividerColor.withOpacity(0.7),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.03,
+                    ),
+                    Form(
+                      key: _formKey,
+                      child: TextFormField(
+                        cursorColor: Theme.of(context).primaryColor,
+                        controller: _emailTextController,
+                        keyboardType: TextInputType.emailAddress,
+                        onEditingComplete: () {
+                          _submitFormOnLogin(context);
+                        },
+                        validator:
+                            ValidationBuilder().email().maxLength(50).build(),
+                        decoration: InputDecoration(
+                          prefixIcon:
+                              const Icon(Icons.mail, color: Colors.grey),
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                          hintText: "Email",
+                          hintStyle: const TextStyle(color: Colors.grey),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: Theme.of(context)
+                                    .dividerColor
+                                    .withOpacity(0.4),
+                              )),
+                          focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide(
                               width: 1,
-                              color: Theme.of(context)
-                                  .dividerColor
-                                  .withOpacity(0.4),
-                            )),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            width: 1,
-                            color: Theme.of(context).primaryColor,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                            width: 1,
-                            color: Colors.red,
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                              width: 1,
+                              color: Colors.red,
+                            ),
                           ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            width: 1,
-                            color: Theme.of(context).primaryColor,
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              width: 1,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.03,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 60,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          elevation: 3,
-                          primary: Theme.of(context).primaryColor),
-                      onPressed: () {
-                        _submitFormOnLogin();
-                      },
-                      child: const Text(
-                        'Reset password',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.03,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 60,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            elevation: 3,
+                            primary: Theme.of(context).primaryColor),
+                        onPressed: () {
+                          _submitFormOnLogin(context);
+                        },
+                        child: const Text(
+                          'Reset password',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w500),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
