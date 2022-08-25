@@ -8,6 +8,8 @@ import 'package:uuid/uuid.dart';
 
 import '../consts/firebase_consts.dart';
 import '../services/global_methods.dart';
+import '../widgets/team/member.dart';
+import '../widgets/team/team.dart';
 
 class TeamScreen extends StatefulWidget {
   const TeamScreen({Key? key}) : super(key: key);
@@ -51,37 +53,58 @@ class _TeamScreenState extends State<TeamScreen> {
               child: SizedBox(
                 width: double.infinity,
                 height: double.infinity,
-                child: Row(
-                  // Debug buttons
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        setState(() {
-                          teamLenght++;
-                        });
-                      },
-                      child: const Text('add'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        setState(() {
-                          teamLenght--;
-                        });
-                      },
-                      child: const Text('remove'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        _showTeamDialog();
-                      },
-                      child: const Text('Create'),
-                    ),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Team',
+                        style: kTitleTextStyle.copyWith(fontSize: 23),
+                      ),
+                      const TeamWidget(),
+                      Row(
+                        // Debug buttons
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                teamLenght++;
+                              });
+                            },
+                            child: const Text('add'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                teamLenght--;
+                              });
+                            },
+                            child: const Text('remove'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              _showTeamDialog();
+                            },
+                            child: const Text('Create'),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(
+                          'Members',
+                          style: kTitleTextStyle.copyWith(fontSize: 23),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
             Flexible(
-              flex: 3,
+              flex: 2,
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
@@ -100,15 +123,15 @@ class _TeamScreenState extends State<TeamScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 16,
-                        ),
-                        child: Text(
-                          'Members',
-                          style: kTitleTextStyle.copyWith(fontSize: 23),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(
+                      //     bottom: 16,
+                      //   ),
+                      //   child: Text(
+                      //     'Members',
+                      //     style: kTitleTextStyle.copyWith(fontSize: 23),
+                      //   ),
+                      // ),
                       (teamLenght == 0)
                           ? Expanded(
                               child: Center(
@@ -120,6 +143,9 @@ class _TeamScreenState extends State<TeamScreen> {
                                       style: TextStyle(fontSize: 20),
                                     ),
                                     ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary:
+                                                Theme.of(context).primaryColor),
                                         onPressed: () {},
                                         child:
                                             const Text('Click to add members'))
@@ -154,94 +180,74 @@ class _TeamScreenState extends State<TeamScreen> {
 
   Future _showTeamDialog() async {
     await showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Please enter a team name'),
-            content: TextField(
-              controller: _teamCreateController,
-              decoration: const InputDecoration(hintText: "Team name"),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () async {
-                  setState(() {
-                    _isLoading = true;
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Please enter a team name'),
+          content: TextField(
+            controller: _teamCreateController,
+            decoration: const InputDecoration(hintText: "Team name"),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                setState(() {
+                  _isLoading = true;
+                });
+                try {
+                  final User? user = authInstance.currentUser;
+                  final uid = user!.uid;
+                  final uuid = const Uuid().v4();
+                  await FirebaseFirestore.instance
+                      .collection('teams')
+                      .doc(uuid)
+                      .set({
+                    'id': uuid,
+                    'name': _teamCreateController.text,
+                    'leader': uid,
+                    'members': [
+                      uid,
+                    ],
+                    'events': [],
+                    'pictureUrl': '',
+                    'createdAt': Timestamp.now(),
                   });
-                  try {
-                    final User? user = authInstance.currentUser;
-                    final uid = user!.uid;
-                    final uuid = const Uuid().v4();
-                    await FirebaseFirestore.instance
-                        .collection('teams')
-                        .doc(uuid)
-                        .set({
-                      'id': uuid,
-                      'name': _teamCreateController.text,
-                      'leader': uid,
-                      'members': [
-                        uid,
-                      ],
-                      'events': [],
-                      'pictureUrl': '',
-                      'createdAt': Timestamp.now(),
-                    });
-                    Navigator.pop(context);
-                  } on FirebaseException catch (error) {
-                    GlobalMethods.dialog(
-                      context: context,
-                      title: 'On snap!',
-                      message: '${error.message}',
-                      contentType: ContentType.failure,
-                    );
-                    setState(() {
-                      _isLoading = false;
-                    });
-                    return;
-                  } catch (error) {
-                    GlobalMethods.dialog(
-                      context: context,
-                      title: 'On snap!',
-                      message: '$error',
-                      contentType: ContentType.failure,
-                    );
-                    setState(() {
-                      _isLoading = false;
-                    });
-                    return;
-                  } finally {
-                    setState(() {
-                      _isLoading = false;
-                    });
-                  }
-                },
-                child: const Text(
-                  'create',
-                ),
+                  Navigator.pop(context);
+                } on FirebaseException catch (error) {
+                  GlobalMethods.dialog(
+                    context: context,
+                    title: 'On snap!',
+                    message: '${error.message}',
+                    contentType: ContentType.failure,
+                  );
+                  setState(() {
+                    _isLoading = false;
+                  });
+                  return;
+                } catch (error) {
+                  GlobalMethods.dialog(
+                    context: context,
+                    title: 'On snap!',
+                    message: '$error',
+                    contentType: ContentType.failure,
+                  );
+                  setState(() {
+                    _isLoading = false;
+                  });
+                  return;
+                } finally {
+                  setState(() {
+                    _isLoading = false;
+                  });
+                }
+              },
+              child: const Text(
+                'create',
               ),
-            ],
-          );
-        });
-  }
-}
-
-class MemberWidget extends StatelessWidget {
-  const MemberWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      borderRadius: BorderRadius.circular(12),
-      color: Theme.of(context).cardColor.withOpacity(0.9),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: () {},
-        child: const Center(
-            child: Text(
-          'Member1',
-          style: kTitleTextStyle,
-        )),
-      ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

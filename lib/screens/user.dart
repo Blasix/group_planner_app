@@ -312,89 +312,108 @@ class _UserScreenState extends State<UserScreen> {
                                       borderRadius: BorderRadius.circular(12),
                                       color: Theme.of(context).cardColor,
                                     ),
-                                    width: 115,
+                                    width: 100,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        TextButton(
-                                          onPressed: () {
+                                        const SizedBox(height: 10),
+                                        InkWell(
+                                          onTap: () {
                                             theme.setLightMode();
                                             // setState(() {
                                             //   themeSelector = false;
                                             // });
                                           },
-                                          child: FittedBox(
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.light_mode_outlined,
-                                                  color: lightMode,
-                                                  size: 25,
-                                                ),
-                                                Text(
-                                                  ' Light',
-                                                  style:
-                                                      kTitleTextStyle.copyWith(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 6),
+                                            child: FittedBox(
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.light_mode_outlined,
                                                     color: lightMode,
-                                                    fontWeight: FontWeight.w500,
+                                                    size: 22,
                                                   ),
-                                                ),
-                                              ],
+                                                  Text(
+                                                    ' Light',
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: lightMode,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
-                                        TextButton(
-                                          onPressed: () {
+                                        const SizedBox(height: 10),
+                                        InkWell(
+                                          onTap: () {
                                             theme.setDarkMode();
                                             // setState(() {
                                             //   themeSelector = false;
                                             // });
                                           },
-                                          child: FittedBox(
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.dark_mode_outlined,
-                                                  size: 25,
-                                                  color: darkMode,
-                                                ),
-                                                Text(
-                                                  ' Dark',
-                                                  style:
-                                                      kTitleTextStyle.copyWith(
-                                                          color: darkMode,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                ),
-                                              ],
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 6),
+                                            child: FittedBox(
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.dark_mode_outlined,
+                                                    color: darkMode,
+                                                    size: 22,
+                                                  ),
+                                                  Text(
+                                                    ' Dark',
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: darkMode,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
-                                        TextButton(
-                                          onPressed: () {
+                                        const SizedBox(height: 10),
+                                        InkWell(
+                                          onTap: () {
                                             theme.setSystemMode();
                                           },
-                                          child: FittedBox(
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.computer_outlined,
-                                                  size: 25,
-                                                  color: systemMode,
-                                                ),
-                                                Text(
-                                                  ' System',
-                                                  style:
-                                                      kTitleTextStyle.copyWith(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 6),
+                                            child: FittedBox(
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.computer_outlined,
                                                     color: systemMode,
-                                                    fontWeight: FontWeight.w500,
+                                                    size: 22,
                                                   ),
-                                                ),
-                                              ],
+                                                  Text(
+                                                    ' System',
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: systemMode,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
+                                        const SizedBox(height: 10),
                                       ],
                                     ),
                                   ),
