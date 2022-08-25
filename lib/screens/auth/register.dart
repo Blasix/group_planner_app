@@ -427,14 +427,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             primary: Theme.of(context).primaryColor),
                         onPressed: () {
                           _submitFormOnLogin(context);
-                          if (_formKey.currentState!.validate()) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const BottomBarScreen(),
-                              ),
-                            );
-                          }
                         },
                         child: const Text(
                           'Register',

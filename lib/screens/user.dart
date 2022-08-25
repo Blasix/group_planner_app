@@ -30,7 +30,6 @@ class _UserScreenState extends State<UserScreen> {
   final User? user = authInstance.currentUser;
   String? _email;
   String? _name;
-  File? _image;
   String _imageUrl = '';
 
   @override

@@ -182,6 +182,7 @@ class _TeamScreenState extends State<TeamScreen> {
                       'members': [
                         uid,
                       ],
+                      'events': [],
                       'pictureUrl': '',
                       'createdAt': Timestamp.now(),
                     });
