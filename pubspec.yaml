@@ -39,8 +39,8 @@ dependencies:
 
   ### Fun popups
   awesome_snackbar_content: ^0.0.8
+  quickalert: ^1.0.0
   # top_snackbar_flutter
-  # quickalert
 
   ### Other
   cupertino_icons: ^1.0.2
@@ -51,6 +51,7 @@ dependencies:
   image_picker: ^0.8.5+3
   form_validator: ^1.0.2
   uuid: ^3.0.6
+  
 
 dev_dependencies:
   flutter_test:

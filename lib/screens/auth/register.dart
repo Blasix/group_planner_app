@@ -423,8 +423,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            elevation: 3,
-                            primary: Theme.of(context).primaryColor),
+                            backgroundColor: Theme.of(context).primaryColor,
+                            elevation: 3),
                         onPressed: () {
                           _submitFormOnLogin(context);
                         },

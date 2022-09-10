@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
 import 'package:group_planner_app/services/utils.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:uuid/uuid.dart';
 
 import '../consts/firebase_consts.dart';
@@ -32,6 +33,55 @@ class _TeamScreenState extends State<TeamScreen> {
   int memberGrid = 2;
   bool _isLoading = false;
 
+  void _createTeam(context) async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final User? user = authInstance.currentUser;
+      final uid = user!.uid;
+      final uuid = const Uuid().v4();
+      await FirebaseFirestore.instance.collection('teams').doc(uuid).set({
+        'id': uuid,
+        'name': _teamCreateController.text,
+        'leader': uid,
+        'members': [
+          uid,
+        ],
+        'events': [],
+        'pictureUrl': '',
+        'createdAt': Timestamp.now(),
+      });
+      Navigator.pop(context);
+    } on FirebaseException catch (error) {
+      GlobalMethods.dialog(
+        context: context,
+        title: 'On snap!',
+        message: '${error.message}',
+        contentType: ContentType.failure,
+      );
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    } catch (error) {
+      GlobalMethods.dialog(
+        context: context,
+        title: 'On snap!',
+        message: '$error',
+        contentType: ContentType.failure,
+      );
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     (teamLenght >= 7)
@@ -54,7 +104,10 @@ class _TeamScreenState extends State<TeamScreen> {
                 width: double.infinity,
                 height: double.infinity,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0,
+                    vertical: 8.0,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -62,7 +115,10 @@ class _TeamScreenState extends State<TeamScreen> {
                         'Team',
                         style: kTitleTextStyle.copyWith(fontSize: 23),
                       ),
-                      const TeamWidget(),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8),
+                        child: TeamWidget(),
+                      ),
                       Row(
                         // Debug buttons
                         children: [
@@ -93,9 +149,15 @@ class _TeamScreenState extends State<TeamScreen> {
                       const Spacer(),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(
-                          'Members',
-                          style: kTitleTextStyle.copyWith(fontSize: 23),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Members',
+                              style: kTitleTextStyle.copyWith(fontSize: 23),
+                            ),
+                            const Icon(Icons.add)
+                          ],
                         ),
                       ),
                     ],
@@ -144,7 +206,7 @@ class _TeamScreenState extends State<TeamScreen> {
                                     ),
                                     ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                            primary:
+                                            backgroundColor:
                                                 Theme.of(context).primaryColor),
                                         onPressed: () {},
                                         child:
@@ -191,55 +253,7 @@ class _TeamScreenState extends State<TeamScreen> {
           actions: [
             TextButton(
               onPressed: () async {
-                setState(() {
-                  _isLoading = true;
-                });
-                try {
-                  final User? user = authInstance.currentUser;
-                  final uid = user!.uid;
-                  final uuid = const Uuid().v4();
-                  await FirebaseFirestore.instance
-                      .collection('teams')
-                      .doc(uuid)
-                      .set({
-                    'id': uuid,
-                    'name': _teamCreateController.text,
-                    'leader': uid,
-                    'members': [
-                      uid,
-                    ],
-                    'events': [],
-                    'pictureUrl': '',
-                    'createdAt': Timestamp.now(),
-                  });
-                  Navigator.pop(context);
-                } on FirebaseException catch (error) {
-                  GlobalMethods.dialog(
-                    context: context,
-                    title: 'On snap!',
-                    message: '${error.message}',
-                    contentType: ContentType.failure,
-                  );
-                  setState(() {
-                    _isLoading = false;
-                  });
-                  return;
-                } catch (error) {
-                  GlobalMethods.dialog(
-                    context: context,
-                    title: 'On snap!',
-                    message: '$error',
-                    contentType: ContentType.failure,
-                  );
-                  setState(() {
-                    _isLoading = false;
-                  });
-                  return;
-                } finally {
-                  setState(() {
-                    _isLoading = false;
-                  });
-                }
+                _createTeam(context);
               },
               child: const Text(
                 'create',

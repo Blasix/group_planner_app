@@ -11,6 +11,7 @@ import 'package:group_planner_app/services/utils.dart';
 import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/quickalert.dart';
 
 import '../consts/firebase_consts.dart';
 import '../consts/theme_manager.dart';
@@ -489,41 +490,47 @@ class _UserScreenState extends State<UserScreen> {
                       icon: IconlyLight.logout,
                       text: 'Logout',
                       onPressed: (context) async {
-                        setState(() {
-                          _isLoading = true;
-                        });
-                        try {
-                          await authInstance.signOut();
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ),
-                          );
-                        } on FirebaseAuthException catch (error) {
-                          GlobalMethods.dialog(
-                            title: 'Oh Snap!',
-                            message: '${error.message}',
-                            context: context,
-                            contentType: ContentType.failure,
-                          );
-                          setState(() {
-                            _isLoading = false;
-                          });
-                        } catch (error) {
-                          GlobalMethods.dialog(
-                            title: 'Oh Snap!',
-                            message: '$error',
-                            context: context,
-                            contentType: ContentType.failure,
-                          );
-                          setState(() {
-                            _isLoading = false;
-                          });
-                        } finally {
-                          setState(() {
-                            _isLoading = false;
-                          });
-                        }
+                        GlobalMethods.confirm(
+                          context: context,
+                          message: 'Do you want to logout',
+                          onTap: () async {
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            try {
+                              await authInstance.signOut();
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => const LoginScreen(),
+                                ),
+                              );
+                            } on FirebaseAuthException catch (error) {
+                              GlobalMethods.dialog(
+                                title: 'Oh Snap!',
+                                message: '${error.message}',
+                                context: context,
+                                contentType: ContentType.failure,
+                              );
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            } catch (error) {
+                              GlobalMethods.dialog(
+                                title: 'Oh Snap!',
+                                message: '$error',
+                                context: context,
+                                contentType: ContentType.failure,
+                              );
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            } finally {
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            }
+                          },
+                        );
                       },
                       hasNavgigation: false,
                     ),
