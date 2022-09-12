@@ -29,6 +29,39 @@ class _TeamScreenState extends State<TeamScreen> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    getTeams();
+    super.initState();
+  }
+
+  int? _numberOfTeams;
+
+  Future<void> getTeams() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final QuerySnapshot<Map<String, dynamic>> teamList =
+          await FirebaseFirestore.instance.collection('teams').get();
+      _numberOfTeams = teamList.size;
+    } catch (error) {
+      GlobalMethods.dialog(
+        context: context,
+        title: 'On snap!',
+        message: '$error',
+        contentType: ContentType.failure,
+      );
+      setState(() {
+        _isLoading = false;
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   int teamLenght = 0;
   int memberGrid = 2;
   bool _isLoading = false;
@@ -51,6 +84,9 @@ class _TeamScreenState extends State<TeamScreen> {
         'events': [],
         'pictureUrl': '',
         'createdAt': Timestamp.now(),
+      });
+      setState(() {
+        _numberOfTeams = _numberOfTeams! + 1;
       });
       Navigator.pop(context);
     } on FirebaseException catch (error) {
@@ -144,6 +180,7 @@ class _TeamScreenState extends State<TeamScreen> {
                             },
                             child: const Text('Create'),
                           ),
+                          Text('Teams: $_numberOfTeams')
                         ],
                       ),
                       const Spacer(),
