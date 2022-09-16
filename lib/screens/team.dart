@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
 import 'package:group_planner_app/services/utils.dart';
-import 'package:quickalert/quickalert.dart';
 import 'package:uuid/uuid.dart';
 
 import '../consts/firebase_consts.dart';
@@ -35,16 +34,24 @@ class _TeamScreenState extends State<TeamScreen> {
     super.initState();
   }
 
-  int? _numberOfTeams;
+  int _numberOfTotalTeams = 0;
+  int _numberOfTeamsUser = 0;
 
   Future<void> getTeams() async {
     setState(() {
       _isLoading = true;
     });
     try {
+      final uid = authInstance.currentUser!.uid;
+      final QuerySnapshot<Map<String, dynamic>> userTeamList =
+          await FirebaseFirestore.instance
+              .collection('teams')
+              .where('members', arrayContains: uid)
+              .get();
       final QuerySnapshot<Map<String, dynamic>> teamList =
           await FirebaseFirestore.instance.collection('teams').get();
-      _numberOfTeams = teamList.size;
+      _numberOfTotalTeams = teamList.size;
+      _numberOfTeamsUser = userTeamList.size;
     } catch (error) {
       GlobalMethods.dialog(
         context: context,
@@ -86,7 +93,8 @@ class _TeamScreenState extends State<TeamScreen> {
         'createdAt': Timestamp.now(),
       });
       setState(() {
-        _numberOfTeams = _numberOfTeams! + 1;
+        _numberOfTotalTeams++;
+        _numberOfTeamsUser++;
       });
       Navigator.pop(context);
     } on FirebaseException catch (error) {
@@ -180,7 +188,8 @@ class _TeamScreenState extends State<TeamScreen> {
                             },
                             child: const Text('Create'),
                           ),
-                          Text('Teams: $_numberOfTeams')
+                          Text('Teams: Total $_numberOfTotalTeams'),
+                          Text(' Yours $_numberOfTeamsUser')
                         ],
                       ),
                       const Spacer(),
