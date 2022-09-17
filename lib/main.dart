@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:group_planner_app/providers/team_provider.dart';
 import 'package:group_planner_app/screens/auth/login.dart';
 import 'package:group_planner_app/screens/btm_bar.dart';
 import 'package:provider/provider.dart';
@@ -33,15 +34,22 @@ class _MyAppState extends State<MyApp> {
   final User? user = authInstance.currentUser;
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeNotifier>(builder: (context, theme, child) {
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Group Planner',
-        themeMode: theme.getTheme(),
-        theme: theme.lightTheme,
-        darkTheme: theme.darkTheme,
-        home: user == null ? const LoginScreen() : const BottomBarScreen(),
-      );
-    });
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => TeamProvider(),
+        ),
+      ],
+      child: Consumer<ThemeNotifier>(builder: (context, theme, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Group Planner',
+          themeMode: theme.getTheme(),
+          theme: theme.lightTheme,
+          darkTheme: theme.darkTheme,
+          home: user == null ? const LoginScreen() : const BottomBarScreen(),
+        );
+      }),
+    );
   }
 }

@@ -3,7 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
+import 'package:group_planner_app/models/team_model.dart';
+import 'package:group_planner_app/providers/team_provider.dart';
 import 'package:group_planner_app/services/utils.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../consts/firebase_consts.dart';
@@ -30,44 +33,43 @@ class _TeamScreenState extends State<TeamScreen> {
 
   @override
   void initState() {
-    getTeams();
+    final teamProvider = Provider.of<TeamProvider>(context, listen: false);
+    teamProvider.fetchTeams();
+    teamProvider.fetchAllTeams();
     super.initState();
   }
 
-  int _numberOfTotalTeams = 0;
-  int _numberOfTeamsUser = 0;
-
-  Future<void> getTeams() async {
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      final uid = authInstance.currentUser!.uid;
-      final QuerySnapshot<Map<String, dynamic>> userTeamList =
-          await FirebaseFirestore.instance
-              .collection('teams')
-              .where('members', arrayContains: uid)
-              .get();
-      final QuerySnapshot<Map<String, dynamic>> teamList =
-          await FirebaseFirestore.instance.collection('teams').get();
-      _numberOfTotalTeams = teamList.size;
-      _numberOfTeamsUser = userTeamList.size;
-    } catch (error) {
-      GlobalMethods.dialog(
-        context: context,
-        title: 'On snap!',
-        message: '$error',
-        contentType: ContentType.failure,
-      );
-      setState(() {
-        _isLoading = false;
-      });
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
+  // Future<void> getTeams() async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+  //   try {
+  //     final uid = authInstance.currentUser!.uid;
+  //     final QuerySnapshot<Map<String, dynamic>> userTeamList =
+  //         await FirebaseFirestore.instance
+  //             .collection('teams')
+  //             .where('members', arrayContains: uid)
+  //             .get();
+  //     final QuerySnapshot<Map<String, dynamic>> teamList =
+  //         await FirebaseFirestore.instance.collection('teams').get();
+  //     _numberOfTotalTeams = teamList.size;
+  //     _numberOfTeamsUser = userTeamList.size;
+  //   } catch (error) {
+  //     GlobalMethods.dialog(
+  //       context: context,
+  //       title: 'On snap!',
+  //       message: '$error',
+  //       contentType: ContentType.failure,
+  //     );
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   } finally {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   }
+  // }
 
   int teamLenght = 0;
   int memberGrid = 2;
@@ -92,10 +94,9 @@ class _TeamScreenState extends State<TeamScreen> {
         'pictureUrl': '',
         'createdAt': Timestamp.now(),
       });
-      setState(() {
-        _numberOfTotalTeams++;
-        _numberOfTeamsUser++;
-      });
+      final teamProvider = Provider.of<TeamProvider>(context, listen: false);
+      teamProvider.fetchTeams();
+      teamProvider.fetchAllTeams();
       Navigator.pop(context);
     } on FirebaseException catch (error) {
       GlobalMethods.dialog(
@@ -135,6 +136,11 @@ class _TeamScreenState extends State<TeamScreen> {
         : setState(() {
             memberGrid = 2;
           });
+
+    final teamProvider = Provider.of<TeamProvider>(context);
+
+    List<TeamModel> allTeams = teamProvider.getAllTeams;
+    List<TeamModel> yourTeams = teamProvider.getYourTeams;
 
     return Scaffold(
       body: LoadingManager(
@@ -188,8 +194,8 @@ class _TeamScreenState extends State<TeamScreen> {
                             },
                             child: const Text('Create'),
                           ),
-                          Text('Teams: Total $_numberOfTotalTeams'),
-                          Text(' Yours $_numberOfTeamsUser')
+                          Text('Teams: Total ${allTeams.length}'),
+                          Text(' Yours ${yourTeams.length}')
                         ],
                       ),
                       const Spacer(),

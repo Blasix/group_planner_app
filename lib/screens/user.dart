@@ -11,7 +11,6 @@ import 'package:group_planner_app/services/utils.dart';
 import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:quickalert/quickalert.dart';
 
 import '../consts/firebase_consts.dart';
 import '../consts/theme_manager.dart';
