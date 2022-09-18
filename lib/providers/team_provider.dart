@@ -42,6 +42,14 @@ class TeamProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  List<TeamModel> findByName(String teamName) {
+    List<TeamModel> nameList = _teamList
+        .where((element) =>
+            element.name.toLowerCase().contains(teamName.toLowerCase()))
+        .toList();
+    return nameList;
+  }
+
   //TODO remove all team getter
   static final List<TeamModel> _allteamList = [];
 

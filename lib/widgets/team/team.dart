@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../screens/inner/team/select_team.dart';
 import '../../services/utils.dart';
 
 class TeamWidget extends StatelessWidget {
@@ -38,7 +39,14 @@ class TeamWidget extends StatelessWidget {
             ),
             const Spacer(),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SelectTeamScreen(),
+                  ),
+                );
+              },
               child: const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Icon(

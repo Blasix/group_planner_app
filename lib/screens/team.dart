@@ -31,13 +31,13 @@ class _TeamScreenState extends State<TeamScreen> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    final teamProvider = Provider.of<TeamProvider>(context, listen: false);
-    teamProvider.fetchTeams();
-    teamProvider.fetchAllTeams();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   final teamProvider = Provider.of<TeamProvider>(context, listen: false);
+  //   teamProvider.fetchTeams();
+  //   teamProvider.fetchAllTeams();
+  //   super.initState();
+  // }
 
   // Future<void> getTeams() async {
   //   setState(() {

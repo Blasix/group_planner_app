@@ -7,7 +7,9 @@ import 'package:group_planner_app/screens/agenda.dart';
 import 'package:group_planner_app/screens/team.dart';
 import 'package:group_planner_app/screens/user.dart';
 import 'package:iconly/iconly.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/team_provider.dart';
 import 'home.dart';
 
 class BottomBarScreen extends StatefulWidget {
@@ -30,6 +32,14 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
     setState(() {
       selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    final teamProvider = Provider.of<TeamProvider>(context, listen: false);
+    teamProvider.fetchTeams();
+    teamProvider.fetchAllTeams();
+    super.initState();
   }
 
   @override
