@@ -6,9 +6,22 @@ import '../consts/firebase_consts.dart';
 
 class TeamProvider with ChangeNotifier {
   static final List<TeamModel> _teamList = [];
+  static TeamModel _selectedTeam = TeamModel(
+      uuid: '',
+      name: '',
+      leader: '',
+      pictureUrl: '',
+      members: [],
+      events: [],
+      createdAt: Timestamp.now());
+  static String _selectedTeamID = '';
 
   List<TeamModel> get getYourTeams {
     return _teamList;
+  }
+
+  TeamModel get getSelectedTeam {
+    return _selectedTeam;
   }
 
   Future<void> fetchTeams() async {
@@ -39,6 +52,18 @@ class TeamProvider with ChangeNotifier {
             ));
       }
     });
+    notifyListeners();
+  }
+
+  Future<void> fetchSelectedTeam() async {
+    final uid = authInstance.currentUser!.uid;
+    final DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    _selectedTeamID = userDoc.get('selectedTeam');
+
+    _selectedTeam = _teamList
+        .where((element) => element.uuid.contains(_selectedTeamID))
+        .toList()[0];
     notifyListeners();
   }
 

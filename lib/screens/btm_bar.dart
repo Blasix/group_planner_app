@@ -39,6 +39,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
     final teamProvider = Provider.of<TeamProvider>(context, listen: false);
     teamProvider.fetchTeams();
     teamProvider.fetchAllTeams();
+    teamProvider.fetchSelectedTeam();
     super.initState();
   }
 

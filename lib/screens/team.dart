@@ -12,7 +12,7 @@ import 'package:uuid/uuid.dart';
 import '../consts/firebase_consts.dart';
 import '../services/global_methods.dart';
 import '../widgets/team/member.dart';
-import '../widgets/team/team.dart';
+import 'inner/team/select_team.dart';
 
 class TeamScreen extends StatefulWidget {
   const TeamScreen({Key? key}) : super(key: key);
@@ -31,49 +31,17 @@ class _TeamScreenState extends State<TeamScreen> {
     super.dispose();
   }
 
-  // @override
-  // void initState() {
-  //   final teamProvider = Provider.of<TeamProvider>(context, listen: false);
-  //   teamProvider.fetchTeams();
-  //   teamProvider.fetchAllTeams();
-  //   super.initState();
-  // }
-
-  // Future<void> getTeams() async {
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //   try {
-  //     final uid = authInstance.currentUser!.uid;
-  //     final QuerySnapshot<Map<String, dynamic>> userTeamList =
-  //         await FirebaseFirestore.instance
-  //             .collection('teams')
-  //             .where('members', arrayContains: uid)
-  //             .get();
-  //     final QuerySnapshot<Map<String, dynamic>> teamList =
-  //         await FirebaseFirestore.instance.collection('teams').get();
-  //     _numberOfTotalTeams = teamList.size;
-  //     _numberOfTeamsUser = userTeamList.size;
-  //   } catch (error) {
-  //     GlobalMethods.dialog(
-  //       context: context,
-  //       title: 'On snap!',
-  //       message: '$error',
-  //       contentType: ContentType.failure,
-  //     );
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   } finally {
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   }
-  // }
+  @override
+  void initState() {
+    // getUserData();
+    super.initState();
+  }
 
   int teamLenght = 0;
   int memberGrid = 2;
   bool _isLoading = false;
+  // final User? user = authInstance.currentUser;
+  // String _selectedTeam = '';
 
   void _createTeam(context) async {
     setState(() {
@@ -127,6 +95,38 @@ class _TeamScreenState extends State<TeamScreen> {
     }
   }
 
+  // Future<void> getUserData() async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+  //   if (user == null) {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //     return;
+  //   }
+  //   try {
+  //     String uid = user!.uid;
+  //     final DocumentSnapshot userDoc =
+  //         await FirebaseFirestore.instance.collection('users').doc(uid).get();
+  //     _selectedTeam = userDoc.get('selectedTeam');
+  //   } catch (error) {
+  //     GlobalMethods.dialog(
+  //       context: context,
+  //       title: 'On snap!',
+  //       message: '$error',
+  //       contentType: ContentType.failure,
+  //     );
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   } finally {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     (teamLenght >= 7)
@@ -140,7 +140,8 @@ class _TeamScreenState extends State<TeamScreen> {
     final teamProvider = Provider.of<TeamProvider>(context);
 
     List<TeamModel> allTeams = teamProvider.getAllTeams;
-    List<TeamModel> yourTeams = teamProvider.getYourTeams;
+    List<TeamModel> teams = teamProvider.getYourTeams;
+    TeamModel selectedTeam = teamProvider.getSelectedTeam;
 
     return Scaffold(
       body: LoadingManager(
@@ -165,9 +166,60 @@ class _TeamScreenState extends State<TeamScreen> {
                         'Team',
                         style: kTitleTextStyle.copyWith(fontSize: 23),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8),
-                        child: TeamWidget(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Theme.of(context).canvasColor),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Theme.of(context).cardColor,
+                                  ),
+                                  height: 60,
+                                  width: 60,
+                                  child: const Center(child: Text("icon")),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      selectedTeam.name,
+                                      style: kTitleTextStyle,
+                                    ),
+                                    const Text('edit')
+                                  ],
+                                ),
+                                const Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SelectTeamScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Icon(
+                                      Icons.menu_rounded,
+                                      size: 40,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                       Row(
                         // Debug buttons
@@ -195,7 +247,7 @@ class _TeamScreenState extends State<TeamScreen> {
                             child: const Text('Create'),
                           ),
                           Text('Teams: Total ${allTeams.length}'),
-                          Text(' Yours ${yourTeams.length}')
+                          Text(' Yours ${teams.length}')
                         ],
                       ),
                       const Spacer(),
@@ -234,55 +286,36 @@ class _TeamScreenState extends State<TeamScreen> {
                     right: 24,
                     top: 24,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Padding(
-                      //   padding: const EdgeInsets.only(
-                      //     bottom: 16,
-                      //   ),
-                      //   child: Text(
-                      //     'Members',
-                      //     style: kTitleTextStyle.copyWith(fontSize: 23),
-                      //   ),
-                      // ),
-                      (teamLenght == 0)
-                          ? Expanded(
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      'There are no members in your team',
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                Theme.of(context).primaryColor),
-                                        onPressed: () {},
-                                        child:
-                                            const Text('Click to add members'))
-                                  ],
-                                ),
+                  child: (teamLenght == 0)
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'There are no members in your team',
+                                style: TextStyle(fontSize: 20),
                               ),
-                            )
-                          : Expanded(
-                              child: GridView.builder(
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: memberGrid,
-                                  mainAxisSpacing: 32 / memberGrid,
-                                  crossAxisSpacing: 32 / memberGrid,
-                                ),
-                                itemCount: teamLenght,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return const MemberWidget();
-                                },
-                              ),
-                            ),
-                    ],
-                  ),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          Theme.of(context).primaryColor),
+                                  onPressed: () {},
+                                  child: const Text('Click to add members'))
+                            ],
+                          ),
+                        )
+                      : GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: memberGrid,
+                            mainAxisSpacing: 32 / memberGrid,
+                            crossAxisSpacing: 32 / memberGrid,
+                          ),
+                          itemCount: teamLenght,
+                          itemBuilder: (BuildContext context, int index) {
+                            return const MemberWidget();
+                          },
+                        ),
                 ),
               ),
             ),
