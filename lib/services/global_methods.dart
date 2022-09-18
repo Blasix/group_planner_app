@@ -20,7 +20,7 @@ class GlobalMethods {
         cancelBtnText: 'No',
         confirmBtnColor: Colors.red,
         onConfirmBtnTap: () {
-          onTap;
+          onTap();
         });
   }
 
