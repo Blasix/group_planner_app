@@ -31,17 +31,8 @@ class _TeamScreenState extends State<TeamScreen> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    // getUserData();
-    super.initState();
-  }
-
-  int teamLenght = 0;
   int memberGrid = 2;
   bool _isLoading = false;
-  // final User? user = authInstance.currentUser;
-  // String _selectedTeam = '';
 
   void _createTeam(context) async {
     setState(() {
@@ -64,7 +55,6 @@ class _TeamScreenState extends State<TeamScreen> {
       });
       final teamProvider = Provider.of<TeamProvider>(context, listen: false);
       teamProvider.fetchTeams();
-      teamProvider.fetchAllTeams();
       Navigator.pop(context);
     } on FirebaseException catch (error) {
       GlobalMethods.dialog(
@@ -95,40 +85,12 @@ class _TeamScreenState extends State<TeamScreen> {
     }
   }
 
-  // Future<void> getUserData() async {
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //   if (user == null) {
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //     return;
-  //   }
-  //   try {
-  //     String uid = user!.uid;
-  //     final DocumentSnapshot userDoc =
-  //         await FirebaseFirestore.instance.collection('users').doc(uid).get();
-  //     _selectedTeam = userDoc.get('selectedTeam');
-  //   } catch (error) {
-  //     GlobalMethods.dialog(
-  //       context: context,
-  //       title: 'On snap!',
-  //       message: '$error',
-  //       contentType: ContentType.failure,
-  //     );
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   } finally {
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
+    final teamProvider = Provider.of<TeamProvider>(context);
+    TeamModel? selectedTeam = teamProvider.getSelectedTeam;
+
+    int teamLenght = selectedTeam!.members.length;
     (teamLenght >= 7)
         ? setState(() {
             memberGrid = 3;
@@ -136,12 +98,6 @@ class _TeamScreenState extends State<TeamScreen> {
         : setState(() {
             memberGrid = 2;
           });
-
-    final teamProvider = Provider.of<TeamProvider>(context);
-
-    List<TeamModel> allTeams = teamProvider.getAllTeams;
-    List<TeamModel> teams = teamProvider.getYourTeams;
-    TeamModel selectedTeam = teamProvider.getSelectedTeam;
 
     return Scaffold(
       body: LoadingManager(
@@ -224,30 +180,28 @@ class _TeamScreenState extends State<TeamScreen> {
                       Row(
                         // Debug buttons
                         children: [
-                          TextButton(
-                            onPressed: () {
-                              setState(() {
-                                teamLenght++;
-                              });
-                            },
-                            child: const Text('add'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              setState(() {
-                                teamLenght--;
-                              });
-                            },
-                            child: const Text('remove'),
-                          ),
+                          // TextButton(
+                          //   onPressed: () {
+                          //     setState(() {
+                          //       teamLenght = teamLenght++;
+                          //     });
+                          //   },
+                          //   child: const Text('add'),
+                          // ),
+                          // TextButton(
+                          //   onPressed: () {
+                          //     setState(() {
+                          //       teamLenght = teamLenght--;
+                          //     });
+                          //   },
+                          //   child: const Text('remove'),
+                          // ),
                           TextButton(
                             onPressed: () {
                               _showTeamDialog();
                             },
                             child: const Text('Create'),
                           ),
-                          Text('Teams: Total ${allTeams.length}'),
-                          Text(' Yours ${teams.length}')
                         ],
                       ),
                       const Spacer(),

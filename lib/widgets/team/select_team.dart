@@ -68,6 +68,7 @@ class _SelectTeamWidgetState extends State<SelectTeamWidget> {
                       message: '${teamModel.name} has been selected',
                       contentType: ContentType.success,
                     );
+                    Navigator.pop(context);
                   } on FirebaseException catch (error) {
                     GlobalMethods.dialog(
                       context: context,
