@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:group_planner_app/providers/member_provider.dart';
 import 'package:group_planner_app/providers/team_provider.dart';
 import 'package:group_planner_app/screens/auth/login.dart';
 import 'package:group_planner_app/screens/btm_bar.dart';
@@ -41,6 +42,9 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider(
           create: (_) => TeamProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => MemberProvider(),
         ),
       ],
       child: Consumer<ThemeNotifier>(builder: (context, theme, child) {

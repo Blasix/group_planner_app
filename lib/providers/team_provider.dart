@@ -42,26 +42,27 @@ class TeamProvider with ChangeNotifier {
   }
 
   Future<void> fetchSelectedTeam() async {
-    try {
-      final uid = authInstance.currentUser!.uid;
-      final DocumentSnapshot userDoc =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      _selectedTeamID = userDoc.get('selectedTeam');
+    final uid = authInstance.currentUser!.uid;
 
+    final DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    _selectedTeamID = userDoc.get('selectedTeam');
+    Future.delayed(const Duration(microseconds: 5), () async {
       _selectedTeam = _teamList
           .where((element) => element.uuid.contains(_selectedTeamID!))
           .toList()[0];
-      notifyListeners();
-    } catch (e) {
-      _selectedTeam ??= TeamModel(
-          uuid: '',
-          name: '',
-          leader: '',
-          pictureUrl: '',
-          members: [],
-          events: [],
-          createdAt: Timestamp.now());
-    }
+    });
+
+    notifyListeners();
+
+    _selectedTeam ??= TeamModel(
+        uuid: '',
+        name: 'Select a team ->',
+        leader: '',
+        pictureUrl: '',
+        members: [],
+        events: [],
+        createdAt: Timestamp.now());
   }
 
   List<TeamModel> findByName(String teamName) {

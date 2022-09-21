@@ -7,6 +7,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
+import 'package:group_planner_app/models/member_model.dart';
+import 'package:group_planner_app/providers/member_provider.dart';
 import 'package:group_planner_app/services/utils.dart';
 import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,49 +30,56 @@ class _UserScreenState extends State<UserScreen> {
   bool _isLoading = false;
   bool themeSelector = false;
   final User? user = authInstance.currentUser;
-  String? _email;
-  String? _name;
+  // String? _email;
+  // String? _name;
   String _imageUrl = '';
 
-  @override
-  void initState() {
-    getUserData();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   Future.delayed(const Duration(microseconds: 5), () async {
+  //     final memberProvider = Provider.of<MemberProvider>(context);
+  //     MemberModel? member = memberProvider.getCurrentMember;
+  //     setState(() {
+  //       _imageUrl = memberProvider.getCurrentMember!.pictureURL;
+  //     });
+  //   });
 
-  Future<void> getUserData() async {
-    setState(() {
-      _isLoading = true;
-    });
-    if (user == null) {
-      setState(() {
-        _isLoading = false;
-      });
-      return;
-    }
-    try {
-      String uid = user!.uid;
-      final DocumentSnapshot userDoc =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      _email = userDoc.get('email');
-      _name = userDoc.get('username');
-      _imageUrl = userDoc.get('profilePictureUrl');
-    } catch (error) {
-      GlobalMethods.dialog(
-        context: context,
-        title: 'On snap!',
-        message: '$error',
-        contentType: ContentType.failure,
-      );
-      setState(() {
-        _isLoading = false;
-      });
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
+  //   super.initState();
+  // }
+
+  // Future<void> getUserData() async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+  //   if (user == null) {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //     return;
+  //   }
+  //   try {
+  //     String uid = user!.uid;
+  //     final DocumentSnapshot userDoc =
+  //         await FirebaseFirestore.instance.collection('users').doc(uid).get();
+  //     _email = userDoc.get('email');
+  //     _name = userDoc.get('username');
+  //     _imageUrl = userDoc.get('profilePictureUrl');
+  //   } catch (error) {
+  //     GlobalMethods.dialog(
+  //       context: context,
+  //       title: 'On snap!',
+  //       message: '$error',
+  //       contentType: ContentType.failure,
+  //     );
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   } finally {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   }
+  // }
 
   Future getImage(imageSource) async {
     setState(() {
@@ -118,6 +127,8 @@ class _UserScreenState extends State<UserScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final memberProvider = Provider.of<MemberProvider>(context);
+    MemberModel? member = memberProvider.getCurrentMember;
     Color lightMode = Theme.of(context).colorScheme.primary;
     Color darkMode = Theme.of(context).colorScheme.primary;
     Color systemMode = Theme.of(context).colorScheme.primary;
@@ -168,11 +179,17 @@ class _UserScreenState extends State<UserScreen> {
                                           backgroundImage:
                                               NetworkImage(_imageUrl),
                                         )
-                                      : const CircleAvatar(
-                                          radius: 50,
-                                          backgroundImage: NetworkImage(
-                                              'https://firebasestorage.googleapis.com/v0/b/group-planner-d4826.appspot.com/o/Profile.jpg?alt=media&token=e204d44b-afbe-4f95-a928-1e589ca75712'),
-                                        ),
+                                      : member!.pictureURL != ''
+                                          ? CircleAvatar(
+                                              radius: 50,
+                                              backgroundImage: NetworkImage(
+                                                  member.pictureURL),
+                                            )
+                                          : const CircleAvatar(
+                                              radius: 50,
+                                              backgroundImage: NetworkImage(
+                                                  'https://firebasestorage.googleapis.com/v0/b/group-planner-d4826.appspot.com/o/Profile.jpg?alt=media&token=e204d44b-afbe-4f95-a928-1e589ca75712'),
+                                            ),
                                   Align(
                                     alignment: Alignment.bottomRight,
                                     child: Container(
@@ -428,11 +445,11 @@ class _UserScreenState extends State<UserScreen> {
                                 const SizedBox(
                                   height: 148,
                                 ),
-                                Text(_name ?? 'User', style: kTitleTextStyle),
+                                Text(member!.name, style: kTitleTextStyle),
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                Text(_email ?? '', style: kCaptionTextStyle),
+                                Text(member.email, style: kCaptionTextStyle),
                                 // const SizedBox(
                                 //   height: 20,
                                 // ),

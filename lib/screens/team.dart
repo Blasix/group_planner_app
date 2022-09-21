@@ -89,7 +89,8 @@ class _TeamScreenState extends State<TeamScreen> {
   Widget build(BuildContext context) {
     final teamProvider = Provider.of<TeamProvider>(context);
     TeamModel? selectedTeam = teamProvider.getSelectedTeam;
-
+    final User? user = authInstance.currentUser;
+    selectedTeam?.members.remove(user?.uid);
     int teamLenght = selectedTeam!.members.length;
     (teamLenght >= 7)
         ? setState(() {
@@ -150,7 +151,10 @@ class _TeamScreenState extends State<TeamScreen> {
                                       selectedTeam.name,
                                       style: kTitleTextStyle,
                                     ),
-                                    const Text('edit')
+                                    Visibility(
+                                        visible:
+                                            (selectedTeam.leader == user!.uid),
+                                        child: const Text('edit')),
                                   ],
                                 ),
                                 const Spacer(),
