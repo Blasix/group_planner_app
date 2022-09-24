@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:group_planner_app/providers/member_provider.dart';
 import 'package:group_planner_app/screens/agenda.dart';
 import 'package:group_planner_app/screens/team.dart';
 import 'package:group_planner_app/screens/user.dart';
 import 'package:iconly/iconly.dart';
-import 'package:provider/provider.dart';
-
-import '../providers/team_provider.dart';
 import 'home.dart';
 
 class BottomBarScreen extends StatefulWidget {
@@ -29,18 +25,6 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
     setState(() {
       selectedIndex = index;
     });
-  }
-
-  @override
-  void initState() {
-    final userProvider = Provider.of<MemberProvider>(context, listen: false);
-    userProvider.fetchCurrentUser();
-
-    final teamProvider = Provider.of<TeamProvider>(context, listen: false);
-    teamProvider.fetchTeams();
-    teamProvider.fetchSelectedTeam();
-
-    super.initState();
   }
 
   @override

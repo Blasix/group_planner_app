@@ -65,6 +65,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'email': _emailTextController.text,
           'profilePictureUrl': '',
           'createdAt': Timestamp.now(),
+          'selectedTeam': '',
         });
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(

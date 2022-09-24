@@ -17,13 +17,13 @@ class TeamProvider with ChangeNotifier {
 
   TeamModel? get getSelectedTeam {
     _selectedTeam ??= TeamModel(
-        uuid: '',
-        name: 'Select a team ->',
-        leader: '',
-        pictureUrl: '',
-        members: [],
-        events: [],
-        createdAt: Timestamp.now());
+      uuid: '',
+      name: 'Select a team ->',
+      leader: '',
+      pictureUrl: '',
+      members: [],
+      events: [],
+    );
     return _selectedTeam;
   }
 
@@ -47,7 +47,6 @@ class TeamProvider with ChangeNotifier {
               name: element.get('name'),
               leader: element.get('leader'),
               pictureUrl: element.get('pictureUrl'),
-              createdAt: element.get('createdAt'),
               members: element.get('members'),
               events: element.get('events'),
             ));
@@ -63,7 +62,7 @@ class TeamProvider with ChangeNotifier {
     _selectedTeamID = userDoc.get('selectedTeam');
 
     _memberList.clear();
-    Future.delayed(const Duration(microseconds: 5), () async {
+    Future.delayed(const Duration(microseconds: 6), () async {
       _selectedTeam = _teamList
           .where((element) => element.uuid.contains(_selectedTeamID!))
           .toList()[0];

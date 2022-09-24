@@ -55,7 +55,7 @@ class _SelectTeamWidgetState extends State<SelectTeamWidget> {
                 onTap: () async {
                   final uid = authInstance.currentUser!.uid;
                   try {
-                    FirebaseFirestore.instance
+                    await FirebaseFirestore.instance
                         .collection('users')
                         .doc(uid)
                         .update({'selectedTeam': teamModel.uuid});

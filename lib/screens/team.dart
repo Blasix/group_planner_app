@@ -52,10 +52,14 @@ class _TeamScreenState extends State<TeamScreen> {
         ],
         'events': [],
         'pictureUrl': '',
-        'createdAt': Timestamp.now(),
       });
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .update({'selectedTeam': uuid});
       final teamProvider = Provider.of<TeamProvider>(context, listen: false);
-      teamProvider.fetchTeams();
+      await teamProvider.fetchTeams();
+      await teamProvider.fetchSelectedTeam();
       Navigator.pop(context);
     } on FirebaseException catch (error) {
       GlobalMethods.dialog(
@@ -147,6 +151,8 @@ class _TeamScreenState extends State<TeamScreen> {
                                   width: 10,
                                 ),
                                 Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       selectedTeam.name,
@@ -155,7 +161,83 @@ class _TeamScreenState extends State<TeamScreen> {
                                     Visibility(
                                         visible:
                                             (selectedTeam.leader == user!.uid),
-                                        child: const Text('edit')),
+                                        child: TextButton(
+                                          onPressed: () {
+                                            GlobalMethods.confirm(
+                                                context: context,
+                                                message:
+                                                    'Are you sure you want to delete ${selectedTeam.name}',
+                                                onTap: () async {
+                                                  final uid = authInstance
+                                                      .currentUser!.uid;
+                                                  Navigator.pop(context);
+                                                  try {
+                                                    setState(() {
+                                                      _isLoading = true;
+                                                    });
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection('teams')
+                                                        .doc(selectedTeam.uuid)
+                                                        .delete();
+
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection('users')
+                                                        .doc(uid)
+                                                        .update({
+                                                      'selectedTeam': ''
+                                                    });
+
+                                                    await teamProvider
+                                                        .fetchTeams();
+                                                    await teamProvider
+                                                        .fetchSelectedTeam();
+                                                    GlobalMethods.dialog(
+                                                      context: context,
+                                                      title: 'Succes!',
+                                                      message:
+                                                          '${selectedTeam.name} has been deleted',
+                                                      contentType:
+                                                          ContentType.success,
+                                                    );
+                                                  } on FirebaseException catch (error) {
+                                                    GlobalMethods.dialog(
+                                                      context: context,
+                                                      title: 'On snap!',
+                                                      message:
+                                                          '${error.message}',
+                                                      contentType:
+                                                          ContentType.failure,
+                                                    );
+                                                    setState(() {
+                                                      _isLoading = false;
+                                                    });
+                                                    return;
+                                                  } catch (error) {
+                                                    GlobalMethods.dialog(
+                                                      context: context,
+                                                      title: 'On snap!',
+                                                      message: '$error',
+                                                      contentType:
+                                                          ContentType.failure,
+                                                    );
+                                                    setState(() {
+                                                      _isLoading = false;
+                                                    });
+                                                    return;
+                                                  } finally {
+                                                    setState(() {
+                                                      _isLoading = false;
+                                                    });
+                                                  }
+                                                });
+                                          },
+                                          child: const Text(
+                                            'delete',
+                                            style: TextStyle(color: Colors.red),
+                                          ),
+                                        )),
                                   ],
                                 ),
                                 const Spacer(),
