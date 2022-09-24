@@ -14,7 +14,7 @@ class MemberProvider with ChangeNotifier {
     _currentMember = MemberModel(
       id: userDoc.get('id'),
       name: userDoc.get('username'),
-      currentTeam: userDoc.get('selectedTeam'),
+      // currentTeam: userDoc.get('selectedTeam'),
       email: userDoc.get('email'),
       pictureURL: userDoc.get('profilePictureUrl'),
       createdAt: userDoc.get('createdAt'),

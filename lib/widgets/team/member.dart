@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:group_planner_app/models/member_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../services/utils.dart';
 
@@ -7,6 +9,7 @@ class MemberWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final memberModel = Provider.of<MemberModel>(context);
     return Material(
       borderRadius: BorderRadius.circular(12),
       color: Theme.of(context).cardColor.withOpacity(0.9),
@@ -23,17 +26,19 @@ class MemberWidget extends StatelessWidget {
                   child: AspectRatio(
                     aspectRatio: 1,
                     child: Image.network(
-                      'https://firebasestorage.googleapis.com/v0/b/group-planner-d4826.appspot.com/o/Profile.jpg?alt=media&token=3dc7bc58-3bf3-4548-a2d5-09a3027190db',
+                      (memberModel.pictureURL == '')
+                          ? 'https://firebasestorage.googleapis.com/v0/b/group-planner-d4826.appspot.com/o/Profile.jpg?alt=media&token=3dc7bc58-3bf3-4548-a2d5-09a3027190db'
+                          : memberModel.pictureURL,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 8.0),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
                 child: FittedBox(
                   child: Text(
-                    'Name',
+                    memberModel.name,
                     style: kTitleTextStyle,
                   ),
                 ),

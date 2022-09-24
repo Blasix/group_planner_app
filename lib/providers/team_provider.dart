@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:group_planner_app/models/member_model.dart';
 import 'package:group_planner_app/models/team_model.dart';
 
 import '../consts/firebase_consts.dart';
 
 class TeamProvider with ChangeNotifier {
   static final List<TeamModel> _teamList = [];
+  static final List<MemberModel> _memberList = [];
   static TeamModel? _selectedTeam;
   static String? _selectedTeamID;
 
@@ -14,7 +16,19 @@ class TeamProvider with ChangeNotifier {
   }
 
   TeamModel? get getSelectedTeam {
+    _selectedTeam ??= TeamModel(
+        uuid: '',
+        name: 'Select a team ->',
+        leader: '',
+        pictureUrl: '',
+        members: [],
+        events: [],
+        createdAt: Timestamp.now());
     return _selectedTeam;
+  }
+
+  List<MemberModel> get getSelectedTeamMembers {
+    return _memberList;
   }
 
   Future<void> fetchTeams() async {
@@ -47,22 +61,38 @@ class TeamProvider with ChangeNotifier {
     final DocumentSnapshot userDoc =
         await FirebaseFirestore.instance.collection('users').doc(uid).get();
     _selectedTeamID = userDoc.get('selectedTeam');
+
+    _memberList.clear();
     Future.delayed(const Duration(microseconds: 5), () async {
       _selectedTeam = _teamList
           .where((element) => element.uuid.contains(_selectedTeamID!))
           .toList()[0];
+
+      _selectedTeam!.members.remove(uid);
+
+      for (var element in _selectedTeam!.members) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(element)
+            .get()
+            .then(
+              (value) => _memberList.insert(
+                0,
+                MemberModel(
+                  id: value.get('id'),
+                  name: value.get('username'),
+                  // currentTeam: value.get('selectedTeam'),
+                  email: value.get('email'),
+                  pictureURL: value.get('profilePictureUrl'),
+                  createdAt: value.get('createdAt'),
+                ),
+              ),
+            );
+      }
+      notifyListeners();
     });
 
     notifyListeners();
-
-    _selectedTeam ??= TeamModel(
-        uuid: '',
-        name: 'Select a team ->',
-        leader: '',
-        pictureUrl: '',
-        members: [],
-        events: [],
-        createdAt: Timestamp.now());
   }
 
   List<TeamModel> findByName(String teamName) {

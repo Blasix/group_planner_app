@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
+import 'package:group_planner_app/models/member_model.dart';
 import 'package:group_planner_app/models/team_model.dart';
 import 'package:group_planner_app/providers/team_provider.dart';
 import 'package:group_planner_app/services/utils.dart';
@@ -88,10 +89,10 @@ class _TeamScreenState extends State<TeamScreen> {
   @override
   Widget build(BuildContext context) {
     final teamProvider = Provider.of<TeamProvider>(context);
-    TeamModel? selectedTeam = teamProvider.getSelectedTeam;
+    TeamModel? selectedTeam = teamProvider.getSelectedTeam!;
+    List<MemberModel> members = teamProvider.getSelectedTeamMembers;
     final User? user = authInstance.currentUser;
-    selectedTeam?.members.remove(user?.uid);
-    int teamLenght = selectedTeam!.members.length;
+    int teamLenght = members.length;
     (teamLenght >= 7)
         ? setState(() {
             memberGrid = 3;
@@ -271,7 +272,9 @@ class _TeamScreenState extends State<TeamScreen> {
                           ),
                           itemCount: teamLenght,
                           itemBuilder: (BuildContext context, int index) {
-                            return const MemberWidget();
+                            return ChangeNotifierProvider.value(
+                                value: members[index],
+                                child: const MemberWidget());
                           },
                         ),
                 ),
