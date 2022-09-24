@@ -2,10 +2,10 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
+import 'package:group_planner_app/fetch.dart';
 import 'package:group_planner_app/screens/auth/other_button.dart';
 import 'package:group_planner_app/screens/auth/recovery_password.dart';
 import 'package:group_planner_app/screens/auth/register.dart';
-import 'package:group_planner_app/screens/btm_bar.dart';
 import 'package:form_validator/form_validator.dart';
 
 import '../../consts/firebase_consts.dart';
@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => const BottomBarScreen(),
+            builder: (context) => const Fetch(),
           ),
         );
       } on FirebaseException catch (error) {

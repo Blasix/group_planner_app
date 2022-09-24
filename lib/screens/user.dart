@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
 import 'package:group_planner_app/models/member_model.dart';
 import 'package:group_planner_app/providers/member_provider.dart';
+import 'package:group_planner_app/screens/inner/user/privacy.dart';
 import 'package:group_planner_app/services/utils.dart';
 import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart';
@@ -480,7 +481,14 @@ class _UserScreenState extends State<UserScreen> {
                     ProfileListItem(
                       icon: IconlyLight.shield_done,
                       text: 'Privacy',
-                      onPressed: () {},
+                      onPressed: (context) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PrivacyScreen(),
+                          ),
+                        );
+                      },
                     ),
                     // ProfileListItem(
                     //   icon: IconlyLight.time_circle,
@@ -490,17 +498,17 @@ class _UserScreenState extends State<UserScreen> {
                     ProfileListItem(
                       icon: IconlyLight.discovery,
                       text: 'Help & Support',
-                      onPressed: () {},
+                      onPressed: (context) {},
                     ),
                     ProfileListItem(
                       icon: IconlyLight.setting,
                       text: 'Settings',
-                      onPressed: () {},
+                      onPressed: (context) {},
                     ),
                     ProfileListItem(
                       icon: IconlyLight.add_user,
                       text: 'Invite a Friend',
-                      onPressed: () {},
+                      onPressed: (context) {},
                     ),
                     ProfileListItem(
                       icon: IconlyLight.logout,

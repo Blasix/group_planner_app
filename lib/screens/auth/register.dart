@@ -8,8 +8,8 @@ import 'package:group_planner_app/screens/auth/login.dart';
 import 'package:group_planner_app/screens/auth/recovery_password.dart';
 
 import '../../consts/firebase_consts.dart';
+import '../../fetch.dart';
 import '../../services/global_methods.dart';
-import '../btm_bar.dart';
 import 'other_button.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -69,7 +69,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         });
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => const BottomBarScreen(),
+            builder: (context) => const Fetch(),
           ),
         );
       } on FirebaseException catch (error) {
