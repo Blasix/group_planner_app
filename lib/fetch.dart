@@ -1,13 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:group_planner_app/screens/auth/login.dart';
 import 'package:group_planner_app/screens/btm_bar.dart';
 import 'package:provider/provider.dart';
-
-import 'consts/firebase_consts.dart';
 import 'providers/member_provider.dart';
 import 'providers/team_provider.dart';
 
@@ -22,26 +18,18 @@ class _FetchState extends State<Fetch> {
   @override
   void initState() {
     Future.delayed(const Duration(microseconds: 5), () async {
-      final User? user = authInstance.currentUser;
       final userProvider = Provider.of<MemberProvider>(context, listen: false);
       await userProvider.fetchCurrentUser();
 
       final teamProvider = Provider.of<TeamProvider>(context, listen: false);
       await teamProvider.fetchTeams();
       await teamProvider.fetchSelectedTeam();
-      user == null
-          ? Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (ctx) => const LoginScreen(),
-              ),
-            )
-          : Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (ctx) => const BottomBarScreen(),
-              ),
-            );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (ctx) => const BottomBarScreen(),
+        ),
+      );
     });
     super.initState();
   }

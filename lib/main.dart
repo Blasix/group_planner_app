@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_planner_app/fetch.dart';
 import 'package:group_planner_app/providers/member_provider.dart';
 import 'package:group_planner_app/providers/team_provider.dart';
+import 'package:group_planner_app/screens/auth/login.dart';
 import 'package:provider/provider.dart';
+import 'consts/firebase_consts.dart';
 import 'consts/theme_manager.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -32,6 +35,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final User? user = authInstance.currentUser;
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -50,7 +54,7 @@ class _MyAppState extends State<MyApp> {
           themeMode: theme.getTheme(),
           theme: theme.lightTheme,
           darkTheme: theme.darkTheme,
-          home: const Fetch(),
+          home: user == null ? const LoginScreen() : const Fetch(),
         );
       }),
     );
