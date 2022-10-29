@@ -1,5 +1,7 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:group_planner_app/services/utils.dart';
+import 'package:iconly/iconly.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
@@ -38,6 +40,52 @@ class GlobalMethods {
           title: title,
           message: message,
           contentType: contentType,
+        ),
+      ),
+    );
+  }
+
+  static profileListItem({
+    required BuildContext context,
+    required IconData icon,
+    required String text,
+    required Function onPressed,
+    bool hasNavgigation = true,
+  }) {
+    return Container(
+      height: 55,
+      margin: const EdgeInsets.symmetric(horizontal: 40).copyWith(bottom: 20),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: Theme.of(context).cardColor),
+      child: InkWell(
+        onTap: () {
+          onPressed(context);
+        },
+        borderRadius: BorderRadius.circular(30),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            children: [
+              Icon(
+                icon,
+                size: 30,
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              Text(text,
+                  style: kTitleTextStyle.copyWith(fontWeight: FontWeight.w500)),
+              const Spacer(),
+              Visibility(
+                visible: hasNavgigation,
+                child: const Icon(
+                  IconlyLight.arrow_right_2,
+                  size: 30,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:group_planner_app/fetch.dart';
 import 'package:group_planner_app/providers/member_provider.dart';
 import 'package:group_planner_app/providers/team_provider.dart';
@@ -10,6 +11,8 @@ import 'consts/firebase_consts.dart';
 import 'consts/theme_manager.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'l10n/l10n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // IF MacOS gives errors run:
 // in ios: pod update
@@ -49,6 +52,13 @@ class _MyAppState extends State<MyApp> {
       ],
       child: Consumer<ThemeNotifier>(builder: (context, theme, child) {
         return MaterialApp(
+          supportedLocales: L10n.all,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
           debugShowCheckedModeBanner: false,
           title: 'Group Planner',
           themeMode: theme.getTheme(),

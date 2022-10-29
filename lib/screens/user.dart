@@ -9,7 +9,9 @@ import 'package:flutter/services.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
 import 'package:group_planner_app/models/member_model.dart';
 import 'package:group_planner_app/providers/member_provider.dart';
+import 'package:group_planner_app/screens/inner/user/help_support.dart';
 import 'package:group_planner_app/screens/inner/user/privacy.dart';
+import 'package:group_planner_app/screens/inner/user/settings.dart';
 import 'package:group_planner_app/services/utils.dart';
 import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart';
@@ -477,40 +479,59 @@ class _UserScreenState extends State<UserScreen> {
               ),
               Expanded(
                 child: ListView(
+                  physics: const BouncingScrollPhysics(),
                   children: [
-                    ProfileListItem(
-                      icon: IconlyLight.shield_done,
-                      text: 'Privacy',
-                      onPressed: (context) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const PrivacyScreen(),
-                          ),
-                        );
-                      },
-                    ),
+                    GlobalMethods.profileListItem(
+                        context: context,
+                        icon: IconlyLight.shield_done,
+                        text: 'Privacy',
+                        onPressed: (context) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const PrivacyScreen(),
+                            ),
+                          );
+                        }),
                     // ProfileListItem(
                     //   icon: IconlyLight.time_circle,
                     //   text: 'Purchase History',
                     //   onPressed: () {},
                     // ),
-                    ProfileListItem(
+                    GlobalMethods.profileListItem(
+                      context: context,
                       icon: IconlyLight.discovery,
                       text: 'Help & Support',
-                      onPressed: (context) {},
+                      onPressed: (context) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HelpSupportScreen(),
+                          ),
+                        );
+                      },
                     ),
-                    ProfileListItem(
+                    GlobalMethods.profileListItem(
+                      context: context,
                       icon: IconlyLight.setting,
                       text: 'Settings',
-                      onPressed: (context) {},
+                      onPressed: (context) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SettingsScreen(),
+                          ),
+                        );
+                      },
                     ),
-                    ProfileListItem(
+                    GlobalMethods.profileListItem(
+                      context: context,
                       icon: IconlyLight.add_user,
                       text: 'Invite a Friend',
                       onPressed: (context) {},
                     ),
-                    ProfileListItem(
+                    GlobalMethods.profileListItem(
+                      context: context,
                       icon: IconlyLight.logout,
                       text: 'Logout',
                       onPressed: (context) async {
@@ -561,62 +582,6 @@ class _UserScreenState extends State<UserScreen> {
                   ],
                 ),
               )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ProfileListItem extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  final Function onPressed;
-  final bool hasNavgigation;
-
-  const ProfileListItem({
-    Key? key,
-    required this.icon,
-    required this.text,
-    required this.onPressed,
-    this.hasNavgigation = true,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 55,
-      margin: const EdgeInsets.symmetric(horizontal: 40).copyWith(bottom: 20),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color: Theme.of(context).cardColor),
-      child: InkWell(
-        onTap: () {
-          onPressed(context);
-        },
-        borderRadius: BorderRadius.circular(30),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Row(
-            children: [
-              Icon(
-                icon,
-                size: 30,
-              ),
-              const SizedBox(
-                width: 8,
-              ),
-              Text(text,
-                  style: kTitleTextStyle.copyWith(fontWeight: FontWeight.w500)),
-              const Spacer(),
-              Visibility(
-                visible: hasNavgigation,
-                child: const Icon(
-                  IconlyLight.arrow_right_2,
-                  size: 30,
-                ),
-              ),
             ],
           ),
         ),
