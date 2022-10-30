@@ -7,18 +7,23 @@ import '../consts/firebase_consts.dart';
 class MemberProvider with ChangeNotifier {
   static MemberModel? _currentMember;
 
-  Future<void> fetchCurrentUser() async {
+  void listenToCurrentUser() {
     final uid = authInstance.currentUser!.uid;
-    final DocumentSnapshot userDoc =
-        await FirebaseFirestore.instance.collection('users').doc(uid).get();
-    _currentMember = MemberModel(
-      id: userDoc.get('id'),
-      name: userDoc.get('username'),
-      // currentTeam: userDoc.get('selectedTeam'),
-      email: userDoc.get('email'),
-      pictureURL: userDoc.get('profilePictureUrl'),
-      createdAt: userDoc.get('createdAt'),
-    );
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .snapshots()
+        .listen((event) {
+      _currentMember = MemberModel(
+        id: event.get('id'),
+        name: event.get('username'),
+        currentTeam: event.get('selectedTeam'),
+        email: event.get('email'),
+        pictureURL: event.get('profilePictureUrl'),
+        createdAt: event.get('createdAt'),
+      );
+      notifyListeners();
+    });
   }
 
   MemberModel? get getCurrentMember {

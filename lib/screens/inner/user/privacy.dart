@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
 import 'package:iconly/iconly.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../consts/firebase_consts.dart';
 import '../../../services/global_methods.dart';
@@ -24,7 +25,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
       isLoading: _isLoading,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Privacy'),
+          title: Text(AppLocalizations.of(context)!.privacy),
           backgroundColor: Colors.transparent,
           foregroundColor: Theme.of(context).colorScheme.primary,
           elevation: 0,
@@ -35,7 +36,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
             GlobalMethods.profileListItem(
               context: context,
               icon: IconlyLight.delete,
-              text: 'Delete account',
+              text: AppLocalizations.of(context)!.deleteAccount,
               onPressed: (context) {
                 GlobalMethods.confirm(
                     context: context,

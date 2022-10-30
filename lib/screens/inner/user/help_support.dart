@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../services/global_methods.dart';
 
@@ -15,7 +16,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Help & Support'),
+          title: Text(AppLocalizations.of(context)!.helpSupport),
           backgroundColor: Colors.transparent,
           foregroundColor: Theme.of(context).colorScheme.primary,
           elevation: 0,
@@ -26,25 +27,25 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
             GlobalMethods.profileListItem(
               context: context,
               icon: IconlyLight.send,
-              text: 'Send bug report',
+              text: AppLocalizations.of(context)!.sendBugReport,
               onPressed: (context) {},
             ),
             GlobalMethods.profileListItem(
               context: context,
               icon: Icons.list,
-              text: 'Copyright',
+              text: AppLocalizations.of(context)!.copyright,
               onPressed: (context) {},
             ),
             GlobalMethods.profileListItem(
               context: context,
               icon: Icons.question_mark_outlined,
-              text: 'FAQ',
+              text: AppLocalizations.of(context)!.faq,
               onPressed: (context) {},
             ),
             GlobalMethods.profileListItem(
               context: context,
               icon: IconlyLight.ticket_star,
-              text: 'Groep planner tester',
+              text: AppLocalizations.of(context)!.becomeATester,
               onPressed: (context) {},
             ),
           ],

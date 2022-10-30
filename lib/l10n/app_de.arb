@@ -1,0 +1,25 @@
+
+{
+    "currentLanguage": "Deutsch",
+
+    "team": "Team",
+    "members": "Mitglieder",
+    "create": "erstellen",
+    "delete": "löschen",
+
+    "privacy": "Datenschutz",
+    "helpSupport": "Hilfe & Unterstützung",
+    "settings": "Einstellungen",
+    "inviteAFriend": "Freund einladen",
+    "logout": "Abmelden",
+    "deleteAccount": "Account löschen",
+    "sendBugReport": "Fehlerbericht senden",
+    "copyright": "Urheberrecht",
+    "faq": "FAQ",
+    "becomeATester": "Tester werden",
+    "pushNotifications": "Push-Benachrichtigungen",
+    "language": "Sprache",
+
+    "yes": "Ja",
+    "no": "Nein"
+}

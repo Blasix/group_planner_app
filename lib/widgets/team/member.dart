@@ -9,7 +9,7 @@ class MemberWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final memberModel = Provider.of<MemberModel>(context);
+    final memberModel = Provider.of<TeamMemberModel>(context);
     return Material(
       borderRadius: BorderRadius.circular(12),
       color: Theme.of(context).cardColor.withOpacity(0.9),

@@ -14,7 +14,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Language settings'),
+          title: Text(AppLocalizations.of(context)!.language),
           backgroundColor: Colors.transparent,
           foregroundColor: Theme.of(context).colorScheme.primary,
           elevation: 0,
@@ -25,7 +25,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
             GlobalMethods.profileListItem(
               context: context,
               icon: Icons.language,
-              text: AppLocalizations.of(context)!.language,
+              text: AppLocalizations.of(context)!.currentLanguage,
               onPressed: (context) {},
               hasNavgigation: false,
             ),

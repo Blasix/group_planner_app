@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_planner_app/screens/inner/user/settings/language.dart';
 import 'package:iconly/iconly.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../services/global_methods.dart';
 
@@ -16,7 +17,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Setings'),
+          title: Text(AppLocalizations.of(context)!.settings),
           backgroundColor: Colors.transparent,
           foregroundColor: Theme.of(context).colorScheme.primary,
           elevation: 0,
@@ -27,13 +28,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             GlobalMethods.profileListItem(
               context: context,
               icon: IconlyLight.notification,
-              text: 'Push notifications',
+              text: AppLocalizations.of(context)!.pushNotifications,
               onPressed: (context) {},
             ),
             GlobalMethods.profileListItem(
               context: context,
               icon: Icons.language,
-              text: 'Language',
+              text: AppLocalizations.of(context)!.language,
               onPressed: (context) {
                 Navigator.push(
                   context,

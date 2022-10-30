@@ -9,6 +9,7 @@ import 'package:group_planner_app/providers/team_provider.dart';
 import 'package:group_planner_app/services/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../consts/firebase_consts.dart';
 import '../services/global_methods.dart';
@@ -94,7 +95,7 @@ class _TeamScreenState extends State<TeamScreen> {
   Widget build(BuildContext context) {
     final teamProvider = Provider.of<TeamProvider>(context);
     TeamModel? selectedTeam = teamProvider.getSelectedTeam!;
-    List<MemberModel> members = teamProvider.getSelectedTeamMembers;
+    List<TeamMemberModel> members = teamProvider.getSelectedTeamMembers;
     final User? user = authInstance.currentUser;
     int teamLenght = members.length;
     (teamLenght >= 7)
@@ -125,7 +126,7 @@ class _TeamScreenState extends State<TeamScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Team',
+                        AppLocalizations.of(context)!.team,
                         style: kTitleTextStyle.copyWith(fontSize: 23),
                       ),
                       Padding(
@@ -244,9 +245,10 @@ class _TeamScreenState extends State<TeamScreen> {
                                                       }
                                                     });
                                               },
-                                              child: const Text(
-                                                'delete',
-                                                style: TextStyle(
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .delete,
+                                                style: const TextStyle(
                                                     color: Colors.red),
                                               ),
                                             )),
@@ -301,7 +303,7 @@ class _TeamScreenState extends State<TeamScreen> {
                             onPressed: () {
                               _showTeamDialog();
                             },
-                            child: const Text('Create'),
+                            child: Text(AppLocalizations.of(context)!.create),
                           ),
                         ],
                       ),
@@ -312,7 +314,7 @@ class _TeamScreenState extends State<TeamScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Members',
+                              AppLocalizations.of(context)!.members,
                               style: kTitleTextStyle.copyWith(fontSize: 23),
                             ),
                             const Icon(Icons.add)

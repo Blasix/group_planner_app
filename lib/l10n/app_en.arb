@@ -1,3 +1,25 @@
 {
-    "language": "English"
+    "currentLanguage": "English",
+
+    "team": "Team",
+    "members": "Members",
+    "create": "create",
+    "delete": "delete",
+
+    "privacy": "Privacy",
+    "helpSupport": "Help & Support",
+    "settings": "Settings",
+    "inviteAFriend": "Invite a friend",
+    "logout": "Logout",
+    "deleteAccount": "Delete account",
+    "sendBugReport": "Send bug report",
+    "copyright": "Copyright",
+    "faq": "FAQ",
+    "becomeATester": "Become a tester",
+    "pushNotifications": "Push notifications",
+    "language": "Language",
+
+    "yes": "Yes",
+    "no": "No"
+
 }

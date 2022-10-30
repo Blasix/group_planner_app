@@ -19,7 +19,7 @@ class _FetchState extends State<Fetch> {
   void initState() {
     Future.delayed(const Duration(microseconds: 5), () async {
       final userProvider = Provider.of<MemberProvider>(context, listen: false);
-      await userProvider.fetchCurrentUser();
+      userProvider.listenToCurrentUser();
 
       final teamProvider = Provider.of<TeamProvider>(context, listen: false);
       await teamProvider.fetchTeams();

@@ -16,6 +16,7 @@ import 'package:group_planner_app/services/utils.dart';
 import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../consts/firebase_consts.dart';
 import '../consts/theme_manager.dart';
@@ -484,7 +485,7 @@ class _UserScreenState extends State<UserScreen> {
                     GlobalMethods.profileListItem(
                         context: context,
                         icon: IconlyLight.shield_done,
-                        text: 'Privacy',
+                        text: AppLocalizations.of(context)!.privacy,
                         onPressed: (context) {
                           Navigator.push(
                             context,
@@ -501,7 +502,7 @@ class _UserScreenState extends State<UserScreen> {
                     GlobalMethods.profileListItem(
                       context: context,
                       icon: IconlyLight.discovery,
-                      text: 'Help & Support',
+                      text: AppLocalizations.of(context)!.helpSupport,
                       onPressed: (context) {
                         Navigator.push(
                           context,
@@ -514,7 +515,7 @@ class _UserScreenState extends State<UserScreen> {
                     GlobalMethods.profileListItem(
                       context: context,
                       icon: IconlyLight.setting,
-                      text: 'Settings',
+                      text: AppLocalizations.of(context)!.settings,
                       onPressed: (context) {
                         Navigator.push(
                           context,
@@ -527,13 +528,13 @@ class _UserScreenState extends State<UserScreen> {
                     GlobalMethods.profileListItem(
                       context: context,
                       icon: IconlyLight.add_user,
-                      text: 'Invite a Friend',
+                      text: AppLocalizations.of(context)!.inviteAFriend,
                       onPressed: (context) {},
                     ),
                     GlobalMethods.profileListItem(
                       context: context,
                       icon: IconlyLight.logout,
-                      text: 'Logout',
+                      text: AppLocalizations.of(context)!.logout,
                       onPressed: (context) async {
                         GlobalMethods.confirm(
                           context: context,

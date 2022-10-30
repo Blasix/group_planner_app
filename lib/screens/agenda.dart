@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../services/utils.dart';
 import '../widgets/agenda/events.dart';
@@ -21,6 +22,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
       child: Column(
         children: [
           TableCalendar(
+            locale: AppLocalizations.of(context)!.localeName,
             firstDay: kFirstDay,
             lastDay: kLastDay,
             focusedDay: _focusedDay,

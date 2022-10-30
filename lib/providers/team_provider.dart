@@ -5,9 +5,12 @@ import 'package:group_planner_app/models/team_model.dart';
 
 import '../consts/firebase_consts.dart';
 
+//TODO dynamicly update teamlist when something changes in Firestore
+//TODO change fetchseletedteam so that it uses memberlist and that it dynamicly updates
+
 class TeamProvider with ChangeNotifier {
   static final List<TeamModel> _teamList = [];
-  static final List<MemberModel> _memberList = [];
+  static final List<TeamMemberModel> _memberList = [];
   static TeamModel? _selectedTeam;
   static String? _selectedTeamID;
 
@@ -27,7 +30,7 @@ class TeamProvider with ChangeNotifier {
     return _selectedTeam;
   }
 
-  List<MemberModel> get getSelectedTeamMembers {
+  List<TeamMemberModel> get getSelectedTeamMembers {
     return _memberList;
   }
 
@@ -40,16 +43,14 @@ class TeamProvider with ChangeNotifier {
         .get()
         .then((QuerySnapshot productSnapshot) {
       for (var element in productSnapshot.docs) {
-        _teamList.insert(
-            0,
-            TeamModel(
-              uuid: element.get('id'),
-              name: element.get('name'),
-              leader: element.get('leader'),
-              pictureUrl: element.get('pictureUrl'),
-              members: element.get('members'),
-              events: element.get('events'),
-            ));
+        _teamList.add(TeamModel(
+          uuid: element.get('id'),
+          name: element.get('name'),
+          leader: element.get('leader'),
+          pictureUrl: element.get('pictureUrl'),
+          members: element.get('members'),
+          events: element.get('events'),
+        ));
       }
     });
   }
@@ -77,10 +78,9 @@ class TeamProvider with ChangeNotifier {
             .then(
               (value) => _memberList.insert(
                 0,
-                MemberModel(
+                TeamMemberModel(
                   id: value.get('id'),
                   name: value.get('username'),
-                  // currentTeam: value.get('selectedTeam'),
                   email: value.get('email'),
                   pictureURL: value.get('profilePictureUrl'),
                   createdAt: value.get('createdAt'),
