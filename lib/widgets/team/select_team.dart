@@ -7,7 +7,6 @@ import 'package:group_planner_app/consts/firebase_consts.dart';
 import 'package:group_planner_app/models/team_model.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/team_provider.dart';
 import '../../services/global_methods.dart';
 import '../../services/utils.dart';
 
@@ -61,9 +60,6 @@ class _SelectTeamWidgetState extends State<SelectTeamWidget> {
                         .collection('users')
                         .doc(uid)
                         .update({'selectedTeam': teamModel.uuid});
-                    final teamProvider =
-                        Provider.of<TeamProvider>(context, listen: false);
-                    teamProvider.fetchSelectedTeam();
                     GlobalMethods.dialog(
                       context: context,
                       title: 'Succes!',

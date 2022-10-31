@@ -58,9 +58,9 @@ class _TeamScreenState extends State<TeamScreen> {
           .collection('users')
           .doc(uid)
           .update({'selectedTeam': uuid});
-      final teamProvider = Provider.of<TeamProvider>(context, listen: false);
-      await teamProvider.fetchTeams();
-      await teamProvider.fetchSelectedTeam();
+      // final teamProvider = Provider.of<TeamProvider>(context, listen: false);
+      // await teamProvider.fetchTeams();
+      // await teamProvider.fetchSelectedTeam(context);
       Navigator.pop(context);
     } on FirebaseException catch (error) {
       GlobalMethods.dialog(
@@ -94,10 +94,11 @@ class _TeamScreenState extends State<TeamScreen> {
   @override
   Widget build(BuildContext context) {
     final teamProvider = Provider.of<TeamProvider>(context);
-    TeamModel? selectedTeam = teamProvider.getSelectedTeam!;
-    List<TeamMemberModel> members = teamProvider.getSelectedTeamMembers;
+    List<TeamMemberModel> currentTeamMembers =
+        teamProvider.getSelectedTeamMembers;
+
     final User? user = authInstance.currentUser;
-    int teamLenght = members.length;
+    int teamLenght = currentTeamMembers.length;
     (teamLenght >= 7)
         ? setState(() {
             memberGrid = 3;
@@ -105,6 +106,46 @@ class _TeamScreenState extends State<TeamScreen> {
         : setState(() {
             memberGrid = 2;
           });
+    final TeamModel? selectedTeam = teamProvider.getSelectedTeam(context);
+
+    //when teammodel is null, it means that the user has no team
+    if (selectedTeam == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.team),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'noteam',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SelectTeamScreen(),
+                    ),
+                  );
+                },
+                child: Text('select team'),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  _showTeamDialog();
+                },
+                child: Text("createTeam"),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       body: LoadingManager(
@@ -198,10 +239,12 @@ class _TeamScreenState extends State<TeamScreen> {
                                                           'selectedTeam': ''
                                                         });
 
-                                                        await teamProvider
-                                                            .fetchTeams();
-                                                        await teamProvider
-                                                            .fetchSelectedTeam();
+                                                        // await teamProvider
+                                                        //     .fetchTeams();
+                                                        // ignore: use_build_context_synchronously
+                                                        // await teamProvider
+                                                        //     .fetchSelectedTeam(
+                                                        //         context);
                                                         GlobalMethods.dialog(
                                                           context: context,
                                                           title: 'Succes!',
@@ -371,7 +414,7 @@ class _TeamScreenState extends State<TeamScreen> {
                           itemCount: teamLenght,
                           itemBuilder: (BuildContext context, int index) {
                             return ChangeNotifierProvider.value(
-                                value: members[index],
+                                value: currentTeamMembers[index],
                                 child: const MemberWidget());
                           },
                         ),
