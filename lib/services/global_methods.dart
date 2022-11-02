@@ -16,6 +16,7 @@ class GlobalMethods {
         context: context,
         type: QuickAlertType.confirm,
         text: message,
+        title: AppLocalizations.of(context)!.sure,
         confirmBtnText: AppLocalizations.of(context)!.yes,
         backgroundColor: Theme.of(context).bottomAppBarColor,
         titleColor: Theme.of(context).colorScheme.primary,

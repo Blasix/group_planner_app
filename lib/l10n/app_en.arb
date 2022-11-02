@@ -1,11 +1,22 @@
 {
+    "@_UNIVERSAL": {}
     "currentLanguage": "English",
+    "sure" : "Are you sure?",
+    "yes": "Yes",
+    "no": "No"
 
-    "team": "Team",
+    "@_GROUP_PAGE": {}
+    "group": "Group",
+    "selectGroup": "Select Group",
+    "createGroup" : "Create Group",
+    "noGroup" : "You have no group selected",
     "members": "Members",
+    "addMembers": "Click to add members",
+    "noMembers": "There are no members in this group",
     "create": "create",
     "delete": "delete",
 
+    "@_SETTINGS_PAGE": {}
     "privacy": "Privacy",
     "helpSupport": "Help & Support",
     "settings": "Settings",
@@ -19,7 +30,8 @@
     "pushNotifications": "Push notifications",
     "language": "Language",
 
-    "yes": "Yes",
-    "no": "No"
+    "@_AUTHENTICATION": {}
+
+    "@_POPUPS": {}
 
 }

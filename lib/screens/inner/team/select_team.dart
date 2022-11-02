@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../models/team_model.dart';
 import '../../../providers/team_provider.dart';
 import '../../../widgets/team/select_team.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SelectTeamScreen extends StatefulWidget {
   const SelectTeamScreen({Key? key}) : super(key: key);
@@ -33,7 +34,7 @@ class _SelectTeamScreenState extends State<SelectTeamScreen> {
         foregroundColor: Theme.of(context).colorScheme.primary,
         elevation: 0,
         backgroundColor: Colors.transparent,
-        title: const Text('Select Team'),
+        title: Text(AppLocalizations.of(context)!.selectGroup),
       ),
       body: Column(
         children: [

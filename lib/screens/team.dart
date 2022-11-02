@@ -112,18 +112,23 @@ class _TeamScreenState extends State<TeamScreen> {
     if (selectedTeam == null) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.team),
+          foregroundColor: Theme.of(context).colorScheme.primary,
+          title: Text(AppLocalizations.of(context)!.group),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'noteam',
+                AppLocalizations.of(context)!.noGroup,
                 style: Theme.of(context).textTheme.headline6,
               ),
               const SizedBox(height: 20),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -132,14 +137,16 @@ class _TeamScreenState extends State<TeamScreen> {
                     ),
                   );
                 },
-                child: Text('select team'),
+                child: Text(AppLocalizations.of(context)!.selectGroup),
               ),
               const SizedBox(height: 20),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor),
                 onPressed: () {
                   _showTeamDialog();
                 },
-                child: Text("createTeam"),
+                child: Text(AppLocalizations.of(context)!.createGroup),
               ),
             ],
           ),
@@ -167,7 +174,7 @@ class _TeamScreenState extends State<TeamScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        AppLocalizations.of(context)!.team,
+                        AppLocalizations.of(context)!.group,
                         style: kTitleTextStyle.copyWith(fontSize: 23),
                       ),
                       Padding(
@@ -391,16 +398,17 @@ class _TeamScreenState extends State<TeamScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
-                                'There are no members in your team',
-                                style: TextStyle(fontSize: 20),
+                              Text(
+                                AppLocalizations.of(context)!.noMembers,
+                                style: const TextStyle(fontSize: 20),
                               ),
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor:
                                           Theme.of(context).primaryColor),
                                   onPressed: () {},
-                                  child: const Text('Click to add members'))
+                                  child: Text(
+                                      AppLocalizations.of(context)!.addMembers))
                             ],
                           ),
                         )

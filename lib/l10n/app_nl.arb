@@ -1,11 +1,22 @@
 {
+    "@_UNIVERSAL": {}
     "currentLanguage": "Nederlands",
+    "sure" : "Weet je het zeker?",
+    "yes": "Ja",
+    "no": "Nee"
 
-    "team": "Team",
-    "members": "Deelnmemers",
+    "@_GROUP_PAGE": {}
+    "group": "Groep",
+    "selectGroup": "Selecteer Groep",
+    "createGroup" : "Creëer Groep",
+    "noGroup" : "Je bent nog niet lid van een groep",
+    "members": "Deelnemers",
+    "addMembers": "Klik om deelnemers toe te voegen",
+    "noMembers": "Er zijn geen deelnemers in deze groep",
     "create": "creëer",
     "delete": "verwijder",
 
+    "@_SETTINGS_PAGE": {}
     "privacy": "Privacy",
     "helpSupport": "Hulp & Ondersteuning",
     "settings": "Instellingen",
@@ -19,6 +30,8 @@
     "pushNotifications": "Pushmeldingen",
     "language": "Taal",
 
-    "yes": "Ja",
-    "no": "Nee"
+    "@_AUTHENTICATION": {}
+
+    "@_POPUPS": {}
+    
 }
