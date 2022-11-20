@@ -7,9 +7,12 @@ import 'package:group_planner_app/screens/auth/other_button.dart';
 import 'package:group_planner_app/screens/auth/recovery_password.dart';
 import 'package:group_planner_app/screens/auth/register.dart';
 import 'package:form_validator/form_validator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../consts/firebase_consts.dart';
 import '../../services/global_methods.dart';
+
+//TODO in all auth screens: add translations to Validatiors (dutch not yet implemented), so wait for that or do it myself
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -101,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Column(
                       children: [
                         Text(
-                          'Hello Again!',
+                          AppLocalizations.of(context)!.signInInfo1,
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 40,
@@ -113,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 6,
                         ),
                         Text(
-                          "Welcome back you've been missed!",
+                          AppLocalizations.of(context)!.signInInfo2,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 30,
@@ -145,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   const Icon(Icons.mail, color: Colors.grey),
                               contentPadding:
                                   const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "Email",
+                              hintText: AppLocalizations.of(context)!.email,
                               hintStyle: const TextStyle(color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -203,7 +206,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   const Icon(Icons.vpn_key, color: Colors.grey),
                               contentPadding:
                                   const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "Password",
+                              hintText: AppLocalizations.of(context)!.password,
                               hintStyle: const TextStyle(color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -261,7 +264,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   );
                                 },
                                 child: Text(
-                                  'Recovery password',
+                                  AppLocalizations.of(context)!.forgotPassword,
                                   maxLines: 1,
                                   style: TextStyle(
                                     color: Theme.of(context)
@@ -287,9 +290,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {
                           _submitFormOnLogin(context);
                         },
-                        child: const Text(
-                          'Sign in',
-                          style: TextStyle(
+                        child: Text(
+                          AppLocalizations.of(context)!.signIn,
+                          style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w500),
                         ),
                       ),
@@ -305,7 +308,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           width: 10,
                         ),
                         Text(
-                          'Or continue with',
+                          AppLocalizations.of(context)!.orContinueWith,
                           style: TextStyle(
                             color:
                                 Theme.of(context).dividerColor.withOpacity(0.4),
@@ -346,7 +349,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Not a member?",
+                          AppLocalizations.of(context)!.notMember,
                           maxLines: 1,
                           style: TextStyle(
                             fontSize: 16,
@@ -364,7 +367,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                             },
                             child: Text(
-                              'Register now',
+                              AppLocalizations.of(context)!.registerNow,
                               maxLines: 1,
                               style: TextStyle(
                                 color: Colors.blue.withOpacity(0.8),

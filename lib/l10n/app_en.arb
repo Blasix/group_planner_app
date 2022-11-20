@@ -1,11 +1,11 @@
 {
-    "@_UNIVERSAL": {}
+    "@_UNIVERSAL": {},
     "currentLanguage": "English",
     "sure" : "Are you sure?",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
 
-    "@_GROUP_PAGE": {}
+    "@_GROUP_PAGE": {},
     "group": "Group",
     "selectGroup": "Select Group",
     "createGroup" : "Create Group",
@@ -13,10 +13,11 @@
     "members": "Members",
     "addMembers": "Click to add members",
     "noMembers": "There are no members in this group",
-    "create": "create",
-    "delete": "delete",
+    "create": "Create",
+    "delete": "Delete",
+    "edit": "Edit",
 
-    "@_SETTINGS_PAGE": {}
+    "@_SETTINGS_PAGE": {},
     "privacy": "Privacy",
     "helpSupport": "Help & Support",
     "settings": "Settings",
@@ -30,7 +31,26 @@
     "pushNotifications": "Push notifications",
     "language": "Language",
 
-    "@_AUTHENTICATION": {}
+    "@_AUTHENTICATION": {},
+    "signInInfo1": "Hello Again!",
+    "signInInfo2": "Welcome back you've been missed!",
+    "signIn": "Sign in",
+    "orContinueWith": "Or continue with",
+    "notMember": "Not a member?",
+    "registerNow": "Register now",
+    "registerinfo1": "Welcome!",
+    "registerinfo2": "Make an account to get started!",
+    "register": "Register",
+    "alreadyMember": "Already a member?",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "forgotPassword": "Forgot password?",
+    "forgotPasswordInfo": "Confirm your email and we'll send you the instructions",
+    "resetPassword": "Reset password",
+    
+    
 
     "@_POPUPS": {}
 

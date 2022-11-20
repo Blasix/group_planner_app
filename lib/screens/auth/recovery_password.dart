@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
 import 'package:iconly/iconly.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../consts/firebase_consts.dart';
 import '../../services/global_methods.dart';
@@ -106,7 +107,7 @@ class _PassRecScreenState extends State<PassRecScreen> {
                     Column(
                       children: [
                         Text(
-                          'Forgot your password?',
+                          AppLocalizations.of(context)!.forgotPassword,
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 34,
@@ -118,7 +119,7 @@ class _PassRecScreenState extends State<PassRecScreen> {
                           height: 6,
                         ),
                         Text(
-                          "Confirm your email and we'll send the instructions",
+                          AppLocalizations.of(context)!.forgotPasswordInfo,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 24,
@@ -148,7 +149,7 @@ class _PassRecScreenState extends State<PassRecScreen> {
                               const Icon(Icons.mail, color: Colors.grey),
                           contentPadding:
                               const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                          hintText: "Email",
+                          hintText: AppLocalizations.of(context)!.email,
                           hintStyle: const TextStyle(color: Colors.grey),
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -198,9 +199,9 @@ class _PassRecScreenState extends State<PassRecScreen> {
                         onPressed: () {
                           _submitFormOnLogin(context);
                         },
-                        child: const Text(
-                          'Reset password',
-                          style: TextStyle(
+                        child: Text(
+                          AppLocalizations.of(context)!.resetPassword,
+                          style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w500),
                         ),
                       ),

@@ -40,7 +40,7 @@ dependencies:
   firebase_storage: ^11.0.2
 
   ### Fun popups
-  awesome_snackbar_content: ^0.0.8
+  awesome_snackbar_content: ^0.1.0
   quickalert: ^1.0.0
   # top_snackbar_flutter
 

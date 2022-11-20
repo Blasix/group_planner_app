@@ -1,11 +1,11 @@
 {
-    "@_UNIVERSAL": {}
+    "@_UNIVERSAL": {},
     "currentLanguage": "Nederlands",
     "sure" : "Weet je het zeker?",
     "yes": "Ja",
-    "no": "Nee"
+    "no": "Nee",
 
-    "@_GROUP_PAGE": {}
+    "@_GROUP_PAGE": {},
     "group": "Groep",
     "selectGroup": "Selecteer Groep",
     "createGroup" : "Creëer Groep",
@@ -15,8 +15,9 @@
     "noMembers": "Er zijn geen deelnemers in deze groep",
     "create": "creëer",
     "delete": "verwijder",
+    "edit": "Aanpassen",
 
-    "@_SETTINGS_PAGE": {}
+    "@_SETTINGS_PAGE": {},
     "privacy": "Privacy",
     "helpSupport": "Hulp & Ondersteuning",
     "settings": "Instellingen",
@@ -29,8 +30,25 @@
     "becomeATester": "Tester worden",
     "pushNotifications": "Pushmeldingen",
     "language": "Taal",
-
-    "@_AUTHENTICATION": {}
+    
+    "@_AUTHENTICATION": {},
+    "signInInfo1": "Hallo!",
+    "signInInfo2": "Welkom terug, we hebben je gemist!",
+    "signIn": "Aanmelden",
+    "orContinueWith": "Of ga verder met",
+    "notMember": "Nog geen lid?",
+    "registerNow": "Registreer nu",
+    "registerinfo1": "Welkom!",
+    "registerinfo2": "Maak een account om te beginnen!",
+    "register": "Registreer",
+    "alreadyMember": "Al een lid?",
+    "username": "Gebruikersnaam",
+    "email": "Email",
+    "password": "Wachtwoord",
+    "confirmPassword": "Bevestig wachtwoord",
+    "forgotPassword": "Wachtwoord vergeten?",
+    "forgotPasswordInfo": "Bevestig je email en we sturen je de instructies",
+    "resetPassword": "Reset wachtwoord",
 
     "@_POPUPS": {}
     

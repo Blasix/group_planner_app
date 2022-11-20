@@ -162,217 +162,141 @@ class _TeamScreenState extends State<TeamScreen> {
           children: [
             Flexible(
               flex: 1,
-              child: SizedBox(
-                width: double.infinity,
-                height: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 8.0,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.group,
-                        style: kTitleTextStyle.copyWith(fontSize: 23),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Theme.of(context).canvasColor),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Theme.of(context).cardColor,
-                                  ),
-                                  height: 60,
-                                  width: 60,
-                                  child: const Center(child: Text("icon")),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 8.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.group,
+                      style: kTitleTextStyle.copyWith(fontSize: 23),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Theme.of(context).canvasColor),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Theme.of(context).cardColor,
                                 ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                SizedBox(
-                                  width: 200,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        FittedBox(
-                                          fit: BoxFit.fitWidth,
-                                          child: Text(
-                                            selectedTeam.name,
-                                            style: kTitleTextStyle,
-                                          ),
+                                height: 60,
+                                width: 60,
+                                child: const Center(child: Text("icon")),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              SizedBox(
+                                width: 200,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      FittedBox(
+                                        fit: BoxFit.fitWidth,
+                                        child: Text(
+                                          selectedTeam.name,
+                                          style: kTitleTextStyle,
                                         ),
-                                        Visibility(
-                                            visible: (selectedTeam.leader ==
-                                                user!.uid),
-                                            child: InkWell(
-                                              onTap: () {
-                                                GlobalMethods.confirm(
-                                                    context: context,
-                                                    message:
-                                                        'Are you sure you want to delete ${selectedTeam.name}?',
-                                                    onTap: () async {
-                                                      final uid = authInstance
-                                                          .currentUser!.uid;
-                                                      Navigator.pop(context);
-                                                      try {
-                                                        setState(() {
-                                                          _isLoading = true;
-                                                        });
-                                                        await FirebaseFirestore
-                                                            .instance
-                                                            .collection('teams')
-                                                            .doc(selectedTeam
-                                                                .uuid)
-                                                            .delete();
-
-                                                        await FirebaseFirestore
-                                                            .instance
-                                                            .collection('users')
-                                                            .doc(uid)
-                                                            .update({
-                                                          'selectedTeam': ''
-                                                        });
-
-                                                        // await teamProvider
-                                                        //     .fetchTeams();
-                                                        // ignore: use_build_context_synchronously
-                                                        // await teamProvider
-                                                        //     .fetchSelectedTeam(
-                                                        //         context);
-                                                        GlobalMethods.dialog(
-                                                          context: context,
-                                                          title: 'Succes!',
-                                                          message:
-                                                              '${selectedTeam.name} has been deleted',
-                                                          contentType:
-                                                              ContentType
-                                                                  .success,
-                                                        );
-                                                      } on FirebaseException catch (error) {
-                                                        GlobalMethods.dialog(
-                                                          context: context,
-                                                          title: 'On snap!',
-                                                          message:
-                                                              '${error.message}',
-                                                          contentType:
-                                                              ContentType
-                                                                  .failure,
-                                                        );
-                                                        setState(() {
-                                                          _isLoading = false;
-                                                        });
-                                                        return;
-                                                      } catch (error) {
-                                                        GlobalMethods.dialog(
-                                                          context: context,
-                                                          title: 'On snap!',
-                                                          message: '$error',
-                                                          contentType:
-                                                              ContentType
-                                                                  .failure,
-                                                        );
-                                                        setState(() {
-                                                          _isLoading = false;
-                                                        });
-                                                        return;
-                                                      } finally {
-                                                        setState(() {
-                                                          _isLoading = false;
-                                                        });
-                                                      }
-                                                    });
-                                              },
-                                              child: Text(
-                                                AppLocalizations.of(context)!
-                                                    .delete,
-                                                style: const TextStyle(
-                                                    color: Colors.red),
-                                              ),
-                                            )),
-                                      ],
-                                    ),
+                                      ),
+                                      Visibility(
+                                          visible: (selectedTeam.leader ==
+                                              user!.uid),
+                                          child: InkWell(
+                                            onTap: () {
+                                              _showTeamEditDialog(
+                                                selectedTeam,
+                                              );
+                                            },
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .edit,
+                                              style: const TextStyle(
+                                                  color: Colors.blue),
+                                            ),
+                                          )),
+                                    ],
                                   ),
                                 ),
-                                const Spacer(),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SelectTeamScreen(),
-                                      ),
-                                    );
-                                  },
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Icon(
-                                      Icons.menu_rounded,
-                                      size: 40,
+                              ),
+                              const Spacer(),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SelectTeamScreen(),
                                     ),
+                                  );
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.menu_rounded,
+                                    size: 40,
                                   ),
-                                )
-                              ],
-                            ),
+                                ),
+                              )
+                            ],
                           ),
                         ),
                       ),
-                      Row(
-                        // Debug buttons
+                    ),
+                    Row(
+                      // Debug buttons
+                      children: [
+                        // TextButton(
+                        //   onPressed: () {
+                        //     setState(() {
+                        //       teamLenght = teamLenght++;
+                        //     });
+                        //   },
+                        //   child: const Text('add'),
+                        // ),
+                        // TextButton(
+                        //   onPressed: () {
+                        //     setState(() {
+                        //       teamLenght = teamLenght--;
+                        //     });
+                        //   },
+                        //   child: const Text('remove'),
+                        // ),
+                        TextButton(
+                          onPressed: () {
+                            _showTeamDialog();
+                          },
+                          child: Text(AppLocalizations.of(context)!.create),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          // TextButton(
-                          //   onPressed: () {
-                          //     setState(() {
-                          //       teamLenght = teamLenght++;
-                          //     });
-                          //   },
-                          //   child: const Text('add'),
-                          // ),
-                          // TextButton(
-                          //   onPressed: () {
-                          //     setState(() {
-                          //       teamLenght = teamLenght--;
-                          //     });
-                          //   },
-                          //   child: const Text('remove'),
-                          // ),
-                          TextButton(
-                            onPressed: () {
-                              _showTeamDialog();
-                            },
-                            child: Text(AppLocalizations.of(context)!.create),
+                          Text(
+                            AppLocalizations.of(context)!.members,
+                            style: kTitleTextStyle.copyWith(fontSize: 23),
                           ),
+                          const Icon(Icons.add)
                         ],
                       ),
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.members,
-                              style: kTitleTextStyle.copyWith(fontSize: 23),
-                            ),
-                            const Icon(Icons.add)
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -432,6 +356,113 @@ class _TeamScreenState extends State<TeamScreen> {
           ],
         )),
       ),
+    );
+  }
+
+  Future _showTeamEditDialog(
+    selectedTeam,
+  ) async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: ShapeBorder.lerp(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            1,
+          ),
+          title: Text(
+            AppLocalizations.of(context)!.edit,
+          ),
+          content: SizedBox(
+            height: 120,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //Actualy make uption to change team name
+                const Text('change name:'),
+                TextField(
+                    decoration: InputDecoration(hintText: selectedTeam.name)),
+                const Spacer(),
+                InkWell(
+                  onTap: () {
+                    GlobalMethods.confirm(
+                        context: context,
+                        message:
+                            'Are you sure you want to delete ${selectedTeam.name}?',
+                        onTap: () async {
+                          final uid = authInstance.currentUser!.uid;
+                          Navigator.pop(context);
+                          try {
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            await FirebaseFirestore.instance
+                                .collection('teams')
+                                .doc(selectedTeam.uuid)
+                                .delete();
+
+                            await FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(uid)
+                                .update({'selectedTeam': ''});
+
+                            // await teamProvider
+                            //     .fetchTeams();
+                            // ignore: use_build_context_synchronously
+                            // await teamProvider
+                            //     .fetchSelectedTeam(
+                            //         context);
+                            GlobalMethods.dialog(
+                              context: context,
+                              title: 'Succes!',
+                              message: '${selectedTeam.name} has been deleted',
+                              contentType: ContentType.success,
+                            );
+                          } on FirebaseException catch (error) {
+                            GlobalMethods.dialog(
+                              context: context,
+                              title: 'On snap!',
+                              message: '${error.message}',
+                              contentType: ContentType.failure,
+                            );
+                            setState(() {
+                              _isLoading = false;
+                            });
+                            return;
+                          } catch (error) {
+                            GlobalMethods.dialog(
+                              context: context,
+                              title: 'On snap!',
+                              message: '$error',
+                              contentType: ContentType.failure,
+                            );
+                            setState(() {
+                              _isLoading = false;
+                            });
+                            return;
+                          } finally {
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          }
+                        });
+                  },
+                  child: Text(
+                    AppLocalizations.of(context)!.delete,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // actions: [],
+        );
+      },
     );
   }
 

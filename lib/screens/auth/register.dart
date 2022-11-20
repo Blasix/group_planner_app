@@ -6,6 +6,7 @@ import 'package:form_validator/form_validator.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
 import 'package:group_planner_app/screens/auth/login.dart';
 import 'package:group_planner_app/screens/auth/recovery_password.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../consts/firebase_consts.dart';
 import '../../fetch.dart';
@@ -121,7 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Column(
                       children: [
                         Text(
-                          'Welcome!',
+                          AppLocalizations.of(context)!.registerinfo1,
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 40,
@@ -133,7 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           height: 6,
                         ),
                         Text(
-                          "Make an account to continue!",
+                          AppLocalizations.of(context)!.registerinfo2,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 30,
@@ -162,7 +163,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   const Icon(Icons.person, color: Colors.grey),
                               contentPadding:
                                   const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "Username",
+                              hintText: AppLocalizations.of(context)!.username,
                               hintStyle: const TextStyle(color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -215,7 +216,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   const Icon(Icons.mail, color: Colors.grey),
                               contentPadding:
                                   const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "Email",
+                              hintText: AppLocalizations.of(context)!.email,
                               hintStyle: const TextStyle(color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -273,7 +274,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   const Icon(Icons.vpn_key, color: Colors.grey),
                               contentPadding:
                                   const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "Password",
+                              hintText: AppLocalizations.of(context)!.password,
                               hintStyle: const TextStyle(color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -345,7 +346,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   const Icon(Icons.vpn_key, color: Colors.grey),
                               contentPadding:
                                   const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              hintText: "Confirm password",
+                              hintText:
+                                  AppLocalizations.of(context)!.confirmPassword,
                               hintStyle: const TextStyle(color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -403,7 +405,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   );
                                 },
                                 child: Text(
-                                  'Recovery password',
+                                  AppLocalizations.of(context)!.forgotPassword,
                                   maxLines: 1,
                                   style: TextStyle(
                                     color: Theme.of(context)
@@ -429,9 +431,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onPressed: () {
                           _submitFormOnLogin(context);
                         },
-                        child: const Text(
-                          'Register',
-                          style: TextStyle(
+                        child: Text(
+                          AppLocalizations.of(context)!.register,
+                          style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w500),
                         ),
                       ),
@@ -447,7 +449,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           width: 10,
                         ),
                         Text(
-                          'Or continue with',
+                          AppLocalizations.of(context)!.orContinueWith,
                           style: TextStyle(
                             color:
                                 Theme.of(context).dividerColor.withOpacity(0.4),
@@ -488,7 +490,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Already an account?",
+                          AppLocalizations.of(context)!.alreadyMember,
                           maxLines: 1,
                           style: TextStyle(
                             fontSize: 16,
@@ -506,7 +508,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               );
                             },
                             child: Text(
-                              'Sign in',
+                              AppLocalizations.of(context)!.signIn,
                               maxLines: 1,
                               style: TextStyle(
                                 color: Colors.blue.withOpacity(0.8),
