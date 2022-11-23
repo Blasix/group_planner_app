@@ -1,6 +1,8 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
 import 'package:group_planner_app/fetch.dart';
 import 'package:group_planner_app/screens/auth/other_button.dart';
@@ -329,7 +331,42 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         OtherButton(
-                            function: () {},
+                            function: () async {
+                              // Trigger the authentication flow
+                              final GoogleSignInAccount? googleUser =
+                                  await GoogleSignIn().signIn();
+
+                              // Obtain the auth details from the request
+                              final GoogleSignInAuthentication? googleAuth =
+                                  await googleUser?.authentication;
+
+                              // Create a new credential
+                              final credential = GoogleAuthProvider.credential(
+                                accessToken: googleAuth?.accessToken,
+                                idToken: googleAuth?.idToken,
+                              );
+                              // Once signed in, return the UserCredential
+                              await FirebaseAuth.instance
+                                  .signInWithCredential(credential);
+
+                              final uid = authInstance.currentUser!.uid;
+                              await FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(uid)
+                                  .set({
+                                'id': uid,
+                                'username': googleUser?.displayName,
+                                'email': googleUser?.email,
+                                'profilePictureUrl': googleUser?.photoUrl,
+                                'createdAt': Timestamp.now(),
+                                'selectedTeam': '',
+                              });
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => const Fetch(),
+                                ),
+                              );
+                            },
                             buttonImagePath: 'assets/images/auth/google.png'),
                         const SizedBox(
                           width: 30,

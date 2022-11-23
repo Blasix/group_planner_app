@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "749553275010-20nltr837914inccc3nchs9tucdrrafr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.blasix.group_planner_app",
+            "certificate_hash": "e8e76142542c73368617ede10dcbbaa58826aee6"
+          }
+        },
+        {
           "client_id": "749553275010-0d7d7ru9q4cdciaj4h4nftelauvvep9k.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "749553275010-0d7d7ru9q4cdciaj4h4nftelauvvep9k.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "749553275010-26qaksqa0klor3fpjtba7fe5ftdbauon.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "net.blasix.groupPlannerApp"
+              }
             }
           ]
         }

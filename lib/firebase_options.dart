@@ -67,6 +67,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '749553275010',
     projectId: 'group-planner-d4826',
     storageBucket: 'group-planner-d4826.appspot.com',
+    androidClientId: '749553275010-20nltr837914inccc3nchs9tucdrrafr.apps.googleusercontent.com',
     iosClientId: '749553275010-26qaksqa0klor3fpjtba7fe5ftdbauon.apps.googleusercontent.com',
     iosBundleId: 'net.blasix.groupPlannerApp',
   );
@@ -77,6 +78,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '749553275010',
     projectId: 'group-planner-d4826',
     storageBucket: 'group-planner-d4826.appspot.com',
+    androidClientId: '749553275010-20nltr837914inccc3nchs9tucdrrafr.apps.googleusercontent.com',
     iosClientId: '749553275010-26qaksqa0klor3fpjtba7fe5ftdbauon.apps.googleusercontent.com',
     iosBundleId: 'net.blasix.groupPlannerApp',
   );
