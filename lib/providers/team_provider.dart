@@ -113,27 +113,28 @@ class TeamProvider with ChangeNotifier {
       team = _teamMap[selectedTeam];
       notifyListeners();
     });
-
-    team!.members.remove(uid);
-    for (final member in team!.members) {
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(member)
-          .snapshots()
-          .listen(
-        (value) {
-          _members.add(
-            TeamMemberModel(
-              id: value.get('id'),
-              name: value.get('username'),
-              email: value.get('email'),
-              pictureURL: value.get('profilePictureUrl'),
-              createdAt: value.get('createdAt'),
-            ),
-          );
-        },
-      );
-      notifyListeners();
+    if (team != null) {
+      team!.members.remove(uid);
+      for (final member in team!.members) {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(member)
+            .snapshots()
+            .listen(
+          (value) {
+            _members.add(
+              TeamMemberModel(
+                id: value.get('id'),
+                name: value.get('username'),
+                email: value.get('email'),
+                pictureURL: value.get('profilePictureUrl'),
+                createdAt: value.get('createdAt'),
+              ),
+            );
+          },
+        );
+        notifyListeners();
+      }
     }
     notifyListeners();
   }

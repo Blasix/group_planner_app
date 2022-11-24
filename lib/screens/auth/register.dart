@@ -11,7 +11,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../consts/firebase_consts.dart';
 import '../../fetch.dart';
 import '../../services/global_methods.dart';
-import 'other_button.dart';
+import '../../widgets/auth/apple.dart';
+import '../../widgets/auth/google.dart';
+import '../../widgets/auth/meta.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -468,22 +470,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        OtherButton(
-                            function: () {},
-                            buttonImagePath: 'assets/images/auth/google.png'),
-                        const SizedBox(
+                      children: const [
+                        GoogleButton(),
+                        SizedBox(
                           width: 30,
                         ),
-                        OtherButton(
-                            function: () {},
-                            buttonImagePath: 'assets/images/auth/apple.png'),
-                        const SizedBox(
+                        AppleButton(),
+                        SizedBox(
                           width: 30,
                         ),
-                        OtherButton(
-                            function: () {},
-                            buttonImagePath: 'assets/images/auth/meta.png'),
+                        MetaButton(),
                       ],
                     ),
                     Row(

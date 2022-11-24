@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Group Planner</string>
+    <string name="facebook_app_id">659943528934439</string>
+    <string name="facebook_client_token">95322063ee19f34f5aca1adf77afeedc</string>
+    <string name="fb_login_protocol_scheme">fb659943528934439</string>
+</resources>
