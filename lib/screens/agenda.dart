@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../models/team_model.dart';
+import '../providers/team_provider.dart';
 import '../services/utils.dart';
 import '../widgets/agenda/events.dart';
 
@@ -16,8 +19,11 @@ class AgendaScreen extends StatefulWidget {
 class _AgendaScreenState extends State<AgendaScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+
   @override
   Widget build(BuildContext context) {
+    final teamProvider = Provider.of<TeamProvider>(context);
+    final TeamModel? selectedTeam = teamProvider.getSelectedTeam(context);
     return SafeArea(
       child: Column(
         children: [
@@ -63,15 +69,17 @@ class _AgendaScreenState extends State<AgendaScreen> {
                   color: Theme.of(context).primaryColor,
                 )),
           ),
-          Expanded(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (BuildContext context, int index) {
-                return const EventsWidget();
-              },
-            ),
-          ),
+          selectedTeam != null
+              ? Expanded(
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: 10,
+                    itemBuilder: (BuildContext context, int index) {
+                      return const EventsWidget();
+                    },
+                  ),
+                )
+              : const Text("No team selected"),
         ],
       ),
     );

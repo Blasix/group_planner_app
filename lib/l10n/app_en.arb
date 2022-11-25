@@ -16,6 +16,9 @@
     "create": "Create",
     "delete": "Delete",
     "edit": "Edit",
+    "noGroups": "You have no groups, please create one!",
+    "noGroupsFound": "'No Group found, please try another keyword'",
+    "searchGroup": "Search Group",
 
     "@_SETTINGS_PAGE": {},
     "privacy": "Privacy",

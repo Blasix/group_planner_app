@@ -16,6 +16,9 @@
     "create": "creëer",
     "delete": "verwijder",
     "edit": "Aanpassen",
+    "noGroups": "Je hebt geen groepen, maak er een aan!",
+    "noGroupsFound": "Geen groep gevonden, probeer een andere zoekterm",
+    "searchGroup": "Zoek groep",
 
     "@_SETTINGS_PAGE": {},
     "privacy": "Privacy",

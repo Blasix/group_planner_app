@@ -64,7 +64,7 @@ class _MyAppState extends State<MyApp> {
           themeMode: theme.getTheme(),
           theme: theme.lightTheme,
           darkTheme: theme.darkTheme,
-          home: user == null ? const LoginScreen() : const Fetch(),
+          home: (user == null) ? const LoginScreen() : const Fetch(),
         );
       }),
     );

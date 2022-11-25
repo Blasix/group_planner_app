@@ -71,7 +71,7 @@ class _SelectTeamScreenState extends State<SelectTeamScreen> {
                     Icons.search,
                     color: Theme.of(context).primaryColor,
                   ),
-                  hintText: 'Search Product',
+                  hintText: AppLocalizations.of(context)!.searchGroup,
                   suffixIcon: IconButton(
                     onPressed: () {
                       _searchTextController.clear();
@@ -84,12 +84,12 @@ class _SelectTeamScreenState extends State<SelectTeamScreen> {
             ),
           ),
           teams.isEmpty
-              ? const Center(
-                  child: Text('You have no teams, please create one!'),
+              ? Center(
+                  child: Text(AppLocalizations.of(context)!.noGroups),
                 )
               : _searchTextController.text.isNotEmpty && listTeamSearch.isEmpty
-                  ? const Center(
-                      child: Text('No Teams found, please try another keyword'),
+                  ? Center(
+                      child: Text(AppLocalizations.of(context)!.noGroupsFound),
                     )
                   : Expanded(
                       child: ListView.builder(
