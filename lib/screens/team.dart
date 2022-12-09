@@ -6,8 +6,10 @@ import 'package:group_planner_app/consts/loading_manager.dart';
 import 'package:group_planner_app/models/member_model.dart';
 import 'package:group_planner_app/models/team_model.dart';
 import 'package:group_planner_app/providers/team_provider.dart';
+import 'package:group_planner_app/services/dynamic_link.dart';
 import 'package:group_planner_app/services/utils.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -292,7 +294,18 @@ class _TeamScreenState extends State<TeamScreen> {
                             AppLocalizations.of(context)!.members,
                             style: kTitleTextStyle.copyWith(fontSize: 23),
                           ),
-                          const Icon(Icons.add)
+                          InkWell(
+                            onTap: () {
+                              DynamicLinkProvider()
+                                  .createLink(selectedTeam.uuid)
+                                  .then(
+                                (value) {
+                                  Share.share(value);
+                                },
+                              );
+                            },
+                            child: const Icon(Icons.add),
+                          )
                         ],
                       ),
                     ),
@@ -330,7 +343,15 @@ class _TeamScreenState extends State<TeamScreen> {
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor:
                                           Theme.of(context).primaryColor),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    DynamicLinkProvider()
+                                        .createLink(selectedTeam.uuid)
+                                        .then(
+                                      (value) {
+                                        Share.share(value);
+                                      },
+                                    );
+                                  },
                                   child: Text(
                                       AppLocalizations.of(context)!.addMembers))
                             ],
