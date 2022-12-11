@@ -2,21 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleURLTypes</key>
-	<array>
-	  <dict>
-	  <key>CFBundleURLSchemes</key>
-	  <array>
-	    <string>fb659943528934439</string>
-	  </array>
-	  </dict>
-	</array>
-	<key>FacebookAppID</key>
-	<string>659943528934439</string>
-	<key>FacebookClientToken</key>
-	<string>95322063ee19f34f5aca1adf77afeedc</string>
-	<key>FacebookDisplayName</key>
-	<string>Group Planner</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -62,9 +47,35 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Choose photo from gallery.</string>
-	<!-- <key>NSCameraDescription</key>
+	<key>NSCameraDescription</key>
 	<string>Take photo from camera.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Used to take video.</string> -->
+	<string>Used to take video.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+	  <dict>
+	  <key>CFBundleURLSchemes</key>
+	  <array>
+	    <string>fb659943528934439</string>
+	  </array>
+	  </dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>659943528934439</string>
+	<key>FacebookClientToken</key>
+	<string>95322063ee19f34f5aca1adf77afeedc</string>
+	<key>FacebookDisplayName</key>
+	<string>Group Planner</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.749553275010-26qaksqa0klor3fpjtba7fe5ftdbauon</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

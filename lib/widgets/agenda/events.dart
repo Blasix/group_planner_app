@@ -37,7 +37,7 @@ class _EventsWidgetState extends State<EventsWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Event',
+                        'Event (time)',
                         style: kTitleTextStyle.copyWith(fontSize: 24),
                       ),
                     ],

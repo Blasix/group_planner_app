@@ -69,6 +69,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
                   color: Theme.of(context).primaryColor,
                 )),
           ),
+          Text("selected day: ${_focusedDay.toString().split(" ")[0]}"),
           selectedTeam != null
               ? Expanded(
                   child: ListView.builder(
