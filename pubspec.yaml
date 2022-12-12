@@ -39,7 +39,7 @@ dependencies:
   cloud_firestore: ^4.0.2
   firebase_storage: ^11.0.2
   google_sign_in: ^5.4.2
-  flutter_facebook_auth: ^5.0.6
+  # flutter_facebook_auth: ^5.0.6
   firebase_dynamic_links: ^5.0.6
 
   ### Fun popups
