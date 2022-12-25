@@ -54,11 +54,12 @@ dependencies:
   iconly: ^1.0.1
   table_calendar: ^3.0.6
   image_picker: ^0.8.5+3
-  form_validator: ^1.0.2
+  form_validator: ^2.1.1
   uuid: ^3.0.6
   intl: ^0.17.0
   share_plus: ^6.3.0
   firebase_analytics: ^10.0.6
+  google_mobile_ads: ^2.3.0
   
   
   
