@@ -44,54 +44,60 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
     myBanner.load();
     final AdWidget adWidget = AdWidget(ad: myBanner);
     final Container adContainer = Container(
-      color: Theme.of(context).canvasColor,
       alignment: Alignment.center,
-      // width: myBanner.size.width.toDouble(),
+      width: myBanner.size.width.toDouble(),
       height: myBanner.size.height.toDouble(),
       child: adWidget,
     );
 
     return Scaffold(
         body: pages[selectedIndex],
-        bottomNavigationBar: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              selectedItemColor: Theme.of(context).primaryColor,
-              showUnselectedLabels: false,
-              showSelectedLabels: false,
-              currentIndex: selectedIndex,
-              onTap: _selectedPage,
-              items: <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(
-                      selectedIndex == 0 ? IconlyBold.home : IconlyLight.home),
-                  label: "Home",
+        bottomNavigationBar: Container(
+          color: Theme.of(context).canvasColor,
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                BottomNavigationBar(
+                  elevation: 0,
+                  type: BottomNavigationBarType.fixed,
+                  selectedItemColor: Theme.of(context).primaryColor,
+                  showUnselectedLabels: false,
+                  showSelectedLabels: false,
+                  currentIndex: selectedIndex,
+                  onTap: _selectedPage,
+                  items: <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon: Icon(selectedIndex == 0
+                          ? IconlyBold.home
+                          : IconlyLight.home),
+                      label: "Home",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(selectedIndex == 1
+                          ? IconlyBold.calendar
+                          : IconlyLight.calendar),
+                      label: "Agenda",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(selectedIndex == 2
+                          ? IconlyBold.user_3
+                          : IconlyLight.user_1),
+                      label: "Team",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(selectedIndex == 3
+                          ? IconlyBold.profile
+                          : IconlyLight.profile),
+                      label: "User",
+                    ),
+                  ],
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(selectedIndex == 1
-                      ? IconlyBold.calendar
-                      : IconlyLight.calendar),
-                  label: "Agenda",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(selectedIndex == 2
-                      ? IconlyBold.user_3
-                      : IconlyLight.user_1),
-                  label: "Team",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(selectedIndex == 3
-                      ? IconlyBold.profile
-                      : IconlyLight.profile),
-                  label: "User",
-                ),
+                adContainer,
               ],
             ),
-            adContainer,
-          ],
+          ),
         ));
   }
 }
