@@ -16,7 +16,7 @@ class BottomBarScreen extends StatefulWidget {
 class _BottomBarScreenState extends State<BottomBarScreen> {
   int selectedIndex = 0;
   final List pages = [
-    const HomeScreen(),
+    // const HomeScreen(),
     const AgendaScreen(),
     const TeamScreen(),
     const UserScreen(),
@@ -68,12 +68,12 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                   currentIndex: selectedIndex,
                   onTap: _selectedPage,
                   items: <BottomNavigationBarItem>[
-                    BottomNavigationBarItem(
-                      icon: Icon(selectedIndex == 0
-                          ? IconlyBold.home
-                          : IconlyLight.home),
-                      label: "Home",
-                    ),
+                    // BottomNavigationBarItem(
+                    //   icon: Icon(selectedIndex == 0
+                    //       ? IconlyBold.home
+                    //       : IconlyLight.home),
+                    //   label: "Home",
+                    // ),
                     BottomNavigationBarItem(
                       icon: Icon(selectedIndex == 1
                           ? IconlyBold.calendar

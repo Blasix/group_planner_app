@@ -60,9 +60,6 @@ class _TeamScreenState extends State<TeamScreen> {
           .collection('users')
           .doc(uid)
           .update({'selectedTeam': uuid});
-      // final teamProvider = Provider.of<TeamProvider>(context, listen: false);
-      // await teamProvider.fetchTeams();
-      // await teamProvider.fetchSelectedTeam(context);
       Navigator.pop(context);
     } on FirebaseException catch (error) {
       GlobalMethods.dialog(
@@ -257,33 +254,33 @@ class _TeamScreenState extends State<TeamScreen> {
                         ),
                       ),
                     ),
-                    Row(
-                      // Debug buttons
-                      children: [
-                        // TextButton(
-                        //   onPressed: () {
-                        //     setState(() {
-                        //       teamLenght = teamLenght++;
-                        //     });
-                        //   },
-                        //   child: const Text('add'),
-                        // ),
-                        // TextButton(
-                        //   onPressed: () {
-                        //     setState(() {
-                        //       teamLenght = teamLenght--;
-                        //     });
-                        //   },
-                        //   child: const Text('remove'),
-                        // ),
-                        TextButton(
-                          onPressed: () {
-                            _showTeamDialog();
-                          },
-                          child: Text(AppLocalizations.of(context)!.create),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   // Debug buttons
+                    //   children: [
+                    //     // TextButton(
+                    //     //   onPressed: () {
+                    //     //     setState(() {
+                    //     //       teamLenght = teamLenght++;
+                    //     //     });
+                    //     //   },
+                    //     //   child: const Text('add'),
+                    //     // ),
+                    //     // TextButton(
+                    //     //   onPressed: () {
+                    //     //     setState(() {
+                    //     //       teamLenght = teamLenght--;
+                    //     //     });
+                    //     //   },
+                    //     //   child: const Text('remove'),
+                    //     // ),
+                    //     TextButton(
+                    //       onPressed: () {
+                    //         _showTeamDialog();
+                    //       },
+                    //       child: Text(AppLocalizations.of(context)!.create),
+                    //     ),
+                    //   ],
+                    // ),
                     const Spacer(),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),

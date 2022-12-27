@@ -88,8 +88,8 @@ class _SelectTeamWidgetState extends State<SelectTeamWidget> {
                 child: const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Icon(
-                    Icons.add,
-                    size: 40,
+                    Icons.arrow_forward_ios,
+                    size: 30,
                   ),
                 ),
               )

@@ -1,6 +1,7 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
 import 'package:iconly/iconly.dart';
@@ -61,6 +62,10 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
                             .doc(uid)
                             .delete();
                         await user.delete();
+                        Reference ref = FirebaseStorage.instance
+                            .ref()
+                            .child('ProfilePics/$uid.jpg');
+                        await ref.delete();
                         // ignore: use_build_context_synchronously
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
