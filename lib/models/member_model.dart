@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 class MemberModel extends ChangeNotifier {
   final String id, name, email, currentTeam, pictureURL;
   final Timestamp createdAt;
+  final bool hasPremium;
 
   MemberModel({
     required this.id,
@@ -12,6 +13,7 @@ class MemberModel extends ChangeNotifier {
     required this.currentTeam,
     required this.pictureURL,
     required this.createdAt,
+    required this.hasPremium,
   });
 }
 

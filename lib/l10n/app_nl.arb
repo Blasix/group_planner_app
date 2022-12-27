@@ -52,6 +52,10 @@
     "forgotPassword": "Wachtwoord vergeten?",
     "forgotPasswordInfo": "Bevestig je email en we sturen je de instructies",
     "resetPassword": "Reset wachtwoord",
+    "noUppercase": "Moet tenminste één hoofdletter bevatten",
+    "noNumber": "Moet tenminste één nummer bevatten",
+    "noAnything": "Verplicht veld",
+    "noMatch": "Wachtwoorden komen niet overeen",
 
     "@_POPUPS": {}
     

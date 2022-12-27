@@ -4,7 +4,10 @@ import 'package:group_planner_app/screens/agenda.dart';
 import 'package:group_planner_app/screens/team.dart';
 import 'package:group_planner_app/screens/user.dart';
 import 'package:iconly/iconly.dart';
-import 'home.dart';
+import 'package:provider/provider.dart';
+
+import '../models/member_model.dart';
+import '../providers/member_provider.dart';
 
 class BottomBarScreen extends StatefulWidget {
   const BottomBarScreen({Key? key}) : super(key: key);
@@ -30,6 +33,9 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final memberProvider = Provider.of<MemberProvider>(context);
+    MemberModel? member = memberProvider.getCurrentMember;
+
     var platform = Theme.of(context).platform;
     //TODO: Change to real Ad ID
     String bannerAdId = platform == TargetPlatform.iOS
@@ -75,26 +81,26 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                     //   label: "Home",
                     // ),
                     BottomNavigationBarItem(
-                      icon: Icon(selectedIndex == 1
+                      icon: Icon(selectedIndex == 0
                           ? IconlyBold.calendar
                           : IconlyLight.calendar),
                       label: "Agenda",
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(selectedIndex == 2
+                      icon: Icon(selectedIndex == 1
                           ? IconlyBold.user_3
                           : IconlyLight.user_1),
                       label: "Team",
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(selectedIndex == 3
+                      icon: Icon(selectedIndex == 2
                           ? IconlyBold.profile
                           : IconlyLight.profile),
                       label: "User",
                     ),
                   ],
                 ),
-                adContainer,
+                member!.hasPremium ? Container() : adContainer,
               ],
             ),
           ),

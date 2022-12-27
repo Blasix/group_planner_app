@@ -52,6 +52,10 @@
     "forgotPassword": "Forgot password?",
     "forgotPasswordInfo": "Confirm your email and we'll send you the instructions",
     "resetPassword": "Reset password",
+    "noUppercase": "Must contain at least one uppercase letter",
+    "noNumber": "Must contain at least one number",
+    "noAnything": "The field is required",
+    "noMatch": "Passwords do not match",
     
     
 

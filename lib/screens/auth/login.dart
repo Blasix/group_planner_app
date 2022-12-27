@@ -15,8 +15,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../consts/firebase_consts.dart';
 import '../../services/global_methods.dart';
 
-//TODO in all auth screens: add translations to Validatiors (dutch not yet implemented), so wait for that or do it myself
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -142,7 +140,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             keyboardType: TextInputType.emailAddress,
                             onEditingComplete: () => FocusScope.of(context)
                                 .requestFocus(_passFocusNode),
-                            validator: ValidationBuilder()
+                            validator: ValidationBuilder(
+                                    localeName: AppLocalizations.of(context)!
+                                        .localeName)
                                 .email()
                                 .maxLength(50)
                                 .build(),
@@ -196,13 +196,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             controller: _passTextController,
                             keyboardType: TextInputType.visiblePassword,
                             obscureText: _obscureText,
-                            validator: ValidationBuilder()
+                            validator: ValidationBuilder(
+                                    localeName: AppLocalizations.of(context)!
+                                        .localeName)
                                 .minLength(6)
                                 .maxLength(20)
                                 .regExp(RegExp('(?=.*?[A-Z])'),
-                                    'Must contain at least one uppercase letter')
+                                    AppLocalizations.of(context)!.noUppercase)
                                 .regExp(RegExp('(?=.*?[0-9])'),
-                                    'Must contain at least one number')
+                                    AppLocalizations.of(context)!.noNumber)
                                 .build(),
                             decoration: InputDecoration(
                               prefixIcon:

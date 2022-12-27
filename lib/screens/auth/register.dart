@@ -69,6 +69,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'profilePictureUrl': '',
           'createdAt': Timestamp.now(),
           'selectedTeam': '',
+          'hasPremium': false,
         });
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -159,7 +160,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             keyboardType: TextInputType.name,
                             onEditingComplete: () => FocusScope.of(context)
                                 .requestFocus(_emailFocusNode),
-                            validator: ValidationBuilder().build(),
+                            validator: ValidationBuilder(
+                                    localeName: AppLocalizations.of(context)!
+                                        .localeName)
+                                .build(),
                             decoration: InputDecoration(
                               prefixIcon:
                                   const Icon(Icons.person, color: Colors.grey),
@@ -209,7 +213,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             keyboardType: TextInputType.emailAddress,
                             onEditingComplete: () => FocusScope.of(context)
                                 .requestFocus(_passFocusNode),
-                            validator: ValidationBuilder()
+                            validator: ValidationBuilder(
+                                    localeName: AppLocalizations.of(context)!
+                                        .localeName)
                                 .email()
                                 .maxLength(50)
                                 .build(),
@@ -263,13 +269,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             controller: _passTextController,
                             keyboardType: TextInputType.visiblePassword,
                             obscureText: _obscureText,
-                            validator: ValidationBuilder()
+                            validator: ValidationBuilder(
+                                    localeName: AppLocalizations.of(context)!
+                                        .localeName)
                                 .minLength(6)
                                 .maxLength(20)
                                 .regExp(RegExp('(?=.*?[A-Z])'),
-                                    'Must contain at least one uppercase letter')
+                                    AppLocalizations.of(context)!.noUppercase)
                                 .regExp(RegExp('(?=.*?[0-9])'),
-                                    'Must contain at least one number')
+                                    AppLocalizations.of(context)!.noNumber)
                                 .build(),
                             decoration: InputDecoration(
                               prefixIcon:
@@ -335,11 +343,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             obscureText: _confObscureText,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return "The field is required";
+                                return AppLocalizations.of(context)!.noAnything;
                               }
                               if (_confPassTextController.text !=
                                   _passTextController.text) {
-                                return "Passwords don't match";
+                                return AppLocalizations.of(context)!.noMatch;
                               }
                               return null;
                             },

@@ -142,8 +142,12 @@ class _PassRecScreenState extends State<PassRecScreen> {
                         onEditingComplete: () {
                           _submitFormOnLogin(context);
                         },
-                        validator:
-                            ValidationBuilder().email().maxLength(50).build(),
+                        validator: ValidationBuilder(
+                                localeName:
+                                    AppLocalizations.of(context)!.localeName)
+                            .email()
+                            .maxLength(50)
+                            .build(),
                         decoration: InputDecoration(
                           prefixIcon:
                               const Icon(Icons.mail, color: Colors.grey),

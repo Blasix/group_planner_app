@@ -15,6 +15,7 @@ class MemberProvider with ChangeNotifier {
         .snapshots()
         .listen((event) {
       _currentMember = MemberModel(
+        hasPremium: event.get('hasPremium'),
         id: event.get('id'),
         name: event.get('username'),
         currentTeam: event.get('selectedTeam'),
