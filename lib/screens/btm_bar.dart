@@ -34,7 +34,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
   @override
   Widget build(BuildContext context) {
     final memberProvider = Provider.of<MemberProvider>(context);
-    MemberModel? member = memberProvider.getCurrentMember;
+    MemberModel member = memberProvider.getCurrentMember;
 
     var platform = Theme.of(context).platform;
     //TODO: Change to real Ad ID
@@ -100,7 +100,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                     ),
                   ],
                 ),
-                member!.hasPremium ? Container() : adContainer,
+                member.hasPremium ? Container() : adContainer,
               ],
             ),
           ),

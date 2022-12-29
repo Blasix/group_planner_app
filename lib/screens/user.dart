@@ -132,7 +132,7 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     final memberProvider = Provider.of<MemberProvider>(context);
-    MemberModel? member = memberProvider.getCurrentMember;
+    MemberModel member = memberProvider.getCurrentMember;
     Color lightMode = Theme.of(context).colorScheme.primary;
     Color darkMode = Theme.of(context).colorScheme.primary;
     Color systemMode = Theme.of(context).colorScheme.primary;
@@ -183,7 +183,7 @@ class _UserScreenState extends State<UserScreen> {
                                           backgroundImage:
                                               NetworkImage(_imageUrl),
                                         )
-                                      : member!.pictureURL != ''
+                                      : member.pictureURL != ''
                                           ? CircleAvatar(
                                               radius: 50,
                                               backgroundImage: NetworkImage(
@@ -449,7 +449,7 @@ class _UserScreenState extends State<UserScreen> {
                                 const SizedBox(
                                   height: 148,
                                 ),
-                                Text(member!.name, style: kTitleTextStyle),
+                                Text(member.name, style: kTitleTextStyle),
                                 const SizedBox(
                                   height: 5,
                                 ),

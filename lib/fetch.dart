@@ -25,8 +25,8 @@ class _FetchState extends State<Fetch> {
 
       final teamProvider = Provider.of<TeamProvider>(context, listen: false);
       teamProvider.listenToYourTeams();
-      await teamProvider.listenToSelectedTeamMembers();
-      // await teamProvider.fetchSelectedTeam(context);
+      teamProvider.listenToSelectedTeam();
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

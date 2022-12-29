@@ -5,7 +5,15 @@ import 'package:group_planner_app/models/member_model.dart';
 import '../consts/firebase_consts.dart';
 
 class MemberProvider with ChangeNotifier {
-  static MemberModel? _currentMember;
+  static MemberModel _currentMember = MemberModel(
+    hasPremium: false,
+    id: '',
+    name: '',
+    currentTeam: '',
+    email: '',
+    pictureURL: '',
+    createdAt: Timestamp.now(),
+  );
 
   void listenToCurrentUser() {
     final uid = authInstance.currentUser!.uid;
@@ -27,7 +35,7 @@ class MemberProvider with ChangeNotifier {
     });
   }
 
-  MemberModel? get getCurrentMember {
+  MemberModel get getCurrentMember {
     return _currentMember;
   }
 }

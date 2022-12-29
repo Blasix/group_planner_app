@@ -15,7 +15,7 @@ class TeamProvider with ChangeNotifier {
   static final Map<String, TeamModel> _teamMap = {};
   static final List<TeamMemberModel> _members = [];
   static TeamModel? team;
-  static String selectedTeam = '';
+  // static String selectedTeam = '';
 
   List<TeamModel> get getYourTeams {
     return _teamList;
@@ -31,7 +31,7 @@ class TeamProvider with ChangeNotifier {
 
   TeamModel? getSelectedTeam(context) {
     final memberProvider = Provider.of<MemberProvider>(context);
-    return _teamMap[memberProvider.getCurrentMember!.currentTeam];
+    return _teamMap[memberProvider.getCurrentMember.currentTeam];
   }
 
   //dynamicly listen to teams where user is in from firestore and put them in map
@@ -67,75 +67,99 @@ class TeamProvider with ChangeNotifier {
     });
   }
 
-  //TODO make listenToSelectedTeamMembers fully dynamic
+  // //TODO make listenToSelectedTeamMembers fully dynamic
   // void listenToSelectedTeamMembers(context) {
-  //   final memberProvider = Provider.of<MemberProvider>(context, listen: false);
-  //   FirebaseFirestore.instance
-  //       .collection('teams')
-  //       .doc(memberProvider.getCurrentMember!.currentTeam)
-  //       .collection('members')
-  //       .snapshots()
-  //       .listen((event) {
-  //     for (var element in event.docChanges) {
-  //       final member = TeamMemberModel(
-  //         id: element.doc.id,
-  //         name: element.doc.get('username'),
-  //         email: element.doc.get('email'),
-  //         pictureURL: element.doc.get('profilePictureUrl'),
-  //         createdAt: element.doc.get('createdAt'),
-  //       );
-  //       if (element.type == DocumentChangeType.added) {
-  //         _members.add(member);
-  //       } else if (element.type == DocumentChangeType.modified) {
-  //         _members.removeWhere((element) => element.id == member.id);
-  //         _members.add(member);
-  //       } else if (element.type == DocumentChangeType.removed) {
-  //         _members.removeWhere((element) => element.id == member.id);
-  //       }
+  //   try {
+  //     final memberProvider =
+  //         Provider.of<MemberProvider>(context, listen: false);
+  //     TeamModel? team = _teamMap[memberProvider.getCurrentMember.currentTeam];
+  //     // final memberProvider = Provider.of<MemberProvider>(context);
+  //     // MemberModel? member = memberProvider.getCurrentMember;
+  //     // if (member?.currentTeam == null) {
+  //     //   return;
+  //     // }
+  //     print('1');
+  //     if (team?.uuid == null) {
+  //       print('2');
+  //       return;
   //     }
+  //     print('3');
+  //     print(team?.uuid);
+  //     FirebaseFirestore.instance
+  //         .collection('teams')
+  //         .doc(team?.uuid)
+  //         .snapshots()
+  //         .listen((event) {
+  //       for (var element in event.data()!['members']) {
+  //         print(element);
+  //         final member = TeamMemberModel(
+  //           id: element.doc.id,
+  //           name: element.doc.get('username'),
+  //           email: element.doc.get('email'),
+  //           pictureURL: element.doc.get('profilePictureUrl'),
+  //           createdAt: element.doc.get('createdAt'),
+  //         );
+  //         print(member.name);
+  //         if (element.type == DocumentChangeType.added) {
+  //           _members.add(member);
+  //         } else if (element.type == DocumentChangeType.modified) {
+  //           _members.removeWhere((element) => element.id == member.id);
+  //           _members.add(member);
+  //         } else if (element.type == DocumentChangeType.removed) {
+  //           _members.removeWhere((element) => element.id == member.id);
+  //         }
+  //       }
+  //       notifyListeners();
+  //     });
   //     notifyListeners();
-  //   });
+  //   } catch (e) {
+  //     print("Bonjour " + e.toString());
+  //   }
   // }
 
-  Future<void> listenToSelectedTeamMembers() async {
+  void listenToSelectedTeam() {
     final uid = authInstance.currentUser!.uid;
 
     // The problem with this is that with .get the data is no longer updated live
     // So you have to make the data from firestore listen live
     // But then you get an error
 
-    await FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
-        .get()
-        .then((value) {
-      selectedTeam = value.get('selectedTeam');
+        .snapshots()
+        .listen((event) {
+      //TODO make this dynamic
+      final selectedTeam = event.get('selectedTeam');
       team = _teamMap[selectedTeam];
       notifyListeners();
-    });
-    if (team != null) {
-      team!.members.remove(uid);
-      for (final member in team!.members) {
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(member)
-            .snapshots()
-            .listen(
-          (value) {
-            _members.add(
-              TeamMemberModel(
-                id: value.get('id'),
-                name: value.get('username'),
-                email: value.get('email'),
-                pictureURL: value.get('profilePictureUrl'),
-                createdAt: value.get('createdAt'),
-              ),
-            );
-          },
-        );
-        notifyListeners();
+      if (team != null) {
+        print(team!.uuid);
+        team!.members.remove(uid);
+        _members.clear();
+        for (final member in team!.members) {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(member)
+              .snapshots()
+              .listen(
+            (value) {
+              _members.add(
+                TeamMemberModel(
+                  id: value.get('id'),
+                  name: value.get('username'),
+                  email: value.get('email'),
+                  pictureURL: value.get('profilePictureUrl'),
+                  createdAt: value.get('createdAt'),
+                ),
+              );
+            },
+          );
+          notifyListeners();
+        }
       }
-    }
+    });
+
     notifyListeners();
   }
 
