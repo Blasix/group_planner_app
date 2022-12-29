@@ -66,10 +66,9 @@
             </intent-filter>
         </activity>
 
-        <!-- TODO: Change to real Ad ID -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="ca-app-pub-1885557411171609~5121546429"/>
 
     </application>
 </manifest>

@@ -3,8 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:group_planner_app/screens/join_group.dart';
+import 'package:provider/provider.dart';
 
 import '../consts/firebase_consts.dart';
+import '../models/team_model.dart';
+import '../providers/team_provider.dart';
 import 'global_methods.dart';
 
 //TODO the creation works i just need to figure out how to get the link to work
@@ -35,46 +38,47 @@ class DynamicLinkProvider {
   }
 
   //init dynamic link
-  Future<void> initDynamicLinks(BuildContext context) async {
+  Future<void> initDynamicLinks(context) async {
     //when app is open
     FirebaseDynamicLinks.instance.onLink.listen((dynamicLink) async {
+      //pass the group code to the join group screen
       final Uri deepLink = dynamicLink.link;
-
-      final User? user = authInstance.currentUser;
+      // final User? user = authInstance.currentUser;
       try {
-        if (user == null) {
-          //not signed in
-          GlobalMethods.dialog(
-            context: context,
-            title: 'Not logged in',
-            message: 'Please log in or register, then reopen the link',
-            contentType: ContentType.failure,
-          );
-        } else {
-          //signed in
-          const JoinGroupScreen();
-          // GlobalMethods.confirm(
-          //   context: context,
-          //   message:
-          //       'Are you sure you want to join ${deepLink.queryParameters['group']}',
-          //   onTap: () {},
-          // );
-        }
-      } catch (e) {
-        GlobalMethods.dialog(
-          context: context,
-          title: 'Whoops',
-          message: e.toString(),
-          contentType: ContentType.failure,
+        final teamProvider = Provider.of<TeamProvider>(context, listen: false);
+        TeamModel? team = await teamProvider
+            .findGroupByID(deepLink.toString().split('?group=')[1]);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => JoinGroupScreen(
+              team: team,
+            ),
+          ),
         );
+        // if (user == null) {
+        //   //not signed in
+        //   GlobalMethods.dialog(
+        //     context: context,
+        //     title: 'Not logged in',
+        //     message: 'Please log in or register, then reopen the link',
+        //     contentType: ContentType.failure,
+        //   );
+        // } else {
+        //   //signed in
+        //   const JoinGroupScreen();
+        //   // GlobalMethods.confirm(
+        //   //   context: context,
+        //   //   message:
+        //   //       'Are you sure you want to join ${deepLink.queryParameters['group']}',
+        //   //   onTap: () {},
+        //   // );
+        // }
+      } catch (e) {
+        print(e);
       }
     }).onError((error) {
-      GlobalMethods.dialog(
-        context: context,
-        title: 'Whoops',
-        message: error,
-        contentType: ContentType.failure,
-      );
+      print(error);
     });
     //when app is closed
     final PendingDynamicLinkData? data =
@@ -82,33 +86,39 @@ class DynamicLinkProvider {
     final Uri? deepLink = data?.link;
 
     if (deepLink != null) {
-      final User? user = authInstance.currentUser;
+      // final User? user = authInstance.currentUser;
       try {
-        if (user == null) {
-          //not signed in
-          GlobalMethods.dialog(
-            context: context,
-            title: 'Not logged in',
-            message: 'Please log in or register, then reopen the link',
-            contentType: ContentType.failure,
-          );
-        } else {
-          //signed in
-          const JoinGroupScreen();
-          // GlobalMethods.confirm(
-          //   context: context,
-          //   message:
-          //       'Are you sure you want to join ${deepLink.queryParameters['group']}',
-          //   onTap: () {},
-          // );
-        }
-      } catch (e) {
-        GlobalMethods.dialog(
-          context: context,
-          title: 'Whoops',
-          message: e.toString(),
-          contentType: ContentType.failure,
+        final teamProvider = Provider.of<TeamProvider>(context, listen: false);
+        TeamModel? team = await teamProvider
+            .findGroupByID(deepLink.toString().split('?group=')[1]);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => JoinGroupScreen(
+              team: team,
+            ),
+          ),
         );
+        // if (user == null) {
+        //   //not signed in
+        //   GlobalMethods.dialog(
+        //     context: context,
+        //     title: 'Not logged in',
+        //     message: 'Please log in or register, then reopen the link',
+        //     contentType: ContentType.failure,
+        //   );
+        // } else {
+        //   //signed in
+        //   const JoinGroupScreen();
+        //   // GlobalMethods.confirm(
+        //   //   context: context,
+        //   //   message:
+        //   //       'Are you sure you want to join ${deepLink.queryParameters['group']}',
+        //   //   onTap: () {},
+        //   // );
+        // }
+      } catch (e) {
+        print(e);
       }
     }
   }

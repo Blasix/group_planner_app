@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../models/member_model.dart';
 import '../providers/member_provider.dart';
+import '../services/dynamic_link.dart';
 
 class BottomBarScreen extends StatefulWidget {
   const BottomBarScreen({Key? key}) : super(key: key);
@@ -33,6 +34,8 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    DynamicLinkProvider().initDynamicLinks(context);
+
     final memberProvider = Provider.of<MemberProvider>(context);
     MemberModel member = memberProvider.getCurrentMember;
 
@@ -100,7 +103,8 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                     ),
                   ],
                 ),
-                member.hasPremium ? Container() : adContainer,
+                // member.hasPremium ? Container() :
+                adContainer,
               ],
             ),
           ),

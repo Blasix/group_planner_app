@@ -14,7 +14,7 @@ class TeamProvider with ChangeNotifier {
   static final List<TeamModel> _teamList = [];
   static final Map<String, TeamModel> _teamMap = {};
   static final List<TeamMemberModel> _members = [];
-  static TeamModel? team;
+
   // static String selectedTeam = '';
 
   List<TeamModel> get getYourTeams {
@@ -32,6 +32,27 @@ class TeamProvider with ChangeNotifier {
   TeamModel? getSelectedTeam(context) {
     final memberProvider = Provider.of<MemberProvider>(context);
     return _teamMap[memberProvider.getCurrentMember.currentTeam];
+  }
+
+  Future<TeamModel?> findGroupByID(String groupId) async {
+    TeamModel? team;
+
+    await FirebaseFirestore.instance
+        .collection('teams')
+        .doc(groupId)
+        .get()
+        .then((value) {
+      team = TeamModel(
+        uuid: value.id,
+        name: value.get('name'),
+        leader: value.get('leader'),
+        pictureUrl: value.get('pictureUrl'),
+        members: value.get('members'),
+        events: value.get('events'),
+      );
+    });
+
+    return team;
   }
 
   //dynamicly listen to teams where user is in from firestore and put them in map
@@ -119,6 +140,7 @@ class TeamProvider with ChangeNotifier {
 
   void listenToSelectedTeam() {
     final uid = authInstance.currentUser!.uid;
+    TeamModel? team;
 
     // The problem with this is that with .get the data is no longer updated live
     // So you have to make the data from firestore listen live

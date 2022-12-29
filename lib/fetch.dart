@@ -6,7 +6,6 @@ import 'package:group_planner_app/screens/btm_bar.dart';
 import 'package:provider/provider.dart';
 import 'providers/member_provider.dart';
 import 'providers/team_provider.dart';
-import 'services/dynamic_link.dart';
 
 class Fetch extends StatefulWidget {
   const Fetch({Key? key}) : super(key: key);
@@ -18,7 +17,6 @@ class Fetch extends StatefulWidget {
 class _FetchState extends State<Fetch> {
   @override
   void initState() {
-    DynamicLinkProvider().initDynamicLinks(context);
     Future.delayed(const Duration(microseconds: 5), () async {
       final userProvider = Provider.of<MemberProvider>(context, listen: false);
       userProvider.listenToCurrentUser();
