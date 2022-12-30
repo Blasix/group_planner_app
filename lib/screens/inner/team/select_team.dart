@@ -155,6 +155,9 @@ class _SelectTeamScreenState extends State<SelectTeamScreen> {
                       onPressed: () {
                         _searchTextController.clear();
                         _searchTextFocusNode.unfocus();
+                        setState(() {
+                          listTeamSearch.clear();
+                        });
                       },
                       icon: const Icon(Icons.close, color: Colors.red),
                     ),

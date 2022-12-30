@@ -4,10 +4,7 @@ import 'package:group_planner_app/screens/agenda.dart';
 import 'package:group_planner_app/screens/team.dart';
 import 'package:group_planner_app/screens/user.dart';
 import 'package:iconly/iconly.dart';
-import 'package:provider/provider.dart';
 
-import '../models/member_model.dart';
-import '../providers/member_provider.dart';
 import '../services/dynamic_link.dart';
 
 class BottomBarScreen extends StatefulWidget {
@@ -35,9 +32,6 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
   @override
   Widget build(BuildContext context) {
     DynamicLinkProvider().initDynamicLinks(context);
-
-    final memberProvider = Provider.of<MemberProvider>(context);
-    MemberModel member = memberProvider.getCurrentMember;
 
     var platform = Theme.of(context).platform;
     //TODO: Change to real Ad ID
@@ -103,7 +97,6 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                     ),
                   ],
                 ),
-                // member.hasPremium ? Container() :
                 adContainer,
               ],
             ),

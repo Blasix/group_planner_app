@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/team_model.dart';
@@ -7,9 +6,9 @@ import '../consts/firebase_consts.dart';
 import 'btm_bar.dart';
 
 class JoinGroupScreen extends StatefulWidget {
-  TeamModel? team;
+  final TeamModel? team;
 
-  JoinGroupScreen({Key? key, required this.team}) : super(key: key);
+  const JoinGroupScreen({Key? key, required this.team}) : super(key: key);
 
   @override
   State<JoinGroupScreen> createState() => _JoinGroupScreenState();

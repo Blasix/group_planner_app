@@ -6,7 +6,6 @@ import '../consts/firebase_consts.dart';
 
 class MemberProvider with ChangeNotifier {
   static MemberModel _currentMember = MemberModel(
-    hasPremium: false,
     id: '',
     name: '',
     currentTeam: '',
@@ -23,7 +22,6 @@ class MemberProvider with ChangeNotifier {
         .snapshots()
         .listen((event) {
       _currentMember = MemberModel(
-        hasPremium: event.get('hasPremium'),
         id: event.get('id'),
         name: event.get('username'),
         currentTeam: event.get('selectedTeam'),

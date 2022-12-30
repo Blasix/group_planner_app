@@ -355,6 +355,7 @@ class _TeamScreenState extends State<TeamScreen> {
                           ),
                         )
                       : GridView.builder(
+                          physics: const BouncingScrollPhysics(),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: memberGrid,

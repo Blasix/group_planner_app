@@ -69,8 +69,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'profilePictureUrl': '',
           'createdAt': Timestamp.now(),
           'selectedTeam': '',
-          //TODO remove this
-          'hasPremium': false,
         });
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(

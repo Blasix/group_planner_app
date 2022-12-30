@@ -1,16 +1,12 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:group_planner_app/screens/join_group.dart';
+import 'package:group_planner_app/services/global_methods.dart';
 import 'package:provider/provider.dart';
-
-import '../consts/firebase_consts.dart';
 import '../models/team_model.dart';
 import '../providers/team_provider.dart';
-import 'global_methods.dart';
 
-//TODO the creation works i just need to figure out how to get the link to work
 class DynamicLinkProvider {
   // create the link
   Future<String> createLink(String groupCode) async {
@@ -41,52 +37,34 @@ class DynamicLinkProvider {
   Future<void> initDynamicLinks(context) async {
     //when app is open
     FirebaseDynamicLinks.instance.onLink.listen((dynamicLink) async {
-      //pass the group code to the join group screen
       final Uri deepLink = dynamicLink.link;
-      // final User? user = authInstance.currentUser;
-      try {
-        final teamProvider = Provider.of<TeamProvider>(context, listen: false);
-        TeamModel? team = await teamProvider
-            .findGroupByID(deepLink.toString().split('?group=')[1]);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => JoinGroupScreen(
-              team: team,
-            ),
+
+      final teamProvider = Provider.of<TeamProvider>(context, listen: false);
+      TeamModel? team = await teamProvider
+          .findGroupByID(deepLink.toString().split('?group=')[1]);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => JoinGroupScreen(
+            team: team,
           ),
-        );
-        // if (user == null) {
-        //   //not signed in
-        //   GlobalMethods.dialog(
-        //     context: context,
-        //     title: 'Not logged in',
-        //     message: 'Please log in or register, then reopen the link',
-        //     contentType: ContentType.failure,
-        //   );
-        // } else {
-        //   //signed in
-        //   const JoinGroupScreen();
-        //   // GlobalMethods.confirm(
-        //   //   context: context,
-        //   //   message:
-        //   //       'Are you sure you want to join ${deepLink.queryParameters['group']}',
-        //   //   onTap: () {},
-        //   // );
-        // }
-      } catch (e) {
-        print(e);
-      }
+        ),
+      );
     }).onError((error) {
-      print(error);
+      GlobalMethods.dialog(
+        context: context,
+        title: 'On snap!',
+        message: error,
+        contentType: ContentType.failure,
+      );
     });
+
     //when app is closed
     final PendingDynamicLinkData? data =
         await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deepLink = data?.link;
 
     if (deepLink != null) {
-      // final User? user = authInstance.currentUser;
       try {
         final teamProvider = Provider.of<TeamProvider>(context, listen: false);
         TeamModel? team = await teamProvider
@@ -99,26 +77,13 @@ class DynamicLinkProvider {
             ),
           ),
         );
-        // if (user == null) {
-        //   //not signed in
-        //   GlobalMethods.dialog(
-        //     context: context,
-        //     title: 'Not logged in',
-        //     message: 'Please log in or register, then reopen the link',
-        //     contentType: ContentType.failure,
-        //   );
-        // } else {
-        //   //signed in
-        //   const JoinGroupScreen();
-        //   // GlobalMethods.confirm(
-        //   //   context: context,
-        //   //   message:
-        //   //       'Are you sure you want to join ${deepLink.queryParameters['group']}',
-        //   //   onTap: () {},
-        //   // );
-        // }
       } catch (e) {
-        print(e);
+        GlobalMethods.dialog(
+          context: context,
+          title: 'On snap!',
+          message: e.toString(),
+          contentType: ContentType.failure,
+        );
       }
     }
   }

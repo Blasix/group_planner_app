@@ -1,24 +1,66 @@
 
+    
 {
+        
+        
+   "@_UNIVERSAL": {},
     "currentLanguage": "Deutsch",
-
+    "sure" : "Bist du sicher?",
+    "yes": "Ja",
+    "no": "Nein",
+    
+    "@_GROUP_PAGE": {},
+    "group": "Gruppe",
+    "selectGroup": "Gruppe auswählen",
+    "createGroup" : "Gruppe erstellen",
+    "noGroup" : "Du hast keine Gruppe ausgewählt",
     "members": "Mitglieder",
-    "create": "erstellen",
-    "delete": "löschen",
-
-    "privacy": "Datenschutz",
-    "helpSupport": "Hilfe & Unterstützung",
+    "addMembers": "Klicken um Mitglieder hinzuzufügen",
+    "noMembers": "Es gibt keine Mitglieder in dieser Gruppe",
+    "create": "Erstellen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "noGroups": "Du hast keine Gruppen, bitte erstelle eine!",
+    "noGroupsFound": "'Keine Gruppe gefunden, bitte versuche es mit einem anderen Schlüsselwort'",
+    "searchGroup": "Gruppe suchen",
+    
+    "@_SETTINGS_PAGE": {},
+    "privacy": "Privatsphäre",
+    "helpSupport": "Hilfe & Support",
     "settings": "Einstellungen",
     "inviteAFriend": "Freund einladen",
-    "logout": "Abmelden",
+    "logout": "Ausloggen",
     "deleteAccount": "Account löschen",
-    "sendBugReport": "Fehlerbericht senden",
+    "sendBugReport": "Bug melden",
     "copyright": "Urheberrecht",
     "faq": "FAQ",
     "becomeATester": "Tester werden",
-    "pushNotifications": "Push-Benachrichtigungen",
+    "pushNotifications": "Push Benachrichtigungen",
     "language": "Sprache",
 
-    "yes": "Ja",
-    "no": "Nein"
+    "@_AUTHENTICATION": {},
+    "signInInfo1": "Hallo nochmal!",
+    "signInInfo2": "Willkommen zurück, du hast uns gefehlt!",
+    "signIn": "Einloggen",
+    "orContinueWith": "Oder fortfahren mit",
+    "notMember": "Noch kein Mitglied?",
+    "registerNow": "Jetzt registrieren",
+    "registerinfo1": "Willkommen!",
+    "registerinfo2": "Erstelle einen Account um loszulegen!",
+    "register": "Registrieren",
+    "alreadyMember": "Schon ein Mitglied?",
+    "username": "Benutzername",
+    "email": "Email",
+    "password": "Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "forgotPassword": "Passwort vergessen?",
+    "forgotPasswordInfo": "Bestätigen Sie Ihre E-Mail und wir senden Ihnen die Anweisungen zu",
+    "resetPassword": "Passwort zurücksetzen",
+    "noUppercase": "Muss mindestens einen Großbuchstaben enthalten",
+    "noNumber": "Muss mindestens eine Zahl enthalten",
+    "noAnything": "Das Feld ist erforderlich",
+    "noMatch": "Passwörter stimmen nicht überein",
+    
+    "@_POPUPS": {}
+
 }

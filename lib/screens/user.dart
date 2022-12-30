@@ -460,14 +460,21 @@ class _UserScreenState extends State<UserScreen> {
                                 // ElevatedButton(
                                 //   style: ElevatedButton.styleFrom(
                                 //     fixedSize: const Size(200, 40),
-                                //     primary: Theme.of(context).primaryColor,
+                                //     backgroundColor:
+                                //         Theme.of(context).primaryColor,
                                 //     shape: const RoundedRectangleBorder(
                                 //         borderRadius: BorderRadius.all(
                                 //             Radius.circular(30))),
                                 //   ),
                                 //   onPressed: () {},
-                                //   child: Text('Upgrade to PRO',
-                                //       style: kButtonTextStyle),
+                                //   child: const Text(
+                                //     'Upgrade to PRO',
+                                //     style: TextStyle(
+                                //       fontSize: 15,
+                                //       fontWeight: FontWeight.w400,
+                                //       color: Colors.black,
+                                //     ),
+                                //   ),
                                 // ),
                               ],
                             ),
