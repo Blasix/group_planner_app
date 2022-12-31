@@ -78,7 +78,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       } on FirebaseException catch (error) {
         GlobalMethods.dialog(
           context: context,
-          title: 'On snap!',
+          title: 'Oh snap!',
           message: '${error.message}',
           contentType: ContentType.failure,
         );
@@ -89,7 +89,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       } catch (error) {
         GlobalMethods.dialog(
           context: context,
-          title: 'On snap!',
+          title: 'Oh snap!',
           message: '$error',
           contentType: ContentType.failure,
         );

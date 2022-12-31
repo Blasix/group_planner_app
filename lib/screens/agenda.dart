@@ -8,6 +8,7 @@ import '../models/team_model.dart';
 import '../providers/team_provider.dart';
 import '../services/utils.dart';
 import '../widgets/agenda/events.dart';
+import 'inner/team/no_team.dart';
 
 class AgendaScreen extends StatefulWidget {
   const AgendaScreen({Key? key}) : super(key: key);
@@ -24,6 +25,11 @@ class _AgendaScreenState extends State<AgendaScreen> {
   Widget build(BuildContext context) {
     final teamProvider = Provider.of<TeamProvider>(context);
     final TeamModel? selectedTeam = teamProvider.getSelectedTeam(context);
+
+    if (selectedTeam == null) {
+      return const NoTeam();
+    }
+
     return SafeArea(
       child: Column(
         children: [
@@ -70,17 +76,15 @@ class _AgendaScreenState extends State<AgendaScreen> {
                 )),
           ),
           Text("selected day: ${_focusedDay.toString().split(" ")[0]}"),
-          selectedTeam != null
-              ? Expanded(
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: 10,
-                    itemBuilder: (BuildContext context, int index) {
-                      return const EventsWidget();
-                    },
-                  ),
-                )
-              : const Text("No team selected"),
+          Expanded(
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              itemCount: 10,
+              itemBuilder: (BuildContext context, int index) {
+                return const EventsWidget();
+              },
+            ),
+          )
         ],
       ),
     );

@@ -71,7 +71,7 @@ class _UserScreenState extends State<UserScreen> {
   //   } catch (error) {
   //     GlobalMethods.dialog(
   //       context: context,
-  //       title: 'On snap!',
+  //       title: 'Oh snap!',
   //       message: '$error',
   //       contentType: ContentType.failure,
   //     );

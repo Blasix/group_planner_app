@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } on FirebaseException catch (error) {
         GlobalMethods.dialog(
           context: context,
-          title: 'On snap!',
+          title: 'Oh snap!',
           message: '${error.message}',
           contentType: ContentType.failure,
         );
@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } catch (error) {
         GlobalMethods.dialog(
           context: context,
-          title: 'On snap!',
+          title: 'Oh snap!',
           message: '$error',
           contentType: ContentType.failure,
         );

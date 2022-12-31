@@ -47,7 +47,7 @@ class _PassRecScreenState extends State<PassRecScreen> {
       } on FirebaseAuthException catch (error) {
         GlobalMethods.dialog(
           context: context,
-          title: 'On snap!',
+          title: 'Oh snap!',
           message: '${error.message}',
           contentType: ContentType.failure,
         );
@@ -58,7 +58,7 @@ class _PassRecScreenState extends State<PassRecScreen> {
       } catch (error) {
         GlobalMethods.dialog(
           context: context,
-          title: 'On snap!',
+          title: 'Oh snap!',
           message: '$error',
           contentType: ContentType.failure,
         );

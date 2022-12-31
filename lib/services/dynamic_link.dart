@@ -53,7 +53,7 @@ class DynamicLinkProvider {
     }).onError((error) {
       GlobalMethods.dialog(
         context: context,
-        title: 'On snap!',
+        title: 'Oh snap!',
         message: error,
         contentType: ContentType.failure,
       );
@@ -80,7 +80,7 @@ class DynamicLinkProvider {
       } catch (e) {
         GlobalMethods.dialog(
           context: context,
-          title: 'On snap!',
+          title: 'Oh snap!',
           message: e.toString(),
           contentType: ContentType.failure,
         );

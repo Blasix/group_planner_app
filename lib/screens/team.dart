@@ -10,12 +10,12 @@ import 'package:group_planner_app/services/dynamic_link.dart';
 import 'package:group_planner_app/services/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:uuid/uuid.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../consts/firebase_consts.dart';
 import '../services/global_methods.dart';
 import '../widgets/team/member.dart';
+import 'inner/team/no_team.dart';
 import 'inner/team/select_team.dart';
 
 class TeamScreen extends StatefulWidget {
@@ -38,58 +38,6 @@ class _TeamScreenState extends State<TeamScreen> {
   int memberGrid = 2;
   bool _isLoading = false;
 
-  void _createTeam(context) async {
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      final User? user = authInstance.currentUser;
-      final uid = user!.uid;
-      final uuid = const Uuid().v4();
-      await FirebaseFirestore.instance.collection('teams').doc(uuid).set({
-        'id': uuid,
-        'name': _teamCreateController.text,
-        'leader': uid,
-        'members': [
-          uid,
-        ],
-        'events': [],
-        'pictureUrl': '',
-      });
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(uid)
-          .update({'selectedTeam': uuid});
-      Navigator.pop(context);
-    } on FirebaseException catch (error) {
-      GlobalMethods.dialog(
-        context: context,
-        title: 'On snap!',
-        message: '${error.message}',
-        contentType: ContentType.failure,
-      );
-      setState(() {
-        _isLoading = false;
-      });
-      return;
-    } catch (error) {
-      GlobalMethods.dialog(
-        context: context,
-        title: 'On snap!',
-        message: '$error',
-        contentType: ContentType.failure,
-      );
-      setState(() {
-        _isLoading = false;
-      });
-      return;
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final teamProvider = Provider.of<TeamProvider>(context);
@@ -109,48 +57,7 @@ class _TeamScreenState extends State<TeamScreen> {
 
     //when teammodel is null, it means that the user has no team
     if (selectedTeam == null) {
-      return Scaffold(
-        appBar: AppBar(
-          foregroundColor: Theme.of(context).colorScheme.primary,
-          title: Text(AppLocalizations.of(context)!.group),
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.noGroup,
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SelectTeamScreen(),
-                    ),
-                  );
-                },
-                child: Text(AppLocalizations.of(context)!.selectGroup),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor),
-                onPressed: () {
-                  _showTeamDialog();
-                },
-                child: Text(AppLocalizations.of(context)!.createGroup),
-              ),
-            ],
-          ),
-        ),
-      );
+      return const NoTeam();
     }
 
     return Scaffold(
@@ -415,7 +322,7 @@ class _TeamScreenState extends State<TeamScreen> {
                             'Are you sure you want to delete ${selectedTeam.name}?',
                         onTap: () async {
                           final uid = authInstance.currentUser!.uid;
-                          Navigator.pop(context);
+                          if (Navigator.canPop(context)) Navigator.pop(context);
                           try {
                             setState(() {
                               _isLoading = true;
@@ -430,12 +337,6 @@ class _TeamScreenState extends State<TeamScreen> {
                                 .doc(uid)
                                 .update({'selectedTeam': ''});
 
-                            // await teamProvider
-                            //     .fetchTeams();
-                            // ignore: use_build_context_synchronously
-                            // await teamProvider
-                            //     .fetchSelectedTeam(
-                            //         context);
                             GlobalMethods.dialog(
                               context: context,
                               title: 'Succes!',
@@ -445,7 +346,7 @@ class _TeamScreenState extends State<TeamScreen> {
                           } on FirebaseException catch (error) {
                             GlobalMethods.dialog(
                               context: context,
-                              title: 'On snap!',
+                              title: 'Oh snap!',
                               message: '${error.message}',
                               contentType: ContentType.failure,
                             );
@@ -456,7 +357,7 @@ class _TeamScreenState extends State<TeamScreen> {
                           } catch (error) {
                             GlobalMethods.dialog(
                               context: context,
-                              title: 'On snap!',
+                              title: 'Oh snap!',
                               message: '$error',
                               contentType: ContentType.failure,
                             );
@@ -468,6 +369,9 @@ class _TeamScreenState extends State<TeamScreen> {
                             setState(() {
                               _isLoading = false;
                             });
+                            if (Navigator.canPop(context)) {
+                              Navigator.pop(context);
+                            }
                           }
                         });
                   },
@@ -480,31 +384,6 @@ class _TeamScreenState extends State<TeamScreen> {
             ),
           ),
           // actions: [],
-        );
-      },
-    );
-  }
-
-  Future _showTeamDialog() async {
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Please enter a team name'),
-          content: TextField(
-            controller: _teamCreateController,
-            decoration: const InputDecoration(hintText: "Team name"),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                _createTeam(context);
-              },
-              child: const Text(
-                'create',
-              ),
-            ),
-          ],
         );
       },
     );

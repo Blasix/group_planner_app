@@ -47,11 +47,17 @@ class _SelectTeamScreenState extends State<SelectTeamScreen> {
           .collection('users')
           .doc(uid)
           .update({'selectedTeam': uuid});
+      GlobalMethods.dialog(
+        context: context,
+        title: 'Succes!',
+        message: '${_teamCreateController.text} has been created',
+        contentType: ContentType.success,
+      );
       Navigator.pop(context);
     } on FirebaseException catch (error) {
       GlobalMethods.dialog(
         context: context,
-        title: 'On snap!',
+        title: 'Oh snap!',
         message: '${error.message}',
         contentType: ContentType.failure,
       );
@@ -62,7 +68,7 @@ class _SelectTeamScreenState extends State<SelectTeamScreen> {
     } catch (error) {
       GlobalMethods.dialog(
         context: context,
-        title: 'On snap!',
+        title: 'Oh snap!',
         message: '$error',
         contentType: ContentType.failure,
       );

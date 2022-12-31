@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../models/team_model.dart';
+import '../../providers/team_provider.dart';
 import '../../services/utils.dart';
 
 class EventsWidget extends StatefulWidget {
@@ -11,6 +14,8 @@ class EventsWidget extends StatefulWidget {
 class _EventsWidgetState extends State<EventsWidget> {
   @override
   Widget build(BuildContext context) {
+    final teamProvider = Provider.of<TeamProvider>(context);
+    final TeamModel? selectedTeam = teamProvider.getSelectedTeam(context);
     return Padding(
       padding: const EdgeInsets.all(6.0),
       child: Container(
@@ -57,7 +62,7 @@ class _EventsWidgetState extends State<EventsWidget> {
                 padding:
                     const EdgeInsets.only(left: 6.0, right: 6.0, bottom: 6.0),
                 child: ProgressBar(
-                  max: 6,
+                  max: (selectedTeam!.members.length.toDouble() + 1),
                   current: 1,
                   color: Theme.of(context).primaryColor,
                   colorBG: Theme.of(context).canvasColor,

@@ -60,17 +60,11 @@ class _SelectTeamWidgetState extends State<SelectTeamWidget> {
                         .collection('users')
                         .doc(uid)
                         .update({'selectedTeam': teamModel.uuid});
-                    GlobalMethods.dialog(
-                      context: context,
-                      title: 'Succes!',
-                      message: '${teamModel.name} has been selected',
-                      contentType: ContentType.success,
-                    );
                     Navigator.pop(context);
                   } on FirebaseException catch (error) {
                     GlobalMethods.dialog(
                       context: context,
-                      title: 'On snap!',
+                      title: 'Oh snap!',
                       message: '${error.message}',
                       contentType: ContentType.failure,
                     );
@@ -78,7 +72,7 @@ class _SelectTeamWidgetState extends State<SelectTeamWidget> {
                   } catch (error) {
                     GlobalMethods.dialog(
                       context: context,
-                      title: 'On snap!',
+                      title: 'Oh snap!',
                       message: '$error',
                       contentType: ContentType.failure,
                     );
