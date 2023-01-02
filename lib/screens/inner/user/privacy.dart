@@ -61,12 +61,11 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
                             .collection('users')
                             .doc(uid)
                             .delete();
-                        await user.delete();
                         Reference ref = FirebaseStorage.instance
                             .ref()
                             .child('ProfilePics/$uid.jpg');
                         await ref.delete();
-                        // ignore: use_build_context_synchronously
+                        await user.delete();
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (context) => const LoginScreen(),
