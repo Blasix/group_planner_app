@@ -192,7 +192,7 @@ class _UserScreenState extends State<UserScreen> {
                                           : const CircleAvatar(
                                               radius: 50,
                                               backgroundImage: NetworkImage(
-                                                  'https://firebasestorage.googleapis.com/v0/b/group-planner-d4826.appspot.com/o/Profile.jpg?alt=media&token=e204d44b-afbe-4f95-a928-1e589ca75712'),
+                                                  'https://firebasestorage.googleapis.com/v0/b/group-planner-d4826.appspot.com/o/Profile.jpg?alt=media&token=3dc7bc58-3bf3-4548-a2d5-09a3027190db'),
                                             ),
                                   Align(
                                     alignment: Alignment.bottomRight,
