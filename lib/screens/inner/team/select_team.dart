@@ -1,4 +1,3 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -51,26 +50,23 @@ class _SelectTeamScreenState extends State<SelectTeamScreen> {
         context: context,
         title: 'Succes!',
         message: '${_teamCreateController.text} has been created',
-        contentType: ContentType.success,
       );
       Navigator.pop(context);
     } on FirebaseException catch (error) {
-      GlobalMethods.dialog(
+      GlobalMethods.dialogFailure(
         context: context,
         title: 'Oh snap!',
         message: '${error.message}',
-        contentType: ContentType.failure,
       );
       setState(() {
         _isLoading = false;
       });
       return;
     } catch (error) {
-      GlobalMethods.dialog(
+      GlobalMethods.dialogFailure(
         context: context,
         title: 'Oh snap!',
         message: '$error',
-        contentType: ContentType.failure,
       );
       setState(() {
         _isLoading = false;
@@ -206,6 +202,15 @@ class _SelectTeamScreenState extends State<SelectTeamScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          shape: ShapeBorder.lerp(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            1,
+          ),
           title: const Text('Please enter a team name'),
           content: TextField(
             controller: _teamCreateController,

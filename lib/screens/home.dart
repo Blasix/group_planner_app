@@ -1,4 +1,3 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -89,18 +88,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       );
                     } on FirebaseAuthException catch (error) {
-                      GlobalMethods.dialog(
+                      GlobalMethods.dialogFailure(
                         title: 'Oh Snap!',
                         message: '${error.message}',
                         context: context,
-                        contentType: ContentType.failure,
                       );
                     } catch (error) {
-                      GlobalMethods.dialog(
+                      GlobalMethods.dialogFailure(
                         title: 'Oh Snap!',
                         message: '$error',
                         context: context,
-                        contentType: ContentType.failure,
                       );
                     }
                   },

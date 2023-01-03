@@ -1,4 +1,3 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
@@ -42,25 +41,22 @@ class _PassRecScreenState extends State<PassRecScreen> {
           context: context,
           title: 'Send!',
           message: 'A reset password email has been succesfully send',
-          contentType: ContentType.success,
         );
       } on FirebaseAuthException catch (error) {
-        GlobalMethods.dialog(
+        GlobalMethods.dialogFailure(
           context: context,
           title: 'Oh snap!',
           message: '${error.message}',
-          contentType: ContentType.failure,
         );
         setState(() {
           _isLoading = false;
         });
         return;
       } catch (error) {
-        GlobalMethods.dialog(
+        GlobalMethods.dialogFailure(
           context: context,
           title: 'Oh snap!',
           message: '$error',
-          contentType: ContentType.failure,
         );
         setState(() {
           _isLoading = false;

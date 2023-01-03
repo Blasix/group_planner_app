@@ -21,10 +21,13 @@ class GoogleButton extends StatelessWidget {
           final GoogleSignInAuthentication? googleAuth =
               await googleUser?.authentication;
 
+          if (googleAuth == null) {
+            return;
+          }
           // Create a new credential
           final credential = GoogleAuthProvider.credential(
-            accessToken: googleAuth?.accessToken,
-            idToken: googleAuth?.idToken,
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
           );
           // Once signed in, return the UserCredential
           await FirebaseAuth.instance.signInWithCredential(credential);

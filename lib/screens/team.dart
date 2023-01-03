@@ -1,7 +1,7 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
 import 'package:group_planner_app/models/member_model.dart';
 import 'package:group_planner_app/models/team_model.dart';
@@ -63,224 +63,231 @@ class _TeamScreenState extends State<TeamScreen> {
     return Scaffold(
       body: LoadingManager(
         isLoading: _isLoading,
-        child: SafeArea(
-            child: Column(
-          children: [
-            Flexible(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 8.0,
-                ),
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height -
+                AppBar().preferredSize.height -
+                AdSize.banner.height,
+            child: SafeArea(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.group,
-                      style: kTitleTextStyle.copyWith(fontSize: 23),
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0,
+                      vertical: 8.0,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Theme.of(context).canvasColor),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: Theme.of(context).cardColor,
-                                ),
-                                height: 60,
-                                width: 60,
-                                child: const Center(child: Text("icon")),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              SizedBox(
-                                width: 200,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      FittedBox(
-                                        fit: BoxFit.fitWidth,
-                                        child: Text(
-                                          selectedTeam.name,
-                                          style: kTitleTextStyle,
-                                        ),
-                                      ),
-                                      Visibility(
-                                          visible: (selectedTeam.leader ==
-                                              user!.uid),
-                                          child: InkWell(
-                                            onTap: () {
-                                              _showTeamEditDialog(
-                                                selectedTeam,
-                                              );
-                                            },
-                                            child: Text(
-                                              AppLocalizations.of(context)!
-                                                  .edit,
-                                              style: const TextStyle(
-                                                  color: Colors.blue),
-                                            ),
-                                          )),
-                                    ],
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.group,
+                          style: kTitleTextStyle.copyWith(fontSize: 23),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Theme.of(context).canvasColor),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: Theme.of(context).cardColor,
+                                    ),
+                                    height: 60,
+                                    width: 60,
+                                    child: const Center(child: Text("icon")),
                                   ),
-                                ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  SizedBox(
+                                    width: 200,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          FittedBox(
+                                            fit: BoxFit.fitWidth,
+                                            child: Text(
+                                              selectedTeam.name,
+                                              style: kTitleTextStyle,
+                                            ),
+                                          ),
+                                          Visibility(
+                                              visible: (selectedTeam.leader ==
+                                                  user!.uid),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  _showTeamEditDialog(
+                                                    selectedTeam,
+                                                  );
+                                                },
+                                                child: Text(
+                                                  AppLocalizations.of(context)!
+                                                      .edit,
+                                                  style: const TextStyle(
+                                                      color: Colors.blue),
+                                                ),
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SelectTeamScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Icon(
+                                        Icons.menu_rounded,
+                                        size: 40,
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
-                              const Spacer(),
+                            ),
+                          ),
+                        ),
+                        // Row(
+                        //   // Debug buttons
+                        //   children: [
+                        //     // TextButton(
+                        //     //   onPressed: () {
+                        //     //     setState(() {
+                        //     //       teamLenght = teamLenght++;
+                        //     //     });
+                        //     //   },
+                        //     //   child: const Text('add'),
+                        //     // ),
+                        //     // TextButton(
+                        //     //   onPressed: () {
+                        //     //     setState(() {
+                        //     //       teamLenght = teamLenght--;
+                        //     //     });
+                        //     //   },
+                        //     //   child: const Text('remove'),
+                        //     // ),
+                        //     TextButton(
+                        //       onPressed: () {
+                        //         _showTeamDialog();
+                        //       },
+                        //       child: Text(AppLocalizations.of(context)!.create),
+                        //     ),
+                        //   ],
+                        // ),
+                        const Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)!.members,
+                                style: kTitleTextStyle.copyWith(fontSize: 23),
+                              ),
                               InkWell(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SelectTeamScreen(),
-                                    ),
+                                  DynamicLinkProvider()
+                                      .createLink(selectedTeam.uuid)
+                                      .then(
+                                    (value) {
+                                      Share.share(value);
+                                    },
                                   );
                                 },
-                                child: const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Icon(
-                                    Icons.menu_rounded,
-                                    size: 40,
-                                  ),
-                                ),
+                                child: const Icon(Icons.add),
                               )
                             ],
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                    // Row(
-                    //   // Debug buttons
-                    //   children: [
-                    //     // TextButton(
-                    //     //   onPressed: () {
-                    //     //     setState(() {
-                    //     //       teamLenght = teamLenght++;
-                    //     //     });
-                    //     //   },
-                    //     //   child: const Text('add'),
-                    //     // ),
-                    //     // TextButton(
-                    //     //   onPressed: () {
-                    //     //     setState(() {
-                    //     //       teamLenght = teamLenght--;
-                    //     //     });
-                    //     //   },
-                    //     //   child: const Text('remove'),
-                    //     // ),
-                    //     TextButton(
-                    //       onPressed: () {
-                    //         _showTeamDialog();
-                    //       },
-                    //       child: Text(AppLocalizations.of(context)!.create),
-                    //     ),
-                    //   ],
-                    // ),
-                    const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            AppLocalizations.of(context)!.members,
-                            style: kTitleTextStyle.copyWith(fontSize: 23),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              DynamicLinkProvider()
-                                  .createLink(selectedTeam.uuid)
-                                  .then(
-                                (value) {
-                                  Share.share(value);
-                                },
-                              );
-                            },
-                            child: const Icon(Icons.add),
-                          )
-                        ],
+                  ),
+                ),
+                Flexible(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(40),
+                        topRight: Radius.circular(40),
                       ),
+                      color: Theme.of(context).canvasColor,
                     ),
-                  ],
-                ),
-              ),
-            ),
-            Flexible(
-              flex: 2,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
-                  ),
-                  color: Theme.of(context).canvasColor,
-                ),
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 24,
-                    right: 24,
-                    top: 24,
-                  ),
-                  child: (teamLenght == 0)
-                      ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                AppLocalizations.of(context)!.noMembers,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          Theme.of(context).primaryColor),
-                                  onPressed: () {
-                                    DynamicLinkProvider()
-                                        .createLink(selectedTeam.uuid)
-                                        .then(
-                                      (value) {
-                                        Share.share(value);
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 24,
+                        right: 24,
+                        top: 24,
+                      ),
+                      child: (teamLenght == 0)
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!.noMembers,
+                                    style: const TextStyle(fontSize: 20),
+                                  ),
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              Theme.of(context).primaryColor),
+                                      onPressed: () {
+                                        DynamicLinkProvider()
+                                            .createLink(selectedTeam.uuid)
+                                            .then(
+                                          (value) {
+                                            Share.share(value);
+                                          },
+                                        );
                                       },
-                                    );
-                                  },
-                                  child: Text(
-                                      AppLocalizations.of(context)!.addMembers))
-                            ],
-                          ),
-                        )
-                      : GridView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: memberGrid,
-                            mainAxisSpacing: 32 / memberGrid,
-                            crossAxisSpacing: 32 / memberGrid,
-                          ),
-                          itemCount: teamLenght,
-                          itemBuilder: (BuildContext context, int index) {
-                            return ChangeNotifierProvider.value(
-                                value: currentTeamMembers[index],
-                                child: const MemberWidget());
-                          },
-                        ),
+                                      child: Text(AppLocalizations.of(context)!
+                                          .addMembers))
+                                ],
+                              ),
+                            )
+                          : GridView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: memberGrid,
+                                mainAxisSpacing: 32 / memberGrid,
+                                crossAxisSpacing: 32 / memberGrid,
+                              ),
+                              itemCount: teamLenght,
+                              itemBuilder: (BuildContext context, int index) {
+                                return ChangeNotifierProvider.value(
+                                    value: currentTeamMembers[index],
+                                    child: const MemberWidget());
+                              },
+                            ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ],
-        )),
+              ],
+            )),
+          ),
+        ),
       ),
     );
   }
@@ -341,25 +348,22 @@ class _TeamScreenState extends State<TeamScreen> {
                               context: context,
                               title: 'Succes!',
                               message: '${selectedTeam.name} has been deleted',
-                              contentType: ContentType.success,
                             );
                           } on FirebaseException catch (error) {
-                            GlobalMethods.dialog(
+                            GlobalMethods.dialogFailure(
                               context: context,
                               title: 'Oh snap!',
                               message: '${error.message}',
-                              contentType: ContentType.failure,
                             );
                             setState(() {
                               _isLoading = false;
                             });
                             return;
                           } catch (error) {
-                            GlobalMethods.dialog(
+                            GlobalMethods.dialogFailure(
                               context: context,
                               title: 'Oh snap!',
                               message: '$error',
-                              contentType: ContentType.failure,
                             );
                             setState(() {
                               _isLoading = false;

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -110,17 +109,16 @@ class _UserScreenState extends State<UserScreen> {
         });
       });
     } on PlatformException catch (error) {
-      GlobalMethods.dialog(
-          context: context,
-          title: 'Oh snap!',
-          message: '${error.message}',
-          contentType: ContentType.failure);
+      GlobalMethods.dialogFailure(
+        context: context,
+        title: 'Oh snap!',
+        message: '${error.message}',
+      );
     } catch (error) {
-      GlobalMethods.dialog(
+      GlobalMethods.dialogFailure(
         context: context,
         title: 'Oh snap!',
         message: '$error',
-        contentType: ContentType.failure,
       );
     } finally {
       setState(() {
@@ -558,21 +556,19 @@ class _UserScreenState extends State<UserScreen> {
                                 ),
                               );
                             } on FirebaseAuthException catch (error) {
-                              GlobalMethods.dialog(
+                              GlobalMethods.dialogFailure(
                                 title: 'Oh Snap!',
                                 message: '${error.message}',
                                 context: context,
-                                contentType: ContentType.failure,
                               );
                               setState(() {
                                 _isLoading = false;
                               });
                             } catch (error) {
-                              GlobalMethods.dialog(
+                              GlobalMethods.dialogFailure(
                                 title: 'Oh Snap!',
                                 message: '$error',
                                 context: context,
-                                contentType: ContentType.failure,
                               );
                               setState(() {
                                 _isLoading = false;

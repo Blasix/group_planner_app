@@ -1,4 +1,3 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:group_planner_app/screens/join_group.dart';
@@ -51,11 +50,10 @@ class DynamicLinkProvider {
         ),
       );
     }).onError((error) {
-      GlobalMethods.dialog(
+      GlobalMethods.dialogFailure(
         context: context,
         title: 'Oh snap!',
         message: error,
-        contentType: ContentType.failure,
       );
     });
 
@@ -78,11 +76,10 @@ class DynamicLinkProvider {
           ),
         );
       } catch (e) {
-        GlobalMethods.dialog(
+        GlobalMethods.dialogFailure(
           context: context,
           title: 'Oh snap!',
           message: e.toString(),
-          contentType: ContentType.failure,
         );
       }
     }

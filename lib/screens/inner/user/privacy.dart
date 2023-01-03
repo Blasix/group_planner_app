@@ -1,4 +1,3 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -75,25 +74,22 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
                           context: context,
                           title: 'Succes!',
                           message: 'Your account has been deleted',
-                          contentType: ContentType.success,
                         );
                       } on FirebaseException catch (error) {
-                        GlobalMethods.dialog(
+                        GlobalMethods.dialogFailure(
                           context: context,
                           title: 'Oh snap!',
                           message: '${error.message}',
-                          contentType: ContentType.failure,
                         );
                         setState(() {
                           _isLoading = false;
                         });
                         return;
                       } catch (error) {
-                        GlobalMethods.dialog(
+                        GlobalMethods.dialogFailure(
                           context: context,
                           title: 'Oh snap!',
                           message: '$error',
-                          contentType: ContentType.failure,
                         );
                         setState(() {
                           _isLoading = false;

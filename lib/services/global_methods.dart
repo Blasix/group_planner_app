@@ -28,11 +28,10 @@ class GlobalMethods {
         });
   }
 
-  static dialog(
+  static dialogFailure(
       {required BuildContext context,
       required String title,
-      required String message,
-      required ContentType contentType}) {
+      required String message}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         elevation: 0,
@@ -41,7 +40,25 @@ class GlobalMethods {
         content: AwesomeSnackbarContent(
           title: title,
           message: message,
-          contentType: contentType,
+          contentType: ContentType.failure,
+        ),
+      ),
+    );
+  }
+
+  static dialog(
+      {required BuildContext context,
+      required String title,
+      required String message}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: title,
+          message: message,
+          contentType: ContentType.success,
         ),
       ),
     );

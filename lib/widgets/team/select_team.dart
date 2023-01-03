@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:group_planner_app/consts/firebase_consts.dart';
@@ -62,19 +61,17 @@ class _SelectTeamWidgetState extends State<SelectTeamWidget> {
                         .update({'selectedTeam': teamModel.uuid});
                     Navigator.pop(context);
                   } on FirebaseException catch (error) {
-                    GlobalMethods.dialog(
+                    GlobalMethods.dialogFailure(
                       context: context,
                       title: 'Oh snap!',
                       message: '${error.message}',
-                      contentType: ContentType.failure,
                     );
                     return;
                   } catch (error) {
-                    GlobalMethods.dialog(
+                    GlobalMethods.dialogFailure(
                       context: context,
                       title: 'Oh snap!',
                       message: '$error',
-                      contentType: ContentType.failure,
                     );
                     return;
                   }
