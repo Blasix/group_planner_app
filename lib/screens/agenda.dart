@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
   TimeOfDay time = TimeOfDay.now();
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -119,61 +121,99 @@ class _AgendaScreenState extends State<AgendaScreen> {
           return StatefulBuilder(
             builder: (BuildContext context, setState) {
               return AlertDialog(
-                shape: ShapeBorder.lerp(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  1,
-                ),
                 title: Text("Add Event"),
                 content: SizedBox(
-                  height: 150,
+                  height: 160,
                   child: Column(
                     children: [
-                      TextFormField(
-                        decoration: InputDecoration(hintText: 'event name'),
-                        controller: _eventController,
+                      Form(
+                        key: _formKey,
+                        child: TextFormField(
+                          decoration: InputDecoration(hintText: 'event name'),
+                          controller: _eventController,
+                          validator: ValidationBuilder(
+                                  localeName:
+                                      AppLocalizations.of(context)!.localeName)
+                              .required()
+                              .build(),
+                        ),
                       ),
-                      // const Spacer(),
+                      const Spacer(),
                       Row(
                         children: [
-                          TextButton(
-                              onPressed: () async {
-                                final TimeOfDay? newTime = await showTimePicker(
-                                  context: context,
-                                  initialTime: time,
-                                );
-                                setState(() {
-                                  if (newTime != null) time = newTime;
-                                });
-                              },
-                              child: Text('select time')),
+                          Text('Details:'),
                           const Spacer(),
-                          Material(
-                            color: Theme.of(context).canvasColor,
+                          InkWell(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(12)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(DateFormat.yMMMd(
-                                      AppLocalizations.of(context)!.localeName)
-                                  .format(_focusedDay)
-                                  .toString()),
+                            onTap: () async {
+                              final DateTime? newDate = await showDatePicker(
+                                context: context,
+                                initialDate: _focusedDay,
+                                firstDate: kFirstDay,
+                                lastDate: kLastDay,
+                                builder: (context, child) {
+                                  return Theme(
+                                    data: Theme.of(context).copyWith(
+                                      colorScheme: ThemeData()
+                                          .colorScheme
+                                          .copyWith(
+                                            onSurface: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            primary:
+                                                Theme.of(context).primaryColor,
+                                          ),
+                                    ),
+                                    child: child!,
+                                  );
+                                },
+                              );
+                              if (newDate != null) {
+                                setState(() {
+                                  _focusedDay = newDate;
+                                });
+                              }
+                            },
+                            child: Material(
+                              color: Theme.of(context).canvasColor,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(12)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(DateFormat.yMMMd(
+                                        AppLocalizations.of(context)!
+                                            .localeName)
+                                    .format(_focusedDay)
+                                    .toString()),
+                              ),
                             ),
                           ),
                           const SizedBox(
                             width: 4,
                           ),
-                          Material(
-                            color: Theme.of(context).canvasColor,
+                          InkWell(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(12)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(time.format(context)),
+                            onTap: () async {
+                              final TimeOfDay? newTime = await showTimePicker(
+                                context: context,
+                                initialTime: time,
+                              );
+                              if (newTime != null) {
+                                setState(() {
+                                  time = newTime;
+                                });
+                              }
+                            },
+                            child: Material(
+                              color: Theme.of(context).canvasColor,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(12)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(time.format(context)),
+                              ),
                             ),
                           ),
                         ],
@@ -197,16 +237,21 @@ class _AgendaScreenState extends State<AgendaScreen> {
                                   color: Theme.of(context).primaryColor),
                             ),
                             onPressed: () {
-                              //todo: add event to database
-                              print(DateTime(
-                                  _focusedDay.year,
-                                  _focusedDay.month,
-                                  _focusedDay.day,
-                                  time.hour,
-                                  time.minute));
-                              Navigator.pop(context);
-                              _eventController.clear();
-                              return;
+                              final isValid = _formKey.currentState!.validate();
+                              FocusScope.of(context).unfocus();
+                              if (isValid) {
+                                _formKey.currentState!.save();
+                                _eventController.clear();
+                                //todo: add event to database
+                                print(_eventController.text);
+                                print(DateTime(
+                                    _focusedDay.year,
+                                    _focusedDay.month,
+                                    _focusedDay.day,
+                                    time.hour,
+                                    time.minute));
+                                Navigator.pop(context);
+                              }
                             },
                           ),
                         ],

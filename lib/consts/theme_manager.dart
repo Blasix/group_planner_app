@@ -3,16 +3,19 @@ import '../services/storage_manager.dart';
 
 class ThemeNotifier with ChangeNotifier {
   final darkTheme = ThemeData(
+    dialogTheme: const DialogTheme(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(12),
+        ),
+      ),
+    ),
     timePickerTheme: TimePickerThemeData(
       backgroundColor: ThemeData.dark().dialogBackgroundColor,
-      shape: ShapeBorder.lerp(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(12),
         ),
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        1,
       ),
       hourMinuteTextColor: Colors.white,
       dialHandColor: const Color(0xFFFFC107),
@@ -31,6 +34,13 @@ class ThemeNotifier with ChangeNotifier {
   );
 
   final lightTheme = ThemeData(
+    dialogTheme: const DialogTheme(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(12),
+        ),
+      ),
+    ),
     timePickerTheme: TimePickerThemeData(
       dialHandColor: const Color(0xFFFFC107),
       hourMinuteColor: MaterialStateColor.resolveWith((states) =>
@@ -41,14 +51,10 @@ class ThemeNotifier with ChangeNotifier {
           states.contains(MaterialState.selected)
               ? Colors.grey.shade400
               : Colors.grey.shade300),
-      shape: ShapeBorder.lerp(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(12),
         ),
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        1,
       ),
     ),
     primaryColor: const Color(0xFFFFC107),

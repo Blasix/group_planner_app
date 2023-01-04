@@ -299,15 +299,6 @@ class _TeamScreenState extends State<TeamScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape: ShapeBorder.lerp(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            1,
-          ),
           title: Text(
             AppLocalizations.of(context)!.edit,
           ),
