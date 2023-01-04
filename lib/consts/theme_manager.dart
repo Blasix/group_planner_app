@@ -3,6 +3,24 @@ import '../services/storage_manager.dart';
 
 class ThemeNotifier with ChangeNotifier {
   final darkTheme = ThemeData(
+    timePickerTheme: TimePickerThemeData(
+      backgroundColor: ThemeData.dark().dialogBackgroundColor,
+      shape: ShapeBorder.lerp(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        1,
+      ),
+      hourMinuteTextColor: Colors.white,
+      dialHandColor: const Color(0xFFFFC107),
+      dialTextColor: Colors.white,
+      dialBackgroundColor: ThemeData.dark().scaffoldBackgroundColor,
+      entryModeIconColor: Colors.white,
+      dayPeriodTextColor: Colors.white,
+    ),
     primaryColor: const Color(0xFFFFC107),
     colorScheme: ThemeData().colorScheme.copyWith(
           primary: Colors.white,
@@ -13,6 +31,26 @@ class ThemeNotifier with ChangeNotifier {
   );
 
   final lightTheme = ThemeData(
+    timePickerTheme: TimePickerThemeData(
+      dialHandColor: const Color(0xFFFFC107),
+      hourMinuteColor: MaterialStateColor.resolveWith((states) =>
+          states.contains(MaterialState.selected)
+              ? Colors.grey.shade400
+              : Colors.grey.shade300),
+      dayPeriodColor: MaterialStateColor.resolveWith((states) =>
+          states.contains(MaterialState.selected)
+              ? Colors.grey.shade400
+              : Colors.grey.shade300),
+      shape: ShapeBorder.lerp(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        1,
+      ),
+    ),
     primaryColor: const Color(0xFFFFC107),
     colorScheme: ThemeData().colorScheme.copyWith(
           primary: Colors.black,

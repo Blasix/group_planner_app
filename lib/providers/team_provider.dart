@@ -85,7 +85,6 @@ class TeamProvider with ChangeNotifier {
         .listen((event) {
       final selectedTeam = event.get('selectedTeam');
       team = _teamMap[selectedTeam];
-      notifyListeners();
       if (team != null) {
         team!.members.remove(uid);
         _members.clear();
@@ -108,8 +107,6 @@ class TeamProvider with ChangeNotifier {
         }
       }
     });
-
-    notifyListeners();
   }
 
   List<TeamModel> findByName(String teamName) {
