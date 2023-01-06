@@ -63,14 +63,12 @@ class _SelectTeamWidgetState extends State<SelectTeamWidget> {
                   } on FirebaseException catch (error) {
                     GlobalMethods.dialogFailure(
                       context: context,
-                      title: 'Oh snap!',
                       message: '${error.message}',
                     );
                     return;
                   } catch (error) {
                     GlobalMethods.dialogFailure(
                       context: context,
-                      title: 'Oh snap!',
                       message: '$error',
                     );
                     return;

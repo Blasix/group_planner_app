@@ -78,7 +78,6 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
                       } on FirebaseException catch (error) {
                         GlobalMethods.dialogFailure(
                           context: context,
-                          title: 'Oh snap!',
                           message: '${error.message}',
                         );
                         setState(() {
@@ -88,7 +87,6 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
                       } catch (error) {
                         GlobalMethods.dialogFailure(
                           context: context,
-                          title: 'Oh snap!',
                           message: '$error',
                         );
                         setState(() {

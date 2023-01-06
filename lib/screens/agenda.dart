@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:iconly/iconly.dart';
@@ -6,8 +8,11 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../consts/firebase_consts.dart';
+import '../models/event_model.dart';
 import '../models/team_model.dart';
 import '../providers/team_provider.dart';
+import '../services/global_methods.dart';
 import '../services/utils.dart';
 import '../widgets/agenda/events.dart';
 import 'inner/team/no_team.dart';
@@ -27,6 +32,14 @@ class _AgendaScreenState extends State<AgendaScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    setState(() {
+      _selectedDay = _focusedDay;
+    });
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _eventController.dispose();
     super.dispose();
@@ -36,6 +49,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
   Widget build(BuildContext context) {
     final teamProvider = Provider.of<TeamProvider>(context);
     final TeamModel? selectedTeam = teamProvider.getSelectedTeam(context);
+    final List<EventModel> events = teamProvider.getSelectedTeamEvents;
     if (selectedTeam == null) {
       return const NoTeam();
     }
@@ -102,9 +116,10 @@ class _AgendaScreenState extends State<AgendaScreen> {
             Expanded(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: 10,
+                itemCount: events.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return const EventsWidget();
+                  return ChangeNotifierProvider.value(
+                      value: events[index], child: const EventsWidget());
                 },
               ),
             )
@@ -118,6 +133,8 @@ class _AgendaScreenState extends State<AgendaScreen> {
     showDialog(
         context: context,
         builder: (context) {
+          final selectedTeam =
+              Provider.of<TeamProvider>(context).getSelectedTeam(context);
           return StatefulBuilder(
             builder: (BuildContext context, setState) {
               return AlertDialog(
@@ -140,16 +157,15 @@ class _AgendaScreenState extends State<AgendaScreen> {
                       ),
                       const Spacer(),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Details:'),
-                          const Spacer(),
                           InkWell(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(12)),
                             onTap: () async {
                               final DateTime? newDate = await showDatePicker(
                                 context: context,
-                                initialDate: _focusedDay,
+                                initialDate: _selectedDay!,
                                 firstDate: kFirstDay,
                                 lastDate: kLastDay,
                                 builder: (context, child) {
@@ -171,7 +187,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
                               );
                               if (newDate != null) {
                                 setState(() {
-                                  _focusedDay = newDate;
+                                  _selectedDay = newDate;
                                 });
                               }
                             },
@@ -184,7 +200,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
                                 child: Text(DateFormat.yMMMd(
                                         AppLocalizations.of(context)!
                                             .localeName)
-                                    .format(_focusedDay)
+                                    .format(_selectedDay!)
                                     .toString()),
                               ),
                             ),
@@ -236,21 +252,57 @@ class _AgendaScreenState extends State<AgendaScreen> {
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
                               final isValid = _formKey.currentState!.validate();
                               FocusScope.of(context).unfocus();
                               if (isValid) {
-                                _formKey.currentState!.save();
-                                _eventController.clear();
                                 //todo: add event to database
+                                try {
+                                  if (Navigator.canPop(context)) {
+                                    Navigator.pop(context);
+                                  }
+                                  final User? user = authInstance.currentUser;
+                                  final uid = user!.uid;
+                                  await FirebaseFirestore.instance
+                                      .collection('teams')
+                                      .doc(selectedTeam!.uuid)
+                                      .update({
+                                    'events': FieldValue.arrayUnion([
+                                      {
+                                        'name': _eventController.text,
+                                        'votes': [
+                                          uid,
+                                        ],
+                                        'eventTime': DateTime(
+                                            _selectedDay!.year,
+                                            _selectedDay!.month,
+                                            _selectedDay!.day,
+                                            time.hour,
+                                            time.minute),
+                                      }
+                                    ]),
+                                  });
+                                } on FirebaseException catch (error) {
+                                  GlobalMethods.dialogFailure(
+                                    context: context,
+                                    message: '${error.message}',
+                                  );
+                                  return;
+                                } catch (error) {
+                                  GlobalMethods.dialogFailure(
+                                    context: context,
+                                    message: '$error',
+                                  );
+                                  return;
+                                }
                                 print(_eventController.text);
                                 print(DateTime(
-                                    _focusedDay.year,
-                                    _focusedDay.month,
-                                    _focusedDay.day,
+                                    _selectedDay!.year,
+                                    _selectedDay!.month,
+                                    _selectedDay!.day,
                                     time.hour,
                                     time.minute));
-                                Navigator.pop(context);
+                                _eventController.clear();
                               }
                             },
                           ),

@@ -59,7 +59,6 @@ class _NoTeamState extends State<NoTeam> {
     } on FirebaseException catch (error) {
       GlobalMethods.dialogFailure(
         context: context,
-        title: 'Oh snap!',
         message: '${error.message}',
       );
       setState(() {
@@ -69,7 +68,6 @@ class _NoTeamState extends State<NoTeam> {
     } catch (error) {
       GlobalMethods.dialogFailure(
         context: context,
-        title: 'Oh snap!',
         message: '$error',
       );
       setState(() {

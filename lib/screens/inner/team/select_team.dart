@@ -55,7 +55,6 @@ class _SelectTeamScreenState extends State<SelectTeamScreen> {
     } on FirebaseException catch (error) {
       GlobalMethods.dialogFailure(
         context: context,
-        title: 'Oh snap!',
         message: '${error.message}',
       );
       setState(() {
@@ -65,7 +64,6 @@ class _SelectTeamScreenState extends State<SelectTeamScreen> {
     } catch (error) {
       GlobalMethods.dialogFailure(
         context: context,
-        title: 'Oh snap!',
         message: '$error',
       );
       setState(() {

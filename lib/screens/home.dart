@@ -89,13 +89,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     } on FirebaseAuthException catch (error) {
                       GlobalMethods.dialogFailure(
-                        title: 'Oh Snap!',
                         message: '${error.message}',
                         context: context,
                       );
                     } catch (error) {
                       GlobalMethods.dialogFailure(
-                        title: 'Oh Snap!',
                         message: '$error',
                         context: context,
                       );

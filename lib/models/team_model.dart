@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class TeamModel extends ChangeNotifier {
   final String uuid, name, leader, pictureUrl;
-  final List members, events;
+  final List members;
 
   TeamModel({
     required this.uuid,
@@ -10,6 +10,5 @@ class TeamModel extends ChangeNotifier {
     required this.leader,
     required this.pictureUrl,
     required this.members,
-    required this.events,
   });
 }

@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:group_planner_app/models/event_model.dart';
 import 'package:provider/provider.dart';
+import '../../consts/firebase_consts.dart';
 import '../../models/team_model.dart';
 import '../../providers/team_provider.dart';
 import '../../services/utils.dart';
@@ -14,62 +17,63 @@ class EventsWidget extends StatefulWidget {
 class _EventsWidgetState extends State<EventsWidget> {
   @override
   Widget build(BuildContext context) {
+    final eventModel = Provider.of<EventModel>(context);
     final teamProvider = Provider.of<TeamProvider>(context);
-    final TeamModel? selectedTeam = teamProvider.getSelectedTeam(context);
+    int teamLenght = teamProvider.getSelectedTeamMembers.length + 1;
+    final uid = authInstance.currentUser!.uid;
     return Padding(
       padding: const EdgeInsets.all(6.0),
       child: Container(
+        padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
             color: Theme.of(context).cardColor),
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 16,
-            right: 8,
-            top: 8,
-            bottom: 8,
-          ),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Event (time)',
-                        style: kTitleTextStyle.copyWith(fontSize: 24),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  InkWell(
-                    onTap: () {},
-                    child: const Padding(
-                      padding: EdgeInsets.all(6.0),
-                      child: Icon(
-                        Icons.info_outline,
-                        size: 36,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 6.0, right: 6.0, bottom: 6.0),
-                child: ProgressBar(
-                  max: (selectedTeam!.members.length.toDouble() + 1),
-                  current: 1,
-                  color: Theme.of(context).primaryColor,
-                  colorBG: Theme.of(context).canvasColor,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                const SizedBox(
+                  width: 10,
                 ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${eventModel.name} - ${TimeOfDay.fromDateTime(eventModel.eventTime.toDate()).format(context)}",
+                      style: kTitleTextStyle.copyWith(fontSize: 24),
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: eventModel.votes.contains(uid)
+                      ? const Icon(
+                          Icons.check,
+                          size: 36,
+                        )
+                      : InkWell(
+                          onTap: () {
+                            //TODO: add vote to firestore to the correct event
+                          },
+                          child: const Icon(
+                            Icons.add,
+                            size: 36,
+                          )),
+                ),
+              ],
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.only(left: 6.0, right: 6.0, bottom: 6.0),
+              child: ProgressBar(
+                max: teamLenght.toDouble(),
+                current: eventModel.votes.length.toDouble(),
+                color: Theme.of(context).primaryColor,
+                colorBG: Theme.of(context).canvasColor,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

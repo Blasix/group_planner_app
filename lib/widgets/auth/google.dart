@@ -33,14 +33,21 @@ class GoogleButton extends StatelessWidget {
           await FirebaseAuth.instance.signInWithCredential(credential);
 
           final uid = authInstance.currentUser!.uid;
-          await FirebaseFirestore.instance.collection('users').doc(uid).set({
-            'id': uid,
-            'username': googleUser?.displayName,
-            'email': googleUser?.email,
-            'profilePictureUrl': googleUser?.photoUrl,
-            'createdAt': Timestamp.now(),
-            'selectedTeam': '',
-          });
+          // only add user to database if it doesn't exist
+          if (await FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .get()
+              .then((value) => !value.exists)) {
+            await FirebaseFirestore.instance.collection('users').doc(uid).set({
+              'id': uid,
+              'username': googleUser?.displayName,
+              'email': googleUser?.email,
+              'profilePictureUrl': googleUser?.photoUrl,
+              'createdAt': Timestamp.now(),
+              'selectedTeam': '',
+            });
+          }
           // ignore: use_build_context_synchronously
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(

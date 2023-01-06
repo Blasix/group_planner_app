@@ -64,6 +64,7 @@ class _TeamScreenState extends State<TeamScreen> {
       body: LoadingManager(
         isLoading: _isLoading,
         child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
           child: SizedBox(
             height: MediaQuery.of(context).size.height -
                 AppBar().preferredSize.height -
@@ -343,7 +344,6 @@ class _TeamScreenState extends State<TeamScreen> {
                           } on FirebaseException catch (error) {
                             GlobalMethods.dialogFailure(
                               context: context,
-                              title: 'Oh snap!',
                               message: '${error.message}',
                             );
                             setState(() {
@@ -353,7 +353,6 @@ class _TeamScreenState extends State<TeamScreen> {
                           } catch (error) {
                             GlobalMethods.dialogFailure(
                               context: context,
-                              title: 'Oh snap!',
                               message: '$error',
                             );
                             setState(() {

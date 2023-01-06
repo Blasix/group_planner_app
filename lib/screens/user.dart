@@ -111,13 +111,11 @@ class _UserScreenState extends State<UserScreen> {
     } on PlatformException catch (error) {
       GlobalMethods.dialogFailure(
         context: context,
-        title: 'Oh snap!',
         message: '${error.message}',
       );
     } catch (error) {
       GlobalMethods.dialogFailure(
         context: context,
-        title: 'Oh snap!',
         message: '$error',
       );
     } finally {
@@ -557,7 +555,6 @@ class _UserScreenState extends State<UserScreen> {
                               );
                             } on FirebaseAuthException catch (error) {
                               GlobalMethods.dialogFailure(
-                                title: 'Oh Snap!',
                                 message: '${error.message}',
                                 context: context,
                               );
@@ -566,7 +563,6 @@ class _UserScreenState extends State<UserScreen> {
                               });
                             } catch (error) {
                               GlobalMethods.dialogFailure(
-                                title: 'Oh Snap!',
                                 message: '$error',
                                 context: context,
                               );

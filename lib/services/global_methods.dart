@@ -29,16 +29,14 @@ class GlobalMethods {
   }
 
   static dialogFailure(
-      {required BuildContext context,
-      required String title,
-      required String message}) {
+      {required BuildContext context, required String message}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         elevation: 0,
         behavior: SnackBarBehavior.floating,
         backgroundColor: Colors.transparent,
         content: AwesomeSnackbarContent(
-          title: title,
+          title: "Oh snap!",
           message: message,
           contentType: ContentType.failure,
         ),

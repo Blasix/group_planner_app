@@ -77,7 +77,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       } on FirebaseException catch (error) {
         GlobalMethods.dialogFailure(
           context: context,
-          title: 'Oh snap!',
           message: '${error.message}',
         );
         setState(() {
@@ -87,7 +86,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       } catch (error) {
         GlobalMethods.dialogFailure(
           context: context,
-          title: 'Oh snap!',
           message: '$error',
         );
         setState(() {
@@ -476,14 +474,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
                         GoogleButton(),
-                        SizedBox(
-                          width: 30,
-                        ),
-                        AppleButton(),
-                        SizedBox(
-                          width: 30,
-                        ),
-                        MetaButton(),
+                        // SizedBox(
+                        //   width: 30,
+                        // ),
+                        // AppleButton(),
+                        // SizedBox(
+                        //   width: 30,
+                        // ),
+                        // MetaButton(),
                       ],
                     ),
                     Row(
