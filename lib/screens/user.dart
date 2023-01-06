@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
 import 'package:group_planner_app/models/member_model.dart';
 import 'package:group_planner_app/providers/member_provider.dart';
+import 'package:group_planner_app/providers/team_provider.dart';
 import 'package:group_planner_app/screens/inner/user/help_support.dart';
 import 'package:group_planner_app/screens/inner/user/privacy.dart';
 import 'package:group_planner_app/screens/inner/user/settings.dart';
@@ -547,6 +548,14 @@ class _UserScreenState extends State<UserScreen> {
                               _isLoading = true;
                             });
                             try {
+                              final userProvider = Provider.of<MemberProvider>(
+                                  context,
+                                  listen: false);
+                              userProvider.stop();
+                              final teamProvider = Provider.of<TeamProvider>(
+                                  context,
+                                  listen: false);
+                              teamProvider.stop();
                               await authInstance.signOut();
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(

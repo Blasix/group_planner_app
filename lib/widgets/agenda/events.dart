@@ -19,6 +19,7 @@ class _EventsWidgetState extends State<EventsWidget> {
   Widget build(BuildContext context) {
     final eventModel = Provider.of<EventModel>(context);
     final teamProvider = Provider.of<TeamProvider>(context);
+    final selectedTeam = teamProvider.getSelectedTeam(context);
     int teamLenght = teamProvider.getSelectedTeamMembers.length + 1;
     final uid = authInstance.currentUser!.uid;
     return Padding(
@@ -53,13 +54,25 @@ class _EventsWidgetState extends State<EventsWidget> {
                           size: 36,
                         )
                       : InkWell(
-                          onTap: () {
-                            //TODO: add vote to firestore to the correct event
+                          onTap: () async {
+                            try {
+                              await FirebaseFirestore.instance
+                                  .collection('teams')
+                                  .doc(selectedTeam!.uuid)
+                                  .collection('events')
+                                  .doc(eventModel.uuid)
+                                  .update({
+                                'votes': FieldValue.arrayUnion([uid])
+                              });
+                            } catch (e) {
+                              print(e);
+                            }
                           },
                           child: const Icon(
                             Icons.add,
                             size: 36,
-                          )),
+                          ),
+                        ),
                 ),
               ],
             ),

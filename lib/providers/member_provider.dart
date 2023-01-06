@@ -5,6 +5,7 @@ import 'package:group_planner_app/models/member_model.dart';
 import '../consts/firebase_consts.dart';
 
 class MemberProvider with ChangeNotifier {
+  var sub = FirebaseFirestore.instance;
   static MemberModel _currentMember = MemberModel(
     id: '',
     name: '',
@@ -16,11 +17,8 @@ class MemberProvider with ChangeNotifier {
 
   void listenToCurrentUser() {
     final uid = authInstance.currentUser!.uid;
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .snapshots()
-        .listen((event) {
+
+    sub.collection('users').doc(uid).snapshots().listen((event) {
       _currentMember = MemberModel(
         id: event.get('id'),
         name: event.get('username'),
@@ -31,6 +29,10 @@ class MemberProvider with ChangeNotifier {
       );
       notifyListeners();
     });
+  }
+
+  void stop() {
+    sub.terminate();
   }
 
   MemberModel get getCurrentMember {

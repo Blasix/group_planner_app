@@ -49,7 +49,6 @@ class _NoTeamState extends State<NoTeam> {
         'members': [
           uid,
         ],
-        'events': [],
         'pictureUrl': '',
       });
       await FirebaseFirestore.instance

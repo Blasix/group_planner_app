@@ -50,6 +50,13 @@ class _AgendaScreenState extends State<AgendaScreen> {
     final teamProvider = Provider.of<TeamProvider>(context);
     final TeamModel? selectedTeam = teamProvider.getSelectedTeam(context);
     final List<EventModel> events = teamProvider.getSelectedTeamEvents;
+    final List<EventModel> currentEvents = [];
+    for (var element in events) {
+      if (DateFormat('yyyy-MM-dd').format(element.eventTime.toDate()) ==
+          DateFormat('yyyy-MM-dd').format(_selectedDay!)) {
+        currentEvents.add(element);
+      }
+    }
     if (selectedTeam == null) {
       return const NoTeam();
     }
@@ -73,6 +80,14 @@ class _AgendaScreenState extends State<AgendaScreen> {
           children: [
             TableCalendar(
               locale: AppLocalizations.of(context)!.localeName,
+              eventLoader: (day) {
+                return events
+                    .where((event) =>
+                        event.eventTime.toDate().day == day.day &&
+                        event.eventTime.toDate().month == day.month &&
+                        event.eventTime.toDate().year == day.year)
+                    .toList();
+              },
               firstDay: kFirstDay,
               lastDay: kLastDay,
               focusedDay: _focusedDay,
@@ -98,6 +113,10 @@ class _AgendaScreenState extends State<AgendaScreen> {
                 rightChevronIcon: Icon(IconlyLight.arrow_right_2),
               ),
               calendarStyle: CalendarStyle(
+                  markerDecoration: BoxDecoration(
+                    color: Theme.of(context).textTheme.bodyText1!.color,
+                    shape: BoxShape.circle,
+                  ),
                   weekendTextStyle: TextStyle(
                     color: ThemeData.dark().cardColor,
                   ),
@@ -116,10 +135,10 @@ class _AgendaScreenState extends State<AgendaScreen> {
             Expanded(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: events.length,
+                itemCount: currentEvents.length,
                 itemBuilder: (BuildContext context, int index) {
                   return ChangeNotifierProvider.value(
-                      value: events[index], child: const EventsWidget());
+                      value: currentEvents[index], child: const EventsWidget());
                 },
               ),
             )
@@ -256,31 +275,29 @@ class _AgendaScreenState extends State<AgendaScreen> {
                               final isValid = _formKey.currentState!.validate();
                               FocusScope.of(context).unfocus();
                               if (isValid) {
-                                //todo: add event to database
                                 try {
                                   if (Navigator.canPop(context)) {
                                     Navigator.pop(context);
                                   }
                                   final User? user = authInstance.currentUser;
                                   final uid = user!.uid;
-                                  await FirebaseFirestore.instance
+                                  final docRef = FirebaseFirestore.instance
                                       .collection('teams')
                                       .doc(selectedTeam!.uuid)
-                                      .update({
-                                    'events': FieldValue.arrayUnion([
-                                      {
-                                        'name': _eventController.text,
-                                        'votes': [
-                                          uid,
-                                        ],
-                                        'eventTime': DateTime(
-                                            _selectedDay!.year,
-                                            _selectedDay!.month,
-                                            _selectedDay!.day,
-                                            time.hour,
-                                            time.minute),
-                                      }
-                                    ]),
+                                      .collection('events')
+                                      .doc();
+                                  await docRef.set({
+                                    'name': _eventController.text,
+                                    'uuid': docRef.id,
+                                    'votes': [
+                                      uid,
+                                    ],
+                                    'eventTime': DateTime(
+                                        _selectedDay!.year,
+                                        _selectedDay!.month,
+                                        _selectedDay!.day,
+                                        time.hour,
+                                        time.minute),
                                   });
                                 } on FirebaseException catch (error) {
                                   GlobalMethods.dialogFailure(
@@ -295,13 +312,6 @@ class _AgendaScreenState extends State<AgendaScreen> {
                                   );
                                   return;
                                 }
-                                print(_eventController.text);
-                                print(DateTime(
-                                    _selectedDay!.year,
-                                    _selectedDay!.month,
-                                    _selectedDay!.day,
-                                    time.hour,
-                                    time.minute));
                                 _eventController.clear();
                               }
                             },

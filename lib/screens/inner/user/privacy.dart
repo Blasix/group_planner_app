@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
 import 'package:iconly/iconly.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 import '../../../consts/firebase_consts.dart';
+import '../../../providers/member_provider.dart';
+import '../../../providers/team_provider.dart';
 import '../../../services/global_methods.dart';
 import '../../auth/login.dart';
 
@@ -49,6 +52,12 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
                         setState(() {
                           _isLoading = true;
                         });
+                        final userProvider =
+                            Provider.of<MemberProvider>(context, listen: false);
+                        userProvider.stop();
+                        final teamProvider =
+                            Provider.of<TeamProvider>(context, listen: false);
+                        teamProvider.stop();
                         var snapshots = await FirebaseFirestore.instance
                             .collection('teams')
                             .where('leader', isEqualTo: uid)

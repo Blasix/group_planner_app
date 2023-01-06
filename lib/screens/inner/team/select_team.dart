@@ -39,7 +39,6 @@ class _SelectTeamScreenState extends State<SelectTeamScreen> {
         'members': [
           uid,
         ],
-        'events': [],
         'pictureUrl': '',
       });
       await FirebaseFirestore.instance

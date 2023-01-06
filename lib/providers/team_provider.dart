@@ -9,11 +9,10 @@ import '../consts/firebase_consts.dart';
 import 'member_provider.dart';
 
 class TeamProvider with ChangeNotifier {
+  var sub = FirebaseFirestore.instance;
   static final Map<String, TeamModel> _teamMap = {};
   static final List<TeamMemberModel> _members = [];
   static List<EventModel> _events = [];
-
-  // static String selectedTeam = '';
 
   List<TeamModel> get getYourTeams {
     return _teamMap.values.toList();
@@ -54,7 +53,7 @@ class TeamProvider with ChangeNotifier {
 
   void listenToYourTeams() {
     final uid = authInstance.currentUser!.uid;
-    FirebaseFirestore.instance
+    sub
         .collection('teams')
         .where('members', arrayContains: uid)
         .snapshots()
@@ -82,22 +81,14 @@ class TeamProvider with ChangeNotifier {
   void listenToSelectedTeam() {
     final uid = authInstance.currentUser!.uid;
     TeamModel? team;
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .snapshots()
-        .listen((event) {
+    sub.collection('users').doc(uid).snapshots().listen((event) {
       final selectedTeam = event.get('selectedTeam');
       team = _teamMap[selectedTeam];
       if (team != null) {
         team!.members.remove(uid);
         _members.clear();
         for (final member in team!.members) {
-          FirebaseFirestore.instance
-              .collection('users')
-              .doc(member)
-              .snapshots()
-              .listen(
+          sub.collection('users').doc(member).snapshots().listen(
             (value) {
               _members.add(
                 TeamMemberModel(
@@ -109,26 +100,31 @@ class TeamProvider with ChangeNotifier {
           );
           notifyListeners();
         }
-        // get current team events
-        FirebaseFirestore.instance
+        sub
             .collection('teams')
             .doc(selectedTeam)
+            .collection('events')
             .snapshots()
             .listen((snapshot) {
-          if (snapshot.exists) {
-            final events = snapshot.data()!['events'] as List<dynamic>;
-            final currentEvents = events
-                .map((event) =>
-                    EventModel.fromMap(event as Map<String, dynamic>))
+          if (snapshot.docs.isNotEmpty) {
+            final events = snapshot.docs
+                .map((document) => EventModel.fromMap(document.data()))
                 .toList();
-            if (_events != currentEvents) {
-              _events = currentEvents;
+            if (_events != events) {
+              _events = events;
               notifyListeners();
             }
+          } else {
+            _events.clear();
+            notifyListeners();
           }
         });
       }
     });
+  }
+
+  void stop() {
+    sub.terminate();
   }
 
   List<TeamModel> findByName(String teamName) {
