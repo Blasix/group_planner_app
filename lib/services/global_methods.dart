@@ -91,8 +91,18 @@ class GlobalMethods {
               const SizedBox(
                 width: 8,
               ),
-              Text(text,
-                  style: kTitleTextStyle.copyWith(fontWeight: FontWeight.w500)),
+              SizedBox(
+                width: hasNavgigation
+                    ? MediaQuery.of(context).size.width * 0.55
+                    : MediaQuery.of(context).size.width * 0.61,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(text,
+                      style: kTitleTextStyle.copyWith(
+                          fontWeight: FontWeight.w500)),
+                ),
+              ),
               const Spacer(),
               Visibility(
                 visible: hasNavgigation,

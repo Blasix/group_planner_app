@@ -125,6 +125,7 @@ class TeamProvider with ChangeNotifier {
 
   void stop() {
     sub.terminate();
+    _teamMap.clear();
   }
 
   List<TeamModel> findByName(String teamName) {
