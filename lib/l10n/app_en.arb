@@ -2,8 +2,9 @@
     "@_UNIVERSAL": {},
     "currentLanguage": "English",
     "sure" : "Are you sure?",
-    "yes": "Yes",
-    "no": "No",
+    "light" : "Light",
+    "dark" : "Dark",
+    "system" : "System",
 
     "@_GROUP_PAGE": {},
     "group": "Group",
@@ -56,9 +57,13 @@
     "noNumber": "Must contain at least one number",
     "noAnything": "The field is required",
     "noMatch": "Passwords do not match",
-    
-    
 
-    "@_POPUPS": {}
+    "@_AGENDA_PAGE": {},
+    "addEvent": "Add event",
+    "eventName": "Event name",
+    
+    "@_POPUPS": {},
+    "yes": "Yes",
+    "no": "No"
 
 }

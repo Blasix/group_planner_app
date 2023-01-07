@@ -97,7 +97,8 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                     ),
                   ],
                 ),
-                adContainer,
+                //TODO: readd the ads
+                // adContainer,
               ],
             ),
           ),

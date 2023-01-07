@@ -67,9 +67,9 @@ class _AgendaScreenState extends State<AgendaScreen> {
           onPressed: () {
             createEvent();
           },
-          label: const Text(
-            'Add event',
-            style: TextStyle(color: Colors.black),
+          label: Text(
+            AppLocalizations.of(context)!.addEvent,
+            style: const TextStyle(color: Colors.black),
           ),
           icon: const Icon(
             Icons.add,
@@ -157,7 +157,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
           return StatefulBuilder(
             builder: (BuildContext context, setState) {
               return AlertDialog(
-                title: Text("Add Event"),
+                title: Text(AppLocalizations.of(context)!.addEvent),
                 content: SizedBox(
                   height: 160,
                   child: Column(
@@ -165,7 +165,9 @@ class _AgendaScreenState extends State<AgendaScreen> {
                       Form(
                         key: _formKey,
                         child: TextFormField(
-                          decoration: InputDecoration(hintText: 'event name'),
+                          decoration: InputDecoration(
+                              hintText:
+                                  AppLocalizations.of(context)!.eventName),
                           controller: _eventController,
                           validator: ValidationBuilder(
                                   localeName:

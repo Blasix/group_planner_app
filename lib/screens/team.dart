@@ -247,7 +247,11 @@ class _TeamScreenState extends State<TeamScreen> {
                                 children: [
                                   Text(
                                     AppLocalizations.of(context)!.noMembers,
+                                    textAlign: TextAlign.center,
                                     style: const TextStyle(fontSize: 20),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
                                   ),
                                   ElevatedButton(
                                       style: ElevatedButton.styleFrom(

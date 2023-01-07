@@ -10,9 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../consts/firebase_consts.dart';
 import '../../fetch.dart';
 import '../../services/global_methods.dart';
-import '../../widgets/auth/apple.dart';
 import '../../widgets/auth/google.dart';
-import '../../widgets/auth/meta.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);

@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:group_planner_app/models/event_model.dart';
+import 'package:group_planner_app/services/global_methods.dart';
 import 'package:provider/provider.dart';
 import '../../consts/firebase_consts.dart';
-import '../../models/team_model.dart';
 import '../../providers/team_provider.dart';
 import '../../services/utils.dart';
 
@@ -49,9 +49,28 @@ class _EventsWidgetState extends State<EventsWidget> {
                 Padding(
                   padding: const EdgeInsets.all(6.0),
                   child: eventModel.votes.contains(uid)
-                      ? const Icon(
-                          Icons.check,
-                          size: 36,
+                      ? InkWell(
+                          onTap: () async {
+                            try {
+                              await FirebaseFirestore.instance
+                                  .collection('teams')
+                                  .doc(selectedTeam!.uuid)
+                                  .collection('events')
+                                  .doc(eventModel.uuid)
+                                  .update({
+                                'votes': FieldValue.arrayRemove([uid])
+                              });
+                            } catch (e) {
+                              GlobalMethods.dialogFailure(
+                                context: context,
+                                message: e.toString(),
+                              );
+                            }
+                          },
+                          child: const Icon(
+                            Icons.check,
+                            size: 36,
+                          ),
                         )
                       : InkWell(
                           onTap: () async {
@@ -65,7 +84,10 @@ class _EventsWidgetState extends State<EventsWidget> {
                                 'votes': FieldValue.arrayUnion([uid])
                               });
                             } catch (e) {
-                              print(e);
+                              GlobalMethods.dialogFailure(
+                                context: context,
+                                message: e.toString(),
+                              );
                             }
                           },
                           child: const Icon(

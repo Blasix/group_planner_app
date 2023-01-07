@@ -2,8 +2,9 @@
     "@_UNIVERSAL": {},
     "currentLanguage": "Nederlands",
     "sure" : "Weet je het zeker?",
-    "yes": "Ja",
-    "no": "Nee",
+    "light" : "Licht",
+    "dark" : "Donker",
+    "system" : "Systeem",
 
     "@_GROUP_PAGE": {},
     "group": "Groep",
@@ -57,6 +58,12 @@
     "noAnything": "Verplicht veld",
     "noMatch": "Wachtwoorden komen niet overeen",
 
-    "@_POPUPS": {}
-    
+    "@_AGENDA_PAGE": {},
+    "addEvent": "Voeg evenement toe",
+    "eventName": "Evenement naam",
+
+    "@_POPUPS": {},
+    "yes": "Ja",
+    "no": "Nee"
+
 }

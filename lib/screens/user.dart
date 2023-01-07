@@ -343,10 +343,11 @@ class _UserScreenState extends State<UserScreen> {
                                             //   themeSelector = false;
                                             // });
                                           },
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 6),
-                                            child: FittedBox(
+                                          child: FittedBox(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 6),
                                               child: Row(
                                                 children: [
                                                   Icon(
@@ -354,13 +355,24 @@ class _UserScreenState extends State<UserScreen> {
                                                     color: lightMode,
                                                     size: 22,
                                                   ),
-                                                  Text(
-                                                    ' Light',
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: lightMode,
-                                                      fontWeight:
-                                                          FontWeight.w400,
+                                                  const SizedBox(width: 5),
+                                                  SizedBox(
+                                                    width: 60,
+                                                    child: FittedBox(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      fit: BoxFit.scaleDown,
+                                                      child: Text(
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .light,
+                                                        style: TextStyle(
+                                                          fontSize: 18,
+                                                          color: lightMode,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
                                                 ],
@@ -379,25 +391,34 @@ class _UserScreenState extends State<UserScreen> {
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 6),
-                                            child: FittedBox(
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.dark_mode_outlined,
-                                                    color: darkMode,
-                                                    size: 22,
-                                                  ),
-                                                  Text(
-                                                    ' Dark',
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: darkMode,
-                                                      fontWeight:
-                                                          FontWeight.w400,
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.dark_mode_outlined,
+                                                  color: darkMode,
+                                                  size: 22,
+                                                ),
+                                                const SizedBox(width: 5),
+                                                SizedBox(
+                                                  width: 60,
+                                                  child: FittedBox(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    fit: BoxFit.scaleDown,
+                                                    child: Text(
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .dark,
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: darkMode,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
                                                     ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
@@ -409,25 +430,34 @@ class _UserScreenState extends State<UserScreen> {
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 6),
-                                            child: FittedBox(
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.computer_outlined,
-                                                    color: systemMode,
-                                                    size: 22,
-                                                  ),
-                                                  Text(
-                                                    ' System',
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: systemMode,
-                                                      fontWeight:
-                                                          FontWeight.w400,
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.computer_outlined,
+                                                  color: systemMode,
+                                                  size: 22,
+                                                ),
+                                                const SizedBox(width: 5),
+                                                SizedBox(
+                                                  width: 60,
+                                                  child: FittedBox(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    fit: BoxFit.scaleDown,
+                                                    child: Text(
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .system,
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: systemMode,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
                                                     ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
