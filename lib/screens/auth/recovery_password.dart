@@ -35,6 +35,8 @@ class _PassRecScreenState extends State<PassRecScreen> {
         _isLoading = true;
       });
       try {
+        await authInstance
+            .setLanguageCode(AppLocalizations.of(context)!.localeName);
         await authInstance.sendPasswordResetEmail(
             email: _emailTextController.text.toLowerCase().trim());
         GlobalMethods.dialog(

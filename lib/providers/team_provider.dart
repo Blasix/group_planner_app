@@ -94,6 +94,7 @@ class TeamProvider with ChangeNotifier {
                 TeamMemberModel(
                   name: value.get('username'),
                   pictureURL: value.get('profilePictureUrl'),
+                  id: value.get('id'),
                 ),
               );
             },

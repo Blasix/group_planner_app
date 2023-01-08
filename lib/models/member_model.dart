@@ -16,9 +16,10 @@ class MemberModel extends ChangeNotifier {
 }
 
 class TeamMemberModel extends ChangeNotifier {
-  final String name, pictureURL;
+  final String id, name, pictureURL;
 
   TeamMemberModel({
+    required this.id,
     required this.name,
     required this.pictureURL,
   });
