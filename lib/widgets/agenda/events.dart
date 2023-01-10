@@ -8,14 +8,9 @@ import '../../consts/firebase_consts.dart';
 import '../../providers/team_provider.dart';
 import '../../services/utils.dart';
 
-class EventsWidget extends StatefulWidget {
+class EventsWidget extends StatelessWidget {
   const EventsWidget({Key? key}) : super(key: key);
 
-  @override
-  State<EventsWidget> createState() => _EventsWidgetState();
-}
-
-class _EventsWidgetState extends State<EventsWidget> {
   @override
   Widget build(BuildContext context) {
     final eventModel = Provider.of<EventModel>(context);
@@ -49,14 +44,16 @@ class _EventsWidgetState extends State<EventsWidget> {
                   const SizedBox(
                     width: 10,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
+                  SizedBox(
+                    width: 300,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
                         "${eventModel.name} - ${TimeOfDay.fromDateTime(eventModel.eventTime.toDate()).format(context)}",
                         style: kTitleTextStyle.copyWith(fontSize: 24),
                       ),
-                    ],
+                    ),
                   ),
                   const Spacer(),
                   Padding(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
 import 'package:group_planner_app/models/member_model.dart';
@@ -26,12 +27,11 @@ class TeamScreen extends StatefulWidget {
 }
 
 class _TeamScreenState extends State<TeamScreen> {
-  final TextEditingController _teamCreateController =
-      TextEditingController(text: "");
+  final _editTeamController = TextEditingController();
 
   @override
   void dispose() {
-    _teamCreateController.dispose();
+    _editTeamController.dispose();
     super.dispose();
   }
 
@@ -123,12 +123,16 @@ class _TeamScreenState extends State<TeamScreen> {
                                               style: kTitleTextStyle,
                                             ),
                                           ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
                                           Visibility(
                                               visible: (selectedTeam.leader ==
                                                   user!.uid),
                                               child: InkWell(
                                                 onTap: () {
                                                   _showTeamEditDialog(
+                                                    _editTeamController,
                                                     selectedTeam,
                                                   );
                                                 },
@@ -298,90 +302,157 @@ class _TeamScreenState extends State<TeamScreen> {
   }
 
   Future _showTeamEditDialog(
+    textEditingController,
     selectedTeam,
   ) async {
+    final formKey = GlobalKey<FormState>();
     await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(
-            AppLocalizations.of(context)!.edit,
+          title: Row(
+            children: [
+              Text(
+                AppLocalizations.of(context)!.edit,
+              ),
+              const Spacer(),
+              InkWell(
+                onTap: () {
+                  GlobalMethods.confirm(
+                      context: context,
+                      message:
+                          'Are you sure you want to delete ${selectedTeam.name}?',
+                      onTap: () async {
+                        final uid = authInstance.currentUser!.uid;
+                        if (Navigator.canPop(context)) Navigator.pop(context);
+                        try {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          await FirebaseFirestore.instance
+                              .collection('teams')
+                              .doc(selectedTeam.uuid)
+                              .delete();
+
+                          await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(uid)
+                              .update({'selectedTeam': ''});
+
+                          GlobalMethods.dialog(
+                            context: context,
+                            title: 'Succes!',
+                            message: '${selectedTeam.name} has been deleted',
+                          );
+                        } on FirebaseException catch (error) {
+                          GlobalMethods.dialogFailure(
+                            context: context,
+                            message: '${error.message}',
+                          );
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          return;
+                        } catch (error) {
+                          GlobalMethods.dialogFailure(
+                            context: context,
+                            message: '$error',
+                          );
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          return;
+                        } finally {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          if (Navigator.canPop(context)) {
+                            Navigator.pop(context);
+                          }
+                        }
+                      });
+                },
+                child: const Icon(
+                  Icons.delete_outline,
+                  color: Colors.red,
+                ),
+              ),
+            ],
           ),
-          content: SizedBox(
-            height: 120,
+          content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //Actualy make uption to change team name
-                const Text('change name:'),
-                TextField(
-                    decoration: InputDecoration(hintText: selectedTeam.name)),
-                const Spacer(),
-                InkWell(
-                  onTap: () {
-                    GlobalMethods.confirm(
-                        context: context,
-                        message:
-                            'Are you sure you want to delete ${selectedTeam.name}?',
-                        onTap: () async {
-                          final uid = authInstance.currentUser!.uid;
-                          if (Navigator.canPop(context)) Navigator.pop(context);
-                          try {
-                            setState(() {
-                              _isLoading = true;
-                            });
-                            await FirebaseFirestore.instance
-                                .collection('teams')
-                                .doc(selectedTeam.uuid)
-                                .delete();
-
-                            await FirebaseFirestore.instance
-                                .collection('users')
-                                .doc(uid)
-                                .update({'selectedTeam': ''});
-
-                            GlobalMethods.dialog(
-                              context: context,
-                              title: 'Succes!',
-                              message: '${selectedTeam.name} has been deleted',
-                            );
-                          } on FirebaseException catch (error) {
-                            GlobalMethods.dialogFailure(
-                              context: context,
-                              message: '${error.message}',
-                            );
-                            setState(() {
-                              _isLoading = false;
-                            });
-                            return;
-                          } catch (error) {
-                            GlobalMethods.dialogFailure(
-                              context: context,
-                              message: '$error',
-                            );
-                            setState(() {
-                              _isLoading = false;
-                            });
-                            return;
-                          } finally {
-                            setState(() {
-                              _isLoading = false;
-                            });
-                            if (Navigator.canPop(context)) {
-                              Navigator.pop(context);
-                            }
-                          }
-                        });
-                  },
-                  child: Text(
-                    AppLocalizations.of(context)!.delete,
-                    style: const TextStyle(color: Colors.red),
+                Form(
+                  key: formKey,
+                  child: TextFormField(
+                    controller: textEditingController,
+                    validator: ValidationBuilder(
+                            localeName:
+                                AppLocalizations.of(context)!.localeName)
+                        .maxLength(20)
+                        .required()
+                        .build(),
+                    decoration: InputDecoration(
+                      hintText: selectedTeam.name,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      filled: true,
+                      fillColor: Theme.of(context).canvasColor,
+                      focusColor: Theme.of(context).canvasColor,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).canvasColor,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).canvasColor,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
+                Row(
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        if (Navigator.canPop(context)) Navigator.pop(context);
+                      },
+                      child: Text(
+                        AppLocalizations.of(context)!.cancel,
+                        style: TextStyle(color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        final isValid = formKey.currentState!.validate();
+                        FocusScope.of(context).unfocus();
+                        if (isValid) {
+                          FirebaseFirestore.instance
+                              .collection('teams')
+                              .doc(selectedTeam!.uuid)
+                              .update({
+                            'name': textEditingController.text,
+                          });
+                          textEditingController.clear();
+                        }
+                        if (Navigator.canPop(context)) Navigator.pop(context);
+                      },
+                      child: Text(
+                        AppLocalizations.of(context)!.confirm,
+                        style: TextStyle(color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
-          // actions: [],
         );
       },
     );

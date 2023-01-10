@@ -26,6 +26,7 @@ class AgendaScreen extends StatefulWidget {
 
 class _AgendaScreenState extends State<AgendaScreen> {
   final _eventController = TextEditingController();
+  final _eventDescController = TextEditingController();
   TimeOfDay time = TimeOfDay.now();
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -42,6 +43,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
   @override
   void dispose() {
     _eventController.dispose();
+    _eventDescController.dispose();
     super.dispose();
   }
 
@@ -158,25 +160,80 @@ class _AgendaScreenState extends State<AgendaScreen> {
             builder: (BuildContext context, setState) {
               return AlertDialog(
                 title: Text(AppLocalizations.of(context)!.addEvent),
-                content: SizedBox(
-                  height: 160,
+                content: SingleChildScrollView(
                   child: Column(
                     children: [
                       Form(
                         key: _formKey,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                              hintText:
-                                  AppLocalizations.of(context)!.eventName),
-                          controller: _eventController,
-                          validator: ValidationBuilder(
-                                  localeName:
-                                      AppLocalizations.of(context)!.localeName)
-                              .required()
-                              .build(),
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              decoration: InputDecoration(
+                                hintText:
+                                    AppLocalizations.of(context)!.eventName,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                filled: true,
+                                fillColor: Theme.of(context).canvasColor,
+                                focusColor: Theme.of(context).canvasColor,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    color: Theme.of(context).canvasColor,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    color: Theme.of(context).canvasColor,
+                                  ),
+                                ),
+                              ),
+                              controller: _eventController,
+                              validator: ValidationBuilder(
+                                      localeName: AppLocalizations.of(context)!
+                                          .localeName)
+                                  .maxLength(20)
+                                  .required()
+                                  .build(),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            TextFormField(
+                              minLines: 3,
+                              maxLines: 8,
+                              decoration: InputDecoration(
+                                hintText: AppLocalizations.of(context)!
+                                    .eventDescription,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                filled: true,
+                                fillColor: Theme.of(context).canvasColor,
+                                focusColor: Theme.of(context).canvasColor,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    color: Theme.of(context).canvasColor,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    color: Theme.of(context).canvasColor,
+                                  ),
+                                ),
+                              ),
+                              controller: _eventDescController,
+                            ),
+                          ],
                         ),
                       ),
-                      const Spacer(),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -255,12 +312,11 @@ class _AgendaScreenState extends State<AgendaScreen> {
                           ),
                         ],
                       ),
-                      const Spacer(),
                       Row(
                         children: [
                           TextButton(
                             child: Text(
-                              AppLocalizations.of(context)!.no,
+                              AppLocalizations.of(context)!.cancel,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor),
                             ),
@@ -269,7 +325,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
                           const Spacer(),
                           TextButton(
                             child: Text(
-                              AppLocalizations.of(context)!.yes,
+                              AppLocalizations.of(context)!.confirm,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor),
                             ),
@@ -290,6 +346,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
                                       .doc();
                                   await docRef.set({
                                     'name': _eventController.text,
+                                    'description': _eventDescController.text,
                                     'uuid': docRef.id,
                                     'votes': [
                                       uid,
@@ -315,6 +372,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
                                   return;
                                 }
                                 _eventController.clear();
+                                _eventDescController.clear();
                               }
                             },
                           ),

@@ -60,10 +60,13 @@
 
     "@_AGENDA_PAGE": {},
     "addEvent": "Add event",
-    "eventName": "Event name",
+    "eventName": "Name",
+    "eventDescription": "Description (Optional)",
     
     "@_POPUPS": {},
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
 
 }

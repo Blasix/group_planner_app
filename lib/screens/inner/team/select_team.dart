@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:group_planner_app/consts/loading_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -195,6 +196,7 @@ class _SelectTeamScreenState extends State<SelectTeamScreen> {
   }
 
   Future _showTeamDialog() async {
+    final formKey = GlobalKey<FormState>();
     await showDialog(
       context: context,
       builder: (context) {
@@ -208,21 +210,73 @@ class _SelectTeamScreenState extends State<SelectTeamScreen> {
             ),
             1,
           ),
-          title: const Text('Please enter a team name'),
-          content: TextField(
-            controller: _teamCreateController,
-            decoration: const InputDecoration(hintText: "Team name"),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                _createTeam(context);
-              },
-              child: const Text(
-                'create',
-              ),
+          title: const Text('Please enter a group name'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                Form(
+                  key: formKey,
+                  child: TextFormField(
+                    controller: _teamCreateController,
+                    validator: ValidationBuilder(
+                            localeName:
+                                AppLocalizations.of(context)!.localeName)
+                        .maxLength(20)
+                        .required()
+                        .build(),
+                    decoration: InputDecoration(
+                      hintText: "Group name",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      filled: true,
+                      fillColor: Theme.of(context).canvasColor,
+                      focusColor: Theme.of(context).canvasColor,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).canvasColor,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).canvasColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Row(
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        if (Navigator.canPop(context)) Navigator.pop(context);
+                      },
+                      child: Text(
+                        AppLocalizations.of(context)!.cancel,
+                        style: TextStyle(color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        final isValid = formKey.currentState!.validate();
+                        FocusScope.of(context).unfocus();
+                        if (isValid) {
+                          _createTeam(context);
+                        }
+                      },
+                      child: Text(
+                        AppLocalizations.of(context)!.confirm,
+                        style: TextStyle(color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ),
-          ],
+          ),
         );
       },
     );

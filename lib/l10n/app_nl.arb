@@ -60,10 +60,13 @@
 
     "@_AGENDA_PAGE": {},
     "addEvent": "Voeg evenement toe",
-    "eventName": "Evenement naam",
+    "eventName": "Naam",
+    "eventDescription": "Beschrijving (optioneel)",
 
     "@_POPUPS": {},
     "yes": "Ja",
-    "no": "Nee"
+    "no": "Nee",
+    "cancel": "Annuleren",
+    "confirm": "Bevestig"
 
 }

@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 
 class EventModel extends ChangeNotifier {
   final List votes;
-  final String name, uuid;
+  final String name, uuid, description;
   final Timestamp eventTime;
+  // final GeoPoint location;
 
   EventModel({
+    required this.description,
     required this.uuid,
     required this.votes,
     required this.name,
@@ -19,6 +21,7 @@ class EventModel extends ChangeNotifier {
       eventTime: map['eventTime'],
       votes: map['votes'],
       uuid: map['uuid'],
+      description: map['description'],
     );
   }
 }
