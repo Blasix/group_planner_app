@@ -41,6 +41,6 @@ class MetaButton extends StatelessWidget {
           //     ),
           //   );
         },
-        buttonImagePath: 'assets/images/auth/meta.png');
+        buttonImagePath: 'assets/auth/meta.png');
   }
 }

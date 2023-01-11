@@ -6,7 +6,7 @@
         
 
    <application
-        android:label="group_planner_app"
+        android:label="Group Planner"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

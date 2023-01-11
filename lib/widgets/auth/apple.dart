@@ -7,6 +7,6 @@ class AppleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OtherButton(
-        function: () {}, buttonImagePath: 'assets/images/auth/apple.png');
+        function: () {}, buttonImagePath: 'assets/auth/apple.png');
   }
 }

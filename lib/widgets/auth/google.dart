@@ -54,6 +54,6 @@ class GoogleButton extends StatelessWidget {
             ),
           );
         },
-        buttonImagePath: 'assets/images/auth/google.png');
+        buttonImagePath: 'assets/auth/google.png');
   }
 }
