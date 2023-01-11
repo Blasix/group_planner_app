@@ -21,7 +21,7 @@ class EventModel extends ChangeNotifier {
       eventTime: map['eventTime'],
       votes: map['votes'],
       uuid: map['uuid'],
-      description: map['description'],
+      description: map['description'] ?? '',
     );
   }
 }

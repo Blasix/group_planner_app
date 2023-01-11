@@ -39,32 +39,52 @@ class EventDetails extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(
-            icon: const Icon(Icons.edit_outlined, color: Colors.blue),
-            onPressed: () {},
-          ),
+          // IconButton(
+          //   icon: const Icon(Icons.edit_outlined, color: Colors.blue),
+          //   onPressed: () {},
+          // ),
           IconButton(
             icon: const Icon(Icons.delete_outlined, color: Colors.red),
-            onPressed: () async {
-              try {
-                await FirebaseFirestore.instance
-                    .collection('teams')
-                    .doc(selectedTeam!.uuid)
-                    .collection('events')
-                    .doc(event!.uuid)
-                    .delete();
-              } catch (e) {
-                GlobalMethods.dialogFailure(
-                  context: context,
-                  message: e.toString(),
-                );
-              } finally {
-                Navigator.of(context).pop();
-              }
+            onPressed: () {
+              GlobalMethods.confirm(
+                context: context,
+                message: AppLocalizations.of(context)!.delete(event!.name),
+                onTap: () async {
+                  if (Navigator.canPop(context)) Navigator.of(context).pop();
+                  try {
+                    await FirebaseFirestore.instance
+                        .collection('teams')
+                        .doc(selectedTeam!.uuid)
+                        .collection('events')
+                        .doc(event!.uuid)
+                        .delete();
+                    GlobalMethods.dialog(
+                      context: context,
+                      title: 'Succes!',
+                      message:
+                          AppLocalizations.of(context)!.deletion(event!.name),
+                    );
+                  } on FirebaseException catch (error) {
+                    GlobalMethods.dialogFailure(
+                      context: context,
+                      message: '${error.message}',
+                    );
+                    return;
+                  } catch (error) {
+                    GlobalMethods.dialogFailure(
+                      context: context,
+                      message: '$error',
+                    );
+                    return;
+                  } finally {
+                    if (Navigator.canPop(context)) Navigator.of(context).pop();
+                  }
+                },
+              );
             },
           ),
         ],
-        title: const Text("event details"),
+        title: Text(AppLocalizations.of(context)!.eventDetails),
         foregroundColor: Theme.of(context).colorScheme.primary,
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -83,10 +103,10 @@ class EventDetails extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Name:",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    Text(
+                      AppLocalizations.of(context)!.eventName,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       event!.name,
@@ -96,23 +116,35 @@ class EventDetails extends StatelessWidget {
                     const Divider(
                       thickness: 1,
                     ),
-                    const Text(
-                      "Description:",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
                     Text(
-                      event!.description,
-                      style: TextStyle(
-                          color: Theme.of(context).textTheme.headline1!.color),
+                      AppLocalizations.of(context)!.eventDescription,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
                     ),
+                    event!.description.isEmpty
+                        ? Text(
+                            AppLocalizations.of(context)!.eventNoDescription,
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .headline1!
+                                    .color),
+                          )
+                        : Text(
+                            event!.description,
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .headline1!
+                                    .color),
+                          ),
                     const Divider(
                       thickness: 1,
                     ),
-                    const Text(
-                      "Date & Time:",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    Text(
+                      AppLocalizations.of(context)!.eventDateTime,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     Row(
                       children: [
@@ -150,6 +182,7 @@ class EventDetails extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Container(
+                width: double.infinity,
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -158,26 +191,36 @@ class EventDetails extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      const Text(
-                        "Votes:",
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context)!.eventVotes,
+                        style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                      ListView.separated(
-                        physics: const BouncingScrollPhysics(),
-                        shrinkWrap: true, // important
-                        itemCount: votedMembers.length,
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const Divider(
-                          thickness: 1,
-                        ),
-                        itemBuilder: (BuildContext context, int index) {
-                          return ChangeNotifierProvider.value(
-                            value: votedMembers[index],
-                            child: const VotedMembers(),
-                          );
-                        },
-                      ),
+                      event!.votes.isEmpty
+                          ? Text(
+                              AppLocalizations.of(context)!.eventNoVotes,
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline1!
+                                      .color),
+                            )
+                          : ListView.separated(
+                              physics: const BouncingScrollPhysics(),
+                              shrinkWrap: true, // important
+                              itemCount: votedMembers.length,
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      const Divider(
+                                thickness: 1,
+                              ),
+                              itemBuilder: (BuildContext context, int index) {
+                                return ChangeNotifierProvider.value(
+                                  value: votedMembers[index],
+                                  child: const VotedMembers(),
+                                );
+                              },
+                            ),
                     ],
                   ),
                 ),

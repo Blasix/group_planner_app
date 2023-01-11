@@ -206,7 +206,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
                               maxLines: 8,
                               decoration: InputDecoration(
                                 hintText: AppLocalizations.of(context)!
-                                    .eventDescription,
+                                    .eventDescriptionOptional,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),

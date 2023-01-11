@@ -19,6 +19,7 @@ class MemberProvider with ChangeNotifier {
     final uid = authInstance.currentUser!.uid;
 
     sub.collection('users').doc(uid).snapshots().listen((event) {
+      if (!event.exists) return;
       _currentMember = MemberModel(
         id: event.get('id'),
         name: event.get('username'),

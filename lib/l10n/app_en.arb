@@ -20,6 +20,8 @@
     "noGroups": "You have no groups, please create one!",
     "noGroupsFound": "'No Group found, please try another keyword'",
     "searchGroup": "Search Group",
+    "groupName": "Group name",
+    "enterGroupName": "Please enter a group name",
 
     "@_SETTINGS_PAGE": {},
     "privacy": "Privacy",
@@ -28,6 +30,7 @@
     "inviteAFriend": "Invite a friend",
     "logout": "Logout",
     "deleteAccount": "Delete account",
+    "deleteAccountSucces": "Your account has been deleted",
     "sendBugReport": "Send bug report",
     "copyright": "Copyright",
     "faq": "FAQ",
@@ -57,16 +60,47 @@
     "noNumber": "Must contain at least one number",
     "noAnything": "The field is required",
     "noMatch": "Passwords do not match",
+    "logoutConformation": "You want to logout?",
+    "deleteAccConformation": "You want to delete your account?",
 
-    "@_AGENDA_PAGE": {},
+    "@_EVENTS": {},
+    "eventDetails": "Event Details",
     "addEvent": "Add event",
     "eventName": "Name",
-    "eventDescription": "Description (Optional)",
+    "eventDescriptionOptional": "Description (Optional)",
+    "eventDescription": "Description",
+    "eventNoDescription": "No description",
+    "eventDateTime": "Date & Time",
+    "eventVotes": "Votes",
+    "eventNoVotes": "No votes yet",
     
     "@_POPUPS": {},
     "yes": "Yes",
     "no": "No",
     "cancel": "Cancel",
-    "confirm": "Confirm"
-
+    "confirm": "Confirm",
+    "creation": "{input} has been created",
+    "@creation": {
+        "placeholders": {
+            "input": {
+                "type": "String"
+            }
+        }
+    },
+    "delete": "Are you sure you want to delete {input}?",
+    "@delete": {
+        "placeholders": {
+            "input": {
+                "type": "String"
+            }
+        }
+    },
+    "deletion": "{input} has been deleted",
+    "@deletion": {
+        "placeholders": {
+            "input": {
+                "type": "String"
+            }
+        }
+    }
 }

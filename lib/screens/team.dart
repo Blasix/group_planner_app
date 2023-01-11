@@ -320,8 +320,8 @@ class _TeamScreenState extends State<TeamScreen> {
                 onTap: () {
                   GlobalMethods.confirm(
                       context: context,
-                      message:
-                          'Are you sure you want to delete ${selectedTeam.name}?',
+                      message: AppLocalizations.of(context)!
+                          .delete(selectedTeam.name),
                       onTap: () async {
                         final uid = authInstance.currentUser!.uid;
                         if (Navigator.canPop(context)) Navigator.pop(context);
@@ -342,7 +342,8 @@ class _TeamScreenState extends State<TeamScreen> {
                           GlobalMethods.dialog(
                             context: context,
                             title: 'Succes!',
-                            message: '${selectedTeam.name} has been deleted',
+                            message: AppLocalizations.of(context)!
+                                .deletion(selectedTeam.name),
                           );
                         } on FirebaseException catch (error) {
                           GlobalMethods.dialogFailure(
@@ -440,8 +441,8 @@ class _TeamScreenState extends State<TeamScreen> {
                             'name': textEditingController.text,
                           });
                           textEditingController.clear();
+                          if (Navigator.canPop(context)) Navigator.pop(context);
                         }
-                        if (Navigator.canPop(context)) Navigator.pop(context);
                       },
                       child: Text(
                         AppLocalizations.of(context)!.confirm,

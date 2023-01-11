@@ -49,7 +49,8 @@ class _SelectTeamScreenState extends State<SelectTeamScreen> {
       GlobalMethods.dialog(
         context: context,
         title: 'Succes!',
-        message: '${_teamCreateController.text} has been created',
+        message:
+            AppLocalizations.of(context)!.creation(_teamCreateController.text),
       );
       Navigator.pop(context);
     } on FirebaseException catch (error) {
@@ -210,7 +211,7 @@ class _SelectTeamScreenState extends State<SelectTeamScreen> {
             ),
             1,
           ),
-          title: const Text('Please enter a group name'),
+          title: Text(AppLocalizations.of(context)!.enterGroupName),
           content: SingleChildScrollView(
             child: Column(
               children: [
@@ -225,7 +226,7 @@ class _SelectTeamScreenState extends State<SelectTeamScreen> {
                         .required()
                         .build(),
                     decoration: InputDecoration(
-                      hintText: "Group name",
+                      hintText: AppLocalizations.of(context)!.groupName,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

@@ -39,6 +39,7 @@ class TeamProvider with ChangeNotifier {
         .doc(groupId)
         .get()
         .then((value) {
+      if (!value.exists) return;
       team = TeamModel(
         uuid: value.id,
         name: value.get('name'),
@@ -82,6 +83,7 @@ class TeamProvider with ChangeNotifier {
     final uid = authInstance.currentUser!.uid;
     TeamModel? team;
     sub.collection('users').doc(uid).snapshots().listen((event) {
+      if (!event.exists) return;
       final selectedTeam = event.get('selectedTeam');
       team = _teamMap[selectedTeam];
       if (team != null) {

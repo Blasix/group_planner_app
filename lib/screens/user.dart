@@ -572,7 +572,8 @@ class _UserScreenState extends State<UserScreen> {
                       onPressed: (context) async {
                         GlobalMethods.confirm(
                           context: context,
-                          message: 'Do you want to logout',
+                          message:
+                              AppLocalizations.of(context)!.logoutConformation,
                           onTap: () async {
                             setState(() {
                               _isLoading = true;

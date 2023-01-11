@@ -43,7 +43,8 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
               onPressed: (context) {
                 GlobalMethods.confirm(
                     context: context,
-                    message: 'Are you sure you want to delete your account',
+                    message:
+                        AppLocalizations.of(context)!.deleteAccConformation,
                     onTap: () async {
                       final User user = authInstance.currentUser!;
                       final uid = user.uid;
@@ -63,7 +64,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
                             .where('leader', isEqualTo: uid)
                             .get();
                         for (var doc in snapshots.docs) {
-                          await doc.reference.delete();
+                          if (doc.exists) await doc.reference.delete();
                         }
                         await FirebaseFirestore.instance
                             .collection('users')
@@ -72,7 +73,17 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
                         Reference ref = FirebaseStorage.instance
                             .ref()
                             .child('ProfilePics/$uid.jpg');
-                        await ref.delete();
+                        try {
+                          await ref.delete();
+                        } on Exception {
+                          await user.delete();
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
+                          return;
+                        }
                         await user.delete();
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
@@ -82,7 +93,8 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
                         GlobalMethods.dialog(
                           context: context,
                           title: 'Succes!',
-                          message: 'Your account has been deleted',
+                          message:
+                              AppLocalizations.of(context)!.deleteAccountSucces,
                         );
                       } on FirebaseException catch (error) {
                         GlobalMethods.dialogFailure(

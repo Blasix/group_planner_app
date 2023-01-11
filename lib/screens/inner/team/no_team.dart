@@ -37,7 +37,8 @@ class _NoTeamState extends State<NoTeam> {
       GlobalMethods.dialog(
         context: context,
         title: 'Succes!',
-        message: '${_teamCreateController.text} has been created',
+        message:
+            AppLocalizations.of(context)!.creation(_teamCreateController.text),
       );
       if (Navigator.canPop(context)) Navigator.pop(context);
       final User? user = authInstance.currentUser;
@@ -94,7 +95,7 @@ class _NoTeamState extends State<NoTeam> {
               ),
               1,
             ),
-            title: const Text('Please enter a group name'),
+            title: Text(AppLocalizations.of(context)!.enterGroupName),
             content: SingleChildScrollView(
               child: Column(
                 children: [
@@ -109,7 +110,7 @@ class _NoTeamState extends State<NoTeam> {
                           .required()
                           .build(),
                       decoration: InputDecoration(
-                        hintText: "Group name",
+                        hintText: AppLocalizations.of(context)!.groupName,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
