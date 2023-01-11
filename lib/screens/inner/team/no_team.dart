@@ -51,7 +51,6 @@ class _NoTeamState extends State<NoTeam> {
         'members': [
           uid,
         ],
-        'pictureUrl': '',
       });
       await FirebaseFirestore.instance
           .collection('users')

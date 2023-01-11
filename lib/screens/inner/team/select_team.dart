@@ -40,7 +40,6 @@ class _SelectTeamScreenState extends State<SelectTeamScreen> {
         'members': [
           uid,
         ],
-        'pictureUrl': '',
       });
       await FirebaseFirestore.instance
           .collection('users')

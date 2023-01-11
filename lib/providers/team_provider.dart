@@ -44,7 +44,6 @@ class TeamProvider with ChangeNotifier {
         uuid: value.id,
         name: value.get('name'),
         leader: value.get('leader'),
-        pictureUrl: value.get('pictureUrl'),
         members: value.get('members'),
       );
     });
@@ -64,7 +63,6 @@ class TeamProvider with ChangeNotifier {
           uuid: element.doc.id,
           name: element.doc.get('name'),
           leader: element.doc.get('leader'),
-          pictureUrl: element.doc.get('pictureUrl'),
           members: element.doc.get('members'),
         );
         if (element.type == DocumentChangeType.added) {

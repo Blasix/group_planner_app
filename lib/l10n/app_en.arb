@@ -66,6 +66,7 @@
     "@_EVENTS": {},
     "eventDetails": "Event Details",
     "addEvent": "Add event",
+    "editEvent": "Edit event",
     "eventName": "Name",
     "eventDescriptionOptional": "Description (Optional)",
     "eventDescription": "Description",

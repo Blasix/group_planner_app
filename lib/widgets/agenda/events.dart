@@ -27,7 +27,7 @@ class EventsWidget extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => EventDetails(
-                event: eventModel,
+                eventID: eventModel.uuid,
               ),
             ),
           );

@@ -66,6 +66,7 @@
     "@_EVENTS": {},
     "eventDetails": "Evenement Details",
     "addEvent": "Voeg evenement toe",
+    "editEvent": "Bewerk evenement",
     "eventName": "Naam",
     "eventDescriptionOptional": "Beschrijving (Optioneel)",
     "eventDescription": "Beschrijving",

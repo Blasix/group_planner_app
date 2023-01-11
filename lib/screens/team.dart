@@ -96,18 +96,6 @@ class _TeamScreenState extends State<TeamScreen> {
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: Theme.of(context).cardColor,
-                                    ),
-                                    height: 60,
-                                    width: 60,
-                                    child: const Center(child: Text("icon")),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
                                   SizedBox(
                                     width: 200,
                                     child: Padding(
